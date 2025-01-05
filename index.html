@@ -1,0 +1,175 @@
+import { useState } from 'react';
+import { Home, User, Settings } from "lucide-react";
+
+interface User {
+  username: string;
+  password: string;
+  role: string;
+}
+
+const App = () => {
+  const [registeredUsers, setRegisteredUsers] = useState<User[]>([]);
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+
+  const handleRegister = () => {
+    if (username && password && role) {
+      const hashedPassword = password; // implement password hashing
+      const newUser: User = { username, password: hashedPassword, role };
+      setRegisteredUsers([...registeredUsers, newUser]);
+      setIsRegistering(false);
+    }
+  };
+
+  const handleLogin = () => {
+    if (loginUsername && loginPassword) {
+     !registeredUsers.find((user) => user.username === loginUsername && user.password === loginPassword)
+        ? alert('Invalid credentials')
+        : setCurrentUser(registeredUsers.find((user) => user.username === loginUsername && user.password === loginPassword));
+      setIsLoggingIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      {currentUser ? (
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl mb-4">Welcome, {currentUser.username}!</h1>
+          {currentUser.role === 'admin' ? (
+            <div className="flex flex-col items-center justify-center">
+              <h2 className="text-2xl mb-4">Admin Dashboard</h2>
+              <div className="flex flex-col items-center justify-center mb-4">
+                <Home className="w-6 h-6 mr-2" />
+                <span>Home</span>
+              </div>
+              <div className="flex flex-col items-center justify-center mb-4">
+                <User className="w-6 h-6 mr-2" />
+                <span>Users</span>
+              </div>
+              <div className="flex flex-col items-center justify-center mb-4">
+                <Settings className="w-6 h-6 mr-2" />
+                <span>Settings</span>
+              </div>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center">
+              <h2 className="text-2xl mb-4">User Dashboard</h2>
+              <div className="flex flex-col items-center justify-center mb-4">
+                <User className="w-6 h-6 mr-2" />
+                <span>Profile</span>
+              </div>
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      ) : isRegistering ? (
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl mb-4">Register</h1>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="mb-4 p-2 border border-gray-400 rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="mb-4 p-2 border border-gray-400 rounded"
+          />
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="mb-4 p-2 border border-gray-400 rounded"
+          >
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="user">User</option>
+          </select>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleRegister}
+          >
+            Register
+          </button>
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4"
+            onClick={() => setIsRegistering(false)}
+          >
+            Back to Login
+          </button>
+        </div>
+      ) : isLoggingIn ? (
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl mb-4">Login</h1>
+          <input
+            type="text"
+            placeholder="Username"
+            value={loginUsername}
+            onChange={(e) => setLoginUsername(e.target.value)}
+            className="mb-4 p-2 border border-gray-400 rounded"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={loginPassword}
+            onChange={(e) => setLoginPassword(e.target.value)}
+            className="mb-4 p-2 border border-gray-400 rounded"
+          />
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleLogin}
+          >
+            Login
+          </button>
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-4"
+            onClick={() => setIsLoggingIn(false)}
+          >
+            Back to Register
+          </button>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4"
+            onClick={() => setIsRegistering(true)}
+          >
+            Register
+          </button>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => setIsLoggingIn(true)}
+          >
+            Login
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
