@@ -1,0 +1,122 @@
+[
+    {
+      "id": 1,
+      "name": "Mariana Silva",
+      "location": "São Paulo, SP",
+      "profession": "Arquiteta",
+      "product": "Mesa Rio Azul",
+      "text": "A mesa ficou simplesmente espetacular! Todos que visitam nossa casa se encantam com ela. É realmente uma obra de arte funcional. O acabamento é impecável e a combinação de cores da resina com a madeira natural ficou perfeita. Superou todas as minhas expectativas.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente1.webp",
+      "verified": true,
+      "date": "2024-12-10"
+    },
+    {
+      "id": 2,
+      "name": "Rafael Mendes",
+      "location": "Rio de Janeiro, RJ",
+      "profession": "Empresário",
+      "product": "Mesa Oceano",
+      "text": "O processo de encomenda foi simples e a ResinArt entregou exatamente o que eu imaginava. A qualidade do acabamento é impecável. A mesa se tornou o centro das atenções na sala de jantar e combinou perfeitamente com a decoração. O prazo de entrega foi respeitado e a equipe muito atenciosa.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente2.webp",
+      "verified": true,
+      "date": "2024-11-15"
+    },
+    {
+      "id": 3,
+      "name": "Paulo Oliveira",
+      "location": "Curitiba, PR",
+      "profession": "Arquiteto",
+      "product": "Aparador Esmeralda",
+      "text": "Como arquiteto, procuro peças únicas para meus projetos e a ResinArt nunca me decepciona. A capacidade de personalização, a qualidade do acabamento e o profissionalismo da equipe fazem deles parceiros ideais para criar peças que elevam qualquer ambiente. Já recomendei para vários clientes.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente3.webp",
+      "verified": true,
+      "date": "2024-10-22"
+    },
+    {
+      "id": 4,
+      "name": "Carla Fernandes",
+      "location": "Brasília, DF",
+      "profession": "Designer de Interiores",
+      "product": "Mesa Galáxia",
+      "text": "Como designer de interiores, busco sempre peças diferenciadas para projetos especiais. A Mesa Galáxia que adquiri para um cliente se tornou o ponto focal de todo o ambiente. Os efeitos criados na resina são surpreendentes e mudam conforme a iluminação do ambiente. Uma verdadeira obra de arte.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente4.webp",
+      "verified": true,
+      "date": "2024-12-05"
+    },
+    {
+      "id": 5,
+      "name": "Roberta Almeida",
+      "location": "Salvador, BA",
+      "profession": "Médica",
+      "product": "Mesa Cristal",
+      "text": "Encomendei a Mesa Cristal para a sala de jantar da minha casa e fiquei impressionada com a beleza e qualidade do produto. A transparência da resina valoriza a madeira de uma forma única. Além disso, o atendimento personalizado da equipe da ResinArt me deixou muito segura durante todo o processo.",
+      "rating": 4,
+      "image": "/assets/images/testimonials/cliente5.webp",
+      "verified": true,
+      "date": "2024-11-25"
+    },
+    {
+      "id": 6,
+      "name": "Bruno Santos",
+      "location": "Porto Alegre, RS",
+      "profession": "Engenheiro",
+      "product": "Mesa Âmbar",
+      "text": "A mesa Âmbar que comprei para meu escritório é simplesmente deslumbrante. A tonalidade da resina muda conforme a luz do dia, criando um efeito muito interessante. Já recebi diversos elogios de clientes e colegas. A qualidade da madeira e do acabamento é notável, vale cada centavo investido.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente6.webp",
+      "verified": true,
+      "date": "2024-09-18"
+    },
+    {
+      "id": 7,
+      "name": "Renata Campos",
+      "location": "Florianópolis, SC",
+      "profession": "Advogada",
+      "product": "Mesa Centro Personalizada",
+      "text": "Encomendei uma mesa de centro personalizada com as medidas exatas para minha sala e o resultado foi perfeito! A equipe da ResinArt me ajudou a escolher as cores e materiais que melhor se harmonizavam com meu ambiente. Recebi muitas orientações durante todo o processo e isso fez toda a diferença.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente7.webp",
+      "verified": true,
+      "date": "2024-10-30"
+    },
+    {
+      "id": 8,
+      "name": "Carlos Rodrigues",
+      "location": "Belo Horizonte, MG",
+      "profession": "Publicitário",
+      "product": "Mesa Coral",
+      "text": "A Mesa Coral que adquiri para meu apartamento é um verdadeiro sucesso! As cores vibrantes e o design único chamam a atenção de todos que visitam minha casa. Além da beleza, a funcionalidade e durabilidade são excelentes. O processo de compra foi muito tranquilo e a entrega pontual.",
+      "rating": 4,
+      "image": "/assets/images/testimonials/cliente8.webp",
+      "verified": true,
+      "date": "2024-12-15"
+    },
+    {
+      "id": 9,
+      "name": "Juliana Costa",
+      "location": "Recife, PE",
+      "profession": "Psicóloga",
+      "product": "Mesa Floresta",
+      "text": "A Mesa Floresta trouxe um toque de natureza para meu consultório que transformou completamente o ambiente! Os tons de verde e as texturas da resina criam uma atmosfera acolhedora e relaxante. Meus pacientes sempre comentam sobre a beleza da peça. Recomendo a todos que buscam algo exclusivo.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente9.webp",
+      "verified": true,
+      "date": "2024-11-05"
+    },
+    {
+      "id": 10,
+      "name": "André Martins",
+      "location": "Campinas, SP",
+      "profession": "Fotógrafo",
+      "product": "Aparador Personalizado",
+      "text": "Como fotógrafo, tenho um olhar apurado para detalhes e beleza, e posso afirmar que o aparador que a ResinArt criou para meu estúdio é simplesmente perfeito! A combinação de cores foi exatamente o que eu imaginava e a qualidade do acabamento é impressionante. Uma verdadeira obra de arte funcional.",
+      "rating": 5,
+      "image": "/assets/images/testimonials/cliente10.webp",
+      "verified": true,
+      "date": "2024-09-25"
+    }
+  ]

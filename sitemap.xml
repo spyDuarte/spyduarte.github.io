@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Página Inicial -->
+  <url>
+    <loc>https://www.resinart.com.br/</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/logo/resinart-logo.svg</image:loc>
+      <image:title>ResinArt - Mesas de Resina</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Catálogo -->
+  <url>
+    <loc>https://www.resinart.com.br/catalogo.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Produtos Individuais -->
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=mesa-rio-azul</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/mesa-rio-azul.webp</image:loc>
+      <image:title>Mesa Rio Azul</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=mesa-oceano</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/mesa-oceano.webp</image:loc>
+      <image:title>Mesa Oceano</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=mesa-galaxia</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/mesa-galaxia.webp</image:loc>
+      <image:title>Mesa Galáxia</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=aparador-esmeralda</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/aparador-esmeralda.webp</image:loc>
+      <image:title>Aparador Esmeralda</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=mesa-ambar</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/mesa-ambar.webp</image:loc>
+      <image:title>Mesa Âmbar</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/produto.html?id=mesa-cristal</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.resinart.com.br/assets/images/products/mesa-cristal.webp</image:loc>
+      <image:title>Mesa Cristal</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Processo -->
+  <url>
+    <loc>https://www.resinart.com.br/processo.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Sobre -->
+  <url>
+    <loc>https://www.resinart.com.br/sobre.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Contato -->
+  <url>
+    <loc>https://www.resinart.com.br/contato.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- FAQ -->
+  <url>
+    <loc>https://www.resinart.com.br/faq.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Blog Index -->
+  <url>
+    <loc>https://www.resinart.com.br/blog/</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Blog Articles -->
+  <url>
+    <loc>https://www.resinart.com.br/blog/artigos/diferenca-entre-resina-epoxy-e-poliester.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/blog/artigos/como-escolher-a-mesa-de-resina-ideal.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.resinart.com.br/blog/artigos/cuidados-com-moveis-de-resina.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <!-- Política de Privacidade -->
+  <url>
+    <loc>https://www.resinart.com.br/privacidade.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Termos de Uso -->
+  <url>
+    <loc>https://www.resinart.com.br/termos.html</loc>
+    <lastmod>2025-03-15</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+</urlset>

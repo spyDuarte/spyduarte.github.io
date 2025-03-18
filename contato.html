@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato | ResinArt - Mesas de Resina</title>
+    <meta name="description" content="Entre em contato com a ResinArt para encomendar sua mesa de resina exclusiva ou tirar dúvidas sobre nossos produtos artesanais.">
+    
+    <!-- Favicons e PWA -->
+    <link rel="icon" href="/assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/main.min.css">
+    
+    <!-- Schema.org para Rich Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contato ResinArt",
+        "description": "Entre em contato com a ResinArt para encomendar sua mesa de resina exclusiva ou tirar dúvidas sobre nossos produtos artesanais.",
+        "url": "https://www.resinart.com.br/contato.html",
+        "mainEntity": {
+            "@type": "Organization",
+            "name": "ResinArt",
+            "telephone": "+551199999999",
+            "email": "contato@resinart.com.br",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "São Paulo",
+                "addressRegion": "SP",
+                "addressCountry": "BR"
+            }
+        }
+    }
+    </script>
+</head>
+<body class="page-contact">
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">
+                    <img src="/assets/images/logo/resinart-logo.svg" alt="ResinArt - Mesas de Resina" width="180" height="60">
+                </a>
+            </div>
+            
+            <nav class="main-nav">
+                <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">
+                    <span class="sr-only">Menu</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                <ul id="main-menu" class="menu">
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/catalogo.html">Catálogo</a></li>
+                    <li><a href="/processo.html">Processo</a></li>
+                    <li><a href="/sobre.html">Sobre</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li class="current-menu-item"><a href="/contato.html">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Banner de Contato -->
+        <section class="contact-header">
+            <div class="container">
+                <h1>Entre em Contato</h1>
+                <p>Estamos prontos para ajudar com dúvidas, orçamentos e encomendas personalizadas</p>
+            </div>
+        </section>
+
+        <!-- Formulário e Informações -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-layout">
+                    <!-- Formulário de Contato -->
+                    <div class="contact-form">
+                        <div class="form-wrapper">
+                            <h2>Envie uma Mensagem</h2>
+                            <form id="contact-form" action="/api/contact.php" method="post">
+                                <div class="form-group">
+                                    <label for="name">Nome Completo*</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email*</label>
+                                        <input type="email" id="email" name="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Telefone</label>
+                                        <input type="tel" id="phone" name="phone" placeholder="(00) 00000-0000">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="subject">Assunto*</label>
+                                    <select id="subject" name="subject" required>
+                                        <option value="">Selecione uma opção</option>
+                                        <option value="orcamento">Solicitar Orçamento</option>
+                                        <option value="encomenda">Encomenda Personalizada</option>
+                                        <option value="duvida">Dúvidas sobre Produtos</option>
+                                        <option value="revenda">Informações para Revenda</option>
+                                        <option value="outro">Outro Assunto</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="product-interest">Produto de Interesse</label>
+                                    <select id="product-interest" name="product_interest">
+                                        <option value="">Selecione uma opção (opcional)</option>
+                                        <option value="mesa-centro">Mesa de Centro</option>
+                                        <option value="mesa-jantar">Mesa de Jantar</option>
+                                        <option value="mesa-lateral">Mesa Lateral</option>
+                                        <option value="aparador">Aparador</option>
+                                        <option value="personalizado">Projeto Personalizado</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="message">Mensagem*</label>
+                                    <textarea id="message" name="message" rows="6" required></textarea>
+                                </div>
+                                
+                                <div class="form-group form-attachment">
+                                    <label for="attachment">Adicionar Imagem de Referência</label>
+                                    <input type="file" id="attachment" name="attachment" accept="image/*">
+                                    <p class="file-format">Formatos aceitos: JPG, PNG. Tamanho máximo: 5MB</p>
+                                </div>
+                                
+                                <div class="form-group form-consent">
+                                    <input type="checkbox" id="consent" name="consent" required>
+                                    <label for="consent">Concordo com a <a href="/privacidade.html" target="_blank">política de privacidade</a> e com o processamento dos meus dados pessoais.*</label>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Informações de Contato -->
+                    <div class="contact-info">
+                        <div class="info-wrapper">
+                            <h2>Informações de Contato</h2>
+                            
+                            <div class="contact-details">
+                                <div class="contact-method">
+                                    <div class="method-icon">
+                                        <img src="/assets/images/icons/map.svg" alt="Endereço" width="24" height="24">
+                                    </div>
+                                    <div class="method-info">
+                                        <h3>Endereço</h3>
+                                        <p>Rua das Araucárias, 123<br>Vila Madalena, São Paulo - SP<br>CEP: 05443-010</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-method">
+                                    <div class="method-icon">
+                                        <img src="/assets/images/icons/phone.svg" alt="Telefone" width="24" height="24">
+                                    </div>
+                                    <div class="method-info">
+                                        <h3>Telefone</h3>
+                                        <p>(11) 99999-9999</p>
+                                        <p>Segunda a Sexta: 9h às 18h</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-method">
+                                    <div class="method-icon">
+                                        <img src="/assets/images/icons/email.svg" alt="Email" width="24" height="24">
+                                    </div>
+                                    <div class="method-info">
+                                        <h3>Email</h3>
+                                        <p>contato@resinart.com.br</p>
+                                        <p>Respondemos em até 24 horas úteis</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="contact-method">
+                                    <div class="method-icon">
+                                        <img src="/assets/images/icons/instagram.svg" alt="Redes Sociais" width="24" height="24">
+                                    </div>
+                                    <div class="method-info">
+                                        <h3>Redes Sociais</h3>
+                                        <div class="social-links">
+                                            <a href="https://instagram.com/resinart" target="_blank" class="social-link">Instagram</a>
+                                            <a href="https://facebook.com/resinart" target="_blank" class="social-link">Facebook</a>
+                                            <a href="https://pinterest.com/resinart" target="_blank" class="social-link">Pinterest</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="business-hours">
+                                <h3>Horário de Funcionamento</h3>
+                                <ul class="hours-list">
+                                    <li>
+                                        <span class="days">Segunda a Sexta</span>
+                                        <span class="time">9h às 18h</span>
+                                    </li>
+                                    <li>
+                                        <span class="days">Sábado</span>
+                                        <span class="time">10h às 15h</span>
+                                    </li>
+                                    <li>
+                                        <span class="days">Domingo e Feriados</span>
+                                        <span class="time">Fechado</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <div class="direct-contact">
+                                <a href="https://wa.me/5511999999999" class="btn btn-accent btn-large">
+                                    <img src="/assets/images/icons/whatsapp-dark.svg" alt="WhatsApp" width="20" height="20">
+                                    <span>Fale pelo WhatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mapa -->
+        <section class="map-section">
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14628.435744460506!2d-46.70303317348878!3d-23.55682489621789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce579992f3e401%3A0xd286b8f2ac9a9fa!2sVila%20Madalena%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1646068524516!5m2!1spt-BR!2sbr" 
+                    width="600" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                    title="Localização ResinArt">
+                </iframe>
+            </div>
+            <div class="map-overlay">
+                <div class="location-card">
+                    <div class="location-header">
+                        <h3>Visite Nosso Showroom</h3>
+                        <p>Conheça nossas mesas de resina pessoalmente</p>
+                    </div>
+                    <div class="location-address">
+                        <img src="/assets/images/icons/map-pin.svg" alt="Localização" width="16" height="16">
+                        <span>Rua das Araucárias, 123 - Vila Madalena, São Paulo - SP</span>
+                    </div>
+                    <a href="https://goo.gl/maps/YourGoogleMapsLink" class="btn btn-secondary" target="_blank">Como Chegar</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Rápido -->
+        <section class="quick-faq">
+            <div class="container">
+                <h2>Perguntas Frequentes</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <h3 class="faq-question">Qual o prazo para produção de uma mesa personalizada?</h3>
+                        <div class="faq-answer">
+                            <p>O prazo médio para produção de uma mesa personalizada é de 30 a 45 dias, dependendo da complexidade do projeto e da nossa agenda de produção atual.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">Vocês entregam para todo o Brasil?</h3>
+                        <div class="faq-answer">
+                            <p>Sim, realizamos entregas para todo o Brasil. O frete é calculado de acordo com a localidade e dimensões do produto. Para regiões metropolitanas de São Paulo, oferecemos serviço de entrega especializada com montagem.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">As mesas de resina são resistentes a riscos e manchas?</h3>
+                        <div class="faq-answer">
+                            <p>Nossas mesas recebem um acabamento com verniz poliuretano de alta resistência que proporciona excelente proteção contra riscos leves, manchas e raios UV. No entanto, recomendamos o uso de porta-copos para bebidas quentes e evitar o contato com objetos cortantes.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">É possível ver as mesas antes de comprar?</h3>
+                        <div class="faq-answer">
+                            <p>Sim, você pode agendar uma visita ao nosso showroom em São Paulo para conhecer algumas peças. Também disponibilizamos amostras de madeira e resina para clientes que não podem visitar pessoalmente.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a href="/faq.html" class="btn btn-outline">Ver Todas as Perguntas</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="/assets/images/logo/resinart-logo-white.svg" alt="ResinArt" width="150" height="50">
+                    <p>Transformando madeira e resina em arte desde 2018</p>
+                </div>
+                <div class="footer-nav">
+                    <h3>Navegação</h3>
+                    <ul>
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/catalogo.html">Catálogo</a></li>
+                        <li><a href="/processo.html">Processo</a></li>
+                        <li><a href="/sobre.html">Sobre</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/contato.html">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <p>email: contato@resinart.com.br</p>
+                    <p>telefone: (11) 99999-9999</p>
+                    <p>São Paulo - SP</p>
+                </div>
+                <div class="footer-social">
+                    <h3>Redes Sociais</h3>
+                    <div class="social-icons">
+                        <a href="https://instagram.com/resinart" aria-label="Instagram">
+                            <img src="/assets/images/icons/instagram.svg" alt="Instagram" width="24" height="24">
+                        </a>
+                        <a href="https://facebook.com/resinart" aria-label="Facebook">
+                            <img src="/assets/images/icons/facebook.svg" alt="Facebook" width="24" height="24">
+                        </a>
+                        <a href="https://pinterest.com/resinart" aria-label="Pinterest">
+                            <img src="/assets/images/icons/pinterest.svg" alt="Pinterest" width="24" height="24">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ResinArt. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/main.min.js"></script>
+    <script src="/assets/js/src/pages/contact.js"></script>
+</body>
+</html>

@@ -1,270 +1,258 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LD Studio - Mesas de Resina Exclusivas</title>
-    <meta name="description" content="LD Studio - Criamos mesas de resina exclusivas e artesanais, unindo madeira e design para transformar seu ambiente.">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/home.css">
-    <link rel="icon" href="images/logo/favicon.ico" type="image/x-icon">
+    <title>ResinArt - Mesas de Resina Exclusivas</title>
+    <meta name="description" content="ResinArt - Mesas de resina artesanais exclusivas que transformam qualquer ambiente. Peças únicas criadas com madeira natural e resina epóxi.">
+    
+    <!-- Favicons e PWA -->
+    <link rel="icon" href="/assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/main.min.css">
+    
+    <!-- Schema.org para Rich Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "ResinArt",
+        "url": "https://www.resinart.com.br",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.resinart.com.br/catalogo?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <header class="site-header">
         <div class="container">
-            <div class="header-content">
-                <div class="logo">LD <span>Studio</span></div>
-                <nav>
-                    <ul>
-                        <li><a href="#home">Início</a></li>
-                        <li><a href="catalogo.html">Catálogo</a></li>
-                        <li><a href="#about">Sobre Nós</a></li>
-                        <li><a href="processo.html">Processo</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="#contact">Contato</a></li>
-                    </ul>
-                </nav>
+            <div class="logo">
+                <a href="/">
+                    <img src="/assets/images/logo/resinart-logo.svg" alt="ResinArt - Mesas de Resina" width="180" height="60">
+                </a>
             </div>
+            
+            <nav class="main-nav">
+                <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">
+                    <span class="sr-only">Menu</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                <ul id="main-menu" class="menu">
+                    <li class="current-menu-item"><a href="/">Início</a></li>
+                    <li><a href="/catalogo.html">Catálogo</a></li>
+                    <li><a href="/processo.html">Processo</a></li>
+                    <li><a href="/sobre.html">Sobre</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/contato.html">Contato</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Mesas de Resina Exclusivas</h1>
-                <p>Transformamos madeira e resina em peças únicas que contam histórias e encantam ambientes.</p>
-                <a href="#products" class="btn">Ver Produtos</a>
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Arte em Resina para seu Espaço</h1>
+                    <p>Mesas únicas que combinam a beleza natural da madeira com a transparência cristalina da resina epóxi</p>
+                    <a href="/catalogo.html" class="btn btn-primary">Ver Catálogo</a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Featured Products -->
-    <section class="featured" id="products">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nossos Produtos em Destaque</h2>
-                <p>Cada peça é criada artesanalmente com materiais selecionados e técnicas exclusivas.</p>
-            </div>
-            <div class="products-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/produtos/mesa-centro-oceano.jpg" alt="Mesa de Centro Oceano" />
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Mesa de Centro Oceano</h3>
-                        <div class="product-price">R$ 3.499,00</div>
-                        <p class="product-description">Mesa de centro com design inspirado nas ondas do oceano, madeira de jequitibá e resina azul translúcida.</p>
-                        <a href="produto.html" class="btn">Ver Detalhes</a>
-                    </div>
-                </div>
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/produtos/mesa-jantar-aurora.jpg" alt="Mesa de Jantar Aurora" />
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Mesa de Jantar Aurora</h3>
-                        <div class="product-price">R$ 5.890,00</div>
-                        <p class="product-description">Mesa de jantar para 6 pessoas, madeira de tauari com acabamento em resina em tons de verde e roxo.</p>
-                        <a href="produto.html" class="btn">Ver Detalhes</a>
-                    </div>
-                </div>
-                
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="images/produtos/aparador-cosmos.jpg" alt="Aparador Cosmos" />
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-title">Aparador Cosmos</h3>
-                        <div class="product-price">R$ 4.250,00</div>
-                        <p class="product-description">Aparador contemporâneo com madeira rústica e resina em tons galáticos com efeito luminescente.</p>
-                        <a href="produto.html" class="btn">Ver Detalhes</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-image">
-                    <img src="images/sobre/sobre-ldstudio.jpg" alt="Sobre LD Studio" />
-                </div>
-                <div class="about-text">
-                    <h2>Sobre a LD Studio</h2>
-                    <p>A LD Studio nasceu da paixão por transformar madeira bruta em obras de arte funcionais. Há mais de 5 anos, criamos mesas e móveis exclusivos que combinam a beleza natural da madeira com a versatilidade da resina.</p>
-                    <p>Cada peça que criamos carrega uma história única, desde a seleção cuidadosa das madeiras até o processo artesanal de aplicação da resina. Trabalhamos com matérias-primas brasileiras de origem sustentável e resinas não-tóxicas.</p>
-                    <p>Nossa missão é trazer para sua casa ou seu negócio móveis que não são apenas funcionais, mas verdadeiras obras de arte que transmitem emoção e personalidade.</p>
-                    <a href="#contact" class="btn">Entre em Contato</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>O Que Nossos Clientes Dizem</h2>
-                <p>A satisfação dos nossos clientes é o nosso maior orgulho.</p>
-            </div>
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"A mesa de centro que adquiri da LD Studio transformou completamente minha sala de estar. É uma verdadeira obra de arte e todos os visitantes ficam impressionados!"</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="images/depoimentos/mariana-silva.jpg" alt="Mariana Silva" />
+        <!-- Destaques -->
+        <section class="featured-products">
+            <div class="container">
+                <h2>Peças em Destaque</h2>
+                <div class="product-grid">
+                    <!-- Produto 1 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/assets/images/products/mesa-rio-azul.webp" alt="Mesa Rio Azul" width="400" height="300">
                         </div>
-                        <div class="author-info">
-                            <h4>Mariana Silva</h4>
-                            <p>São Paulo, SP</p>
+                        <div class="product-info">
+                            <h3>Mesa Rio Azul</h3>
+                            <p class="product-description">Mesa de centro com desenho de rio em resina azul turquesa</p>
+                            <p class="product-price">R$ 3.890,00</p>
+                            <a href="/produto.html?id=mesa-rio-azul" class="btn btn-secondary">Ver Detalhes</a>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"Comprei uma mesa de jantar para meu restaurante e não poderia estar mais satisfeito. O design é único e a qualidade é impressionante. Vale cada centavo investido."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="images/depoimentos/carlos-mendes.jpg" alt="Carlos Mendes" />
-                        </div>
-                        <div class="author-info">
-                            <h4>Carlos Mendes</h4>
-                            <p>Rio de Janeiro, RJ</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <p class="testimonial-text">"O atendimento personalizado e a atenção aos detalhes são diferenciais da LD Studio. Minha mesa foi entregue exatamente como eu imaginei e no prazo combinado."</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">
-                            <img src="images/depoimentos/ana-costa.jpg" alt="Ana Costa" />
-                        </div>
-                        <div class="author-info">
-                            <h4>Ana Costa</h4>
-                            <p>Belo Horizonte, MG</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-content">
-                <div class="contact-info">
-                    <h2>Entre em Contato</h2>
-                    <p>Estamos prontos para criar a peça dos seus sonhos ou responder qualquer dúvida que você tenha.</p>
-                    
-                    <div class="contact-item">
-                        <i>📍</i>
-                        <p>Rua das Artes, 123 - São Paulo, SP</p>
                     </div>
                     
-                    <div class="contact-item">
-                        <i>📞</i>
-                        <p>(11) 98765-4321</p>
+                    <!-- Produto 2 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/assets/images/products/mesa-oceano.webp" alt="Mesa Oceano" width="400" height="300">
+                        </div>
+                        <div class="product-info">
+                            <h3>Mesa Oceano</h3>
+                            <p class="product-description">Mesa de jantar com efeito de ondas oceânicas em resina</p>
+                            <p class="product-price">R$ 6.750,00</p>
+                            <a href="/produto.html?id=mesa-oceano" class="btn btn-secondary">Ver Detalhes</a>
+                        </div>
                     </div>
                     
-                    <div class="contact-item">
-                        <i>✉️</i>
-                        <p>contato@ldstudio.com.br</p>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <i>⏰</i>
-                        <p>Seg a Sex: 9h às 18h | Sáb: 9h às 13h</p>
+                    <!-- Produto 3 -->
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="/assets/images/products/mesa-galaxia.webp" alt="Mesa Galáxia" width="400" height="300">
+                        </div>
+                        <div class="product-info">
+                            <h3>Mesa Galáxia</h3>
+                            <p class="product-description">Mesa lateral com efeito de galáxia em resina roxa e azul</p>
+                            <p class="product-price">R$ 2.450,00</p>
+                            <a href="/produto.html?id=mesa-galaxia" class="btn btn-secondary">Ver Detalhes</a>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="contact-form">
-                    <form action="#" method="POST" id="contact-form">
-                        <div class="form-group">
-                            <label for="name">Nome</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Telefone</label>
-                            <input type="tel" id="phone" name="phone">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message">Mensagem</label>
-                            <textarea id="message" name="message" required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="btn">Enviar Mensagem</button>
-                    </form>
+                <div class="text-center">
+                    <a href="/catalogo.html" class="btn btn-outline">Ver Todas as Mesas</a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer>
+        <!-- Processo de Criação Resumido -->
+        <section class="process-preview">
+            <div class="container">
+                <div class="process-content">
+                    <h2>Criação Artesanal</h2>
+                    <p>Cada mesa é uma peça única, cuidadosamente criada através de um processo artesanal que combina madeiras nobres selecionadas e resina epóxi de alta qualidade.</p>
+                    <div class="process-steps">
+                        <div class="step">
+                            <div class="step-icon">
+                                <img src="/assets/images/icons/wood.svg" alt="Seleção da Madeira" width="60" height="60">
+                            </div>
+                            <h3>Seleção da Madeira</h3>
+                            <p>Escolhemos cuidadosamente cada peça de madeira pela sua beleza natural e características únicas</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <img src="/assets/images/icons/design.svg" alt="Design Personalizado" width="60" height="60">
+                            </div>
+                            <h3>Design Personalizado</h3>
+                            <p>Criamos um design exclusivo para cada peça, respeitando a forma natural da madeira</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <img src="/assets/images/icons/resin.svg" alt="Aplicação da Resina" width="60" height="60">
+                            </div>
+                            <h3>Aplicação da Resina</h3>
+                            <p>Aplicamos camadas de resina epóxi colorida e transparente para criar efeitos visuais únicos</p>
+                        </div>
+                    </div>
+                    <a href="/processo.html" class="btn btn-outline">Conhecer Todo o Processo</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Depoimentos -->
+        <section class="testimonials">
+            <div class="container">
+                <h2>O que Nossos Clientes Dizem</h2>
+                <div class="testimonial-slider">
+                    <div class="testimonial">
+                        <div class="testimonial-text">
+                            <p>"A mesa ficou simplesmente espetacular! Todos que visitam nossa casa se encantam com ela. É realmente uma obra de arte funcional."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="/assets/images/testimonials/cliente1.webp" alt="Mariana Silva" width="60" height="60">
+                            <div>
+                                <strong>Mariana Silva</strong>
+                                <span>São Paulo, SP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial">
+                        <div class="testimonial-text">
+                            <p>"O processo de encomenda foi simples e a ResinArt entregou exatamente o que eu imaginava. A qualidade do acabamento é impecável."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="/assets/images/testimonials/cliente2.webp" alt="Rafael Mendes" width="60" height="60">
+                            <div>
+                                <strong>Rafael Mendes</strong>
+                                <span>Rio de Janeiro, RJ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Transforme seu Ambiente com uma Peça Exclusiva</h2>
+                    <p>Entre em contato para desenvolvermos juntos a mesa perfeita para o seu espaço</p>
+                    <a href="/contato.html" class="btn btn-primary">Solicitar Orçamento</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
-                    <h3>LD Studio</h3>
+                <div class="footer-logo">
+                    <img src="/assets/images/logo/resinart-logo-white.svg" alt="ResinArt" width="150" height="50">
+                    <p>Transformando madeira e resina em arte desde 2018</p>
+                </div>
+                <div class="footer-nav">
+                    <h3>Navegação</h3>
                     <ul>
-                        <li><a href="#about">Sobre Nós</a></li>
-                        <li><a href="catalogo.html">Produtos</a></li>
-                        <li><a href="#testimonials">Depoimentos</a></li>
-                        <li><a href="#contact">Contato</a></li>
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/catalogo.html">Catálogo</a></li>
+                        <li><a href="/processo.html">Processo</a></li>
+                        <li><a href="/sobre.html">Sobre</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/contato.html">Contato</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-column">
-                    <h3>Produtos</h3>
-                    <ul>
-                        <li><a href="catalogo.html">Mesas de Centro</a></li>
-                        <li><a href="catalogo.html">Mesas de Jantar</a></li>
-                        <li><a href="catalogo.html">Aparadores</a></li>
-                        <li><a href="catalogo.html">Bancadas</a></li>
-                    </ul>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <p>email: contato@resinart.com.br</p>
+                    <p>telefone: (11) 99999-9999</p>
+                    <p>São Paulo - SP</p>
                 </div>
-                
-                <div class="footer-column">
+                <div class="footer-social">
                     <h3>Redes Sociais</h3>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Pinterest</a></li>
-                        <li><a href="#">YouTube</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Informações</h3>
-                    <ul>
-                        <li><a href="#">Política de Privacidade</a></li>
-                        <li><a href="#">Termos de Uso</a></li>
-                        <li><a href="#">Política de Entrega</a></li>
-                        <li><a href="faq.html">FAQs</a></li>
-                    </ul>
+                    <div class="social-icons">
+                        <a href="https://instagram.com/resinart" aria-label="Instagram">
+                            <img src="/assets/images/icons/instagram.svg" alt="Instagram" width="24" height="24">
+                        </a>
+                        <a href="https://facebook.com/resinart" aria-label="Facebook">
+                            <img src="/assets/images/icons/facebook.svg" alt="Facebook" width="24" height="24">
+                        </a>
+                        <a href="https://pinterest.com/resinart" aria-label="Pinterest">
+                            <img src="/assets/images/icons/pinterest.svg" alt="Pinterest" width="24" height="24">
+                        </a>
+                    </div>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2025 LD Studio - Todos os direitos reservados</p>
+                <p>&copy; 2025 ResinArt. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
-    
+
     <!-- Scripts -->
-    <script src="js/main.js"></script>
+    <script src="/assets/js/main.min.js"></script>
+    <script>
+        // Registra o Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registrado'))
+                .catch(err => console.log('Service Worker não registrado', err));
+        }
+    </script>
 </body>
 </html>

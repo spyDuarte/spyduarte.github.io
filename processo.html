@@ -1,1089 +1,444 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nosso Processo de Criação - LD Studio</title>
-    <style>
-        /* Cores e fontes */
-        :root {
-            --primary: #2a6478;
-            --secondary: #61dafb;
-            --dark: #1a1a1a;
-            --light: #f5f5f5;
-            --accent: #e6a756;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-        }
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: var(--secondary);
-            color: var(--dark);
-            transform: translateY(-2px);
-        }
-        
-        /* Header */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-        
-        .logo span {
-            color: var(--accent);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 30px;
-        }
-        
-        nav ul li a {
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        nav ul li a:hover {
-            color: var(--primary);
-        }
-        
-        /* Hero Banner */
-        .hero-banner {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1200/500') center/cover no-repeat;
-            color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-        
-        .hero-banner h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
-        }
-        
-        .hero-banner p {
-            font-size: 20px;
-            max-width: 800px;
-            margin: 0 auto 30px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Process Section */
-        .process-section {
-            padding: 80px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .process-steps {
-            position: relative;
-        }
-        
-        .process-steps::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background-color: var(--primary);
-            transform: translateX(-50%);
-        }
-        
-        .step {
-            position: relative;
-            margin-bottom: 100px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .step:last-child {
-            margin-bottom: 0;
-        }
-        
-        .step-number {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 600;
-            z-index: 2;
-        }
-        
-        .step-content {
-            width: 45%;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .step:nth-child(odd) .step-content {
-            margin-right: auto;
-        }
-        
-        .step:nth-child(even) .step-content {
-            margin-left: auto;
-        }
-        
-        .step-title {
-            font-size: 24px;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .step-description {
-            color: #444;
-            margin-bottom: 20px;
-        }
-        
-        .step-image {
-            width: 100%;
-            height: 250px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        
-        .step-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        /* Materials Section */
-        .materials-section {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .materials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .material-card {
-            background-color: var(--light);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-        
-        .material-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .material-image {
-            height: 200px;
-        }
-        
-        .material-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .material-info {
-            padding: 20px;
-        }
-        
-        .material-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .material-description {
-            color: #444;
-        }
-        
-        /* Workshop Section */
-        .workshop-section {
-            padding: 80px 0;
-            background-color: var(--light);
-        }
-        
-        .workshop-content {
-            display: flex;
-            flex-direction: column;
-            gap: 50px;
-        }
-        
-        .workshop-item {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-        }
-        
-        .workshop-item:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-        
-        .workshop-image {
-            flex: 1;
-            height: 400px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .workshop-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .workshop-text {
-            flex: 1;
-        }
-        
-        .workshop-title {
-            font-size: 28px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .workshop-description {
-            color: #444;
-            margin-bottom: 30px;
-        }
-        
-        /* Craftsmen Section */
-        .craftsmen-section {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .craftsmen-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .craftsman-card {
-            text-align: center;
-        }
-        
-        .craftsman-image {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            margin: 0 auto 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        
-        .craftsman-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .craftsman-name {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .craftsman-role {
-            color: #666;
-            margin-bottom: 15px;
-        }
-        
-        .craftsman-bio {
-            color: #444;
-        }
-        
-        /* Custom Orders Section */
-        .custom-orders-section {
-            padding: 80px 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/api/placeholder/1200/400') center/cover no-repeat;
-            color: white;
-            text-align: center;
-        }
-        
-        .custom-orders-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .custom-orders-description {
-            max-width: 800px;
-            margin: 0 auto 30px;
-            font-size: 18px;
-        }
-        
-        /* Video Section */
-        .video-section {
-            padding: 80px 0;
-            background-color: var(--light);
-        }
-        
-        .video-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-        }
-        
-        .video-placeholder {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-        }
-        
-        .video-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .play-button:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-        
-        .play-icon {
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 15px 0 15px 25px;
-            border-color: transparent transparent transparent white;
-            margin-left: 5px;
-        }
-        
-        /* FAQs */
-        .faq-section {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .faq-item {
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .faq-question {
-            padding: 20px;
-            background-color: var(--light);
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.3s ease;
-        }
-        
-        .faq-question:hover {
-            background-color: #e8e8e8;
-        }
-        
-        .faq-question::after {
-            content: '+';
-            font-size: 20px;
-            color: var(--primary);
-        }
-        
-        .faq-question.active::after {
-            content: '-';
-        }
-        
-        .faq-answer {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            background-color: white;
-        }
-        
-        .faq-answer.active {
-            padding: 20px;
-            max-height: 1000px;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 60px 0;
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-        }
-        
-        .cta-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-description {
-            max-width: 700px;
-            margin: 0 auto 30px;
-            font-size: 18px;
-        }
-        
-        .cta-button {
-            background-color: white;
-            color: var(--primary);
-            padding: 15px 30px;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        
-        .cta-button:hover {
-            background-color: var(--accent);
-            color: white;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 50px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-column h3 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--secondary);
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-column ul li a {
-            color: #aaa;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-column ul li a:hover {
-            color: white;
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            color: #aaa;
-        }
-        
-        /* Responsive */
-        @media (max-width: 992px) {
-            .workshop-item, .workshop-item:nth-child(even) {
-                flex-direction: column;
-            }
-            
-            .workshop-image {
-                width: 100%;
-            }
-            
-            .process-steps::before {
-                left: 30px;
-            }
-            
-            .step {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .step-number {
-                left: 30px;
-                transform: translateX(0);
-            }
-            
-            .step-content {
-                width: 80%;
-                margin-left: 60px !important;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-            }
-            
-            nav ul {
-                margin-top: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav ul li {
-                margin: 5px 10px;
-            }
-            
-            .hero-banner h1 {
-                font-size: 36px;
-            }
-            
-            .step-content {
-                width: 100%;
-                margin-left: 0 !important;
-                padding: 20px 15px;
-            }
-            
-            .process-steps::before {
-                display: none;
-            }
-            
-            .step-number {
-                position: relative;
-                left: 0;
-                margin-bottom: 15px;
-            }
-        }
-    </style>
+    <title>Nosso Processo de Criação | ResinArt - Mesas de Resina</title>
+    <meta name="description" content="Conheça o processo artesanal de criação das mesas de resina ResinArt, da seleção da madeira ao acabamento final.">
+    
+    <!-- Favicons e PWA -->
+    <link rel="icon" href="/assets/images/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/assets/css/main.min.css">
+    
+    <!-- Schema.org para Rich Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Processo de Criação de Mesas de Resina",
+        "description": "Conheça o processo artesanal de criação das mesas de resina ResinArt, da seleção da madeira ao acabamento final.",
+        "url": "https://www.resinart.com.br/processo.html"
+    }
+    </script>
 </head>
-<body>
-    <!-- Header -->
-    <header>
+<body class="page-process">
+    <header class="site-header">
         <div class="container">
-            <div class="header-content">
-                <a href="index.html" class="logo">LD <span>Studio</span></a>
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="catalogo.html">Catálogo</a></li>
-                        <li><a href="index.html#about">Sobre Nós</a></li>
-                        <li><a href="processo.html">Processo</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="index.html#contact">Contato</a></li>
-                    </ul>
-                </nav>
+            <div class="logo">
+                <a href="/">
+                    <img src="/assets/images/logo/resinart-logo.svg" alt="ResinArt - Mesas de Resina" width="180" height="60">
+                </a>
             </div>
+            
+            <nav class="main-nav">
+                <button class="menu-toggle" aria-expanded="false" aria-controls="main-menu">
+                    <span class="sr-only">Menu</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                <ul id="main-menu" class="menu">
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/catalogo.html">Catálogo</a></li>
+                    <li class="current-menu-item"><a href="/processo.html">Processo</a></li>
+                    <li><a href="/sobre.html">Sobre</a></li>
+                    <li><a href="/blog/">Blog</a></li>
+                    <li><a href="/contato.html">Contato</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="hero-banner">
-        <div class="container">
-            <h1>Nosso Processo de Criação</h1>
-            <p>Conheça a arte e a técnica por trás de cada peça exclusiva da LD Studio. Da seleção da madeira até o acabamento final, cada etapa é realizada com paixão e dedicação.</p>
-            <a href="#process" class="btn">Descubra Como Fazemos</a>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section class="process-section" id="process">
-        <div class="container">
-            <div class="section-title">
-                <h2>Passo a Passo da Criação</h2>
-                <p>Cada peça da LD Studio passa por um meticuloso processo artesanal que combina técnicas tradicionais de marcenaria com métodos modernos de aplicação de resina.</p>
+    <main>
+        <!-- Banner do Processo -->
+        <section class="process-header">
+            <div class="container">
+                <h1>Nosso Processo de Criação</h1>
+                <p>Arte, técnica e paixão em cada etapa da criação de nossas mesas de resina</p>
             </div>
-            
-            <div class="process-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Seleção da Madeira</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Seleção da Madeira" />
-                        </div>
-                        <p class="step-description">O processo começa com a seleção cuidadosa das madeiras. Trabalhamos com espécies brasileiras de origem sustentável, como jequitibá, pequiá, imbuia e tauari. Cada tábua é escolhida individualmente, considerando a beleza dos veios, a coloração natural e as características únicas que tornarão cada peça especial.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Preparação e Corte</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Preparação e Corte" />
-                        </div>
-                        <p class="step-description">Após a seleção, a madeira passa por um processo de secagem para garantir a estabilidade. Em seguida, é cortada nas dimensões desejadas e preparada para receber a resina. Nesta etapa, criamos o desenho que a resina irá preencher, seja uma fenda natural da madeira ou um corte planejado para criar efeitos específicos.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Preparação da Resina</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Preparação da Resina" />
-                        </div>
-                        <p class="step-description">A resina epóxi é preparada com cuidado, misturando pigmentos para obter a cor e o efeito desejados. Utilizamos resinas de alta qualidade, livres de toxinas e com resistência UV para garantir a durabilidade da cor e do acabamento. Cada cor é desenvolvida exclusivamente para o projeto, combinando tons e criando efeitos únicos.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Aplicação da Resina</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Aplicação da Resina" />
-                        </div>
-                        <p class="step-description">A aplicação da resina é um processo meticuloso que requer precisão e paciência. A resina é vertida em camadas, permitindo que cada uma cure antes da aplicação da próxima. Este método cria profundidade e dimensão na peça final. Durante esta etapa, também são adicionados efeitos especiais, como imitação de ondas ou inclusão de elementos decorativos.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Cura</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Processo de Cura" />
-                        </div>
-                        <p class="step-description">Após a aplicação da resina, a peça passa por um período de cura em ambiente controlado. A temperatura e a umidade são monitoradas para garantir uma cura perfeita, evitando bolhas ou imperfeições. Este processo pode levar de 48 a 72 horas, dependendo do tamanho e da complexidade da peça.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Acabamento</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Processo de Acabamento" />
-                        </div>
-                        <p class="step-description">O acabamento é realizado com lixamento progressivo, começando com lixas mais grossas e avançando para lixas cada vez mais finas, até atingir uma superfície perfeitamente lisa. A madeira recebe tratamento com óleos naturais ou vernizes especiais, enquanto a resina é polida até obter um brilho cristalino e uniforme.</p>
-                    </div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-number">7</div>
-                    <div class="step-content">
-                        <h3 class="step-title">Montagem e Inspeção Final</h3>
-                        <div class="step-image">
-                            <img src="/api/placeholder/500/300" alt="Inspeção Final" />
-                        </div>
-                        <p class="step-description">Na fase final, os componentes são montados, as bases e os suportes são instalados, e cada detalhe é minuciosamente inspecionado. Realizamos testes de estabilidade e resistência para garantir que a peça não apenas seja bela, mas também durável e funcional. Somente após aprovação em todos os critérios de qualidade, a peça é fotografada e disponibilizada para venda.</p>
+        </section>
+
+        <!-- Visão Geral do Processo -->
+        <section class="process-overview">
+            <div class="container">
+                <div class="overview-content">
+                    <h2>Da Natureza à Sua Casa</h2>
+                    <p>Cada mesa de resina ResinArt passa por um cuidadoso processo artesanal que combina técnicas tradicionais de marcenaria com inovação em materiais modernos. Respeitamos a beleza natural da madeira enquanto adicionamos elementos únicos através da resina epóxi.</p>
+                    <p>Nosso processo foi aperfeiçoado ao longo de anos de experiência e experimentação, resultando em peças excepcionais que são verdadeiras obras de arte funcionais.</p>
+                    
+                    <div class="process-video">
+                        <video controls poster="/assets/images/process/video-poster.webp" width="800" height="450">
+                            <source src="/assets/videos/processo-criacao.mp4" type="video/mp4">
+                            Seu navegador não suporta o elemento de vídeo.
+                        </video>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Materials Section -->
-    <section class="materials-section">
-        <div class="container">
-            <div class="section-title">
+        <!-- Etapas Detalhadas -->
+        <section class="process-steps-detailed">
+            <div class="container">
+                <div class="process-step">
+                    <div class="step-image">
+                        <img src="/assets/images/process/selecao-madeira.webp" alt="Seleção da Madeira" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">01</span>
+                        <h2>Seleção da Madeira</h2>
+                        <p>O processo começa com a cuidadosa seleção de madeiras nobres de origem certificada. Buscamos peças que apresentem características únicas como veios interessantes, cores naturais vibrantes e formato adequado para o projeto.</p>
+                        <p>Trabalhamos principalmente com madeiras como imbuia, pequiá, cedro, freijó, carvalho e nogueira, sempre respeitando práticas sustentáveis de manejo florestal.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Critérios de Seleção:</strong>
+                                <ul>
+                                    <li>Estabilidade da madeira</li>
+                                    <li>Beleza dos veios e nós</li>
+                                    <li>Tonalidade natural</li>
+                                    <li>Origem certificada</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>1-2 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step reversed">
+                    <div class="step-image">
+                        <img src="/assets/images/process/secagem-preparacao.webp" alt="Secagem e Preparação" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">02</span>
+                        <h2>Secagem e Preparação</h2>
+                        <p>Após a seleção, a madeira passa por um rigoroso processo de secagem para garantir a estabilidade necessária para a peça final. Utilizamos técnicas de secagem natural e controlada para evitar empenamentos e rachaduras futuras.</p>
+                        <p>Com a madeira devidamente seca, iniciamos o processo de preparação, que inclui cortes iniciais, aplainamento e lixamento prévio da superfície.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Processo de Secagem:</strong>
+                                <ul>
+                                    <li>Secagem natural</li>
+                                    <li>Controle de umidade</li>
+                                    <li>Estabilização</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>3-7 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-image">
+                        <img src="/assets/images/process/design-planejamento.webp" alt="Design e Planejamento" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">03</span>
+                        <h2>Design e Planejamento</h2>
+                        <p>Esta é a fase criativa onde planejamos o design da peça. Estudamos a madeira para determinar o melhor formato para o "rio" ou padrão de resina, considerando as características naturais da madeira.</p>
+                        <p>Desenvolvemos esboços e, quando necessário, modelos 3D digitais para visualizar o resultado final. Nesta fase também definimos as cores e efeitos que serão aplicados na resina.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Etapas do Design:</strong>
+                                <ul>
+                                    <li>Estudo da madeira</li>
+                                    <li>Criação do conceito</li>
+                                    <li>Escolha de cores</li>
+                                    <li>Planejamento técnico</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>2-3 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step reversed">
+                    <div class="step-image">
+                        <img src="/assets/images/process/esculpir-madeira.webp" alt="Esculpir a Madeira" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">04</span>
+                        <h2>Esculpir a Madeira</h2>
+                        <p>Com o design definido, começamos a esculpir a madeira para criar os espaços onde a resina será aplicada. Para mesas estilo "rio", criamos uma fenda central que imita o curso de um rio natural.</p>
+                        <p>Utilizamos diversas ferramentas como tupias, formões e lixadeiras para dar forma ao design planejado, sempre respeitando a estrutura natural da madeira.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Técnicas Utilizadas:</strong>
+                                <ul>
+                                    <li>Entalhe manual</li>
+                                    <li>Corte com tupia</li>
+                                    <li>Escultura com formões</li>
+                                    <li>Lixamento inicial</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>2-4 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-image">
+                        <img src="/assets/images/process/aplicacao-resina.webp" alt="Aplicação da Resina" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">05</span>
+                        <h2>Aplicação da Resina</h2>
+                        <p>Esta é uma das etapas mais críticas e artísticas do processo. Preparamos a madeira com seladores especiais para garantir a aderência ideal da resina e evitar bolhas de ar.</p>
+                        <p>A resina epóxi é misturada com pigmentos e, quando necessário, materiais complementares como pedras, conchas ou elementos decorativos. Aplicamos em várias camadas, criando profundidade e efeitos únicos.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Processo da Resina:</strong>
+                                <ul>
+                                    <li>Preparação da superfície</li>
+                                    <li>Mistura de pigmentos</li>
+                                    <li>Aplicação em camadas</li>
+                                    <li>Criação de efeitos</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>2-3 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step reversed">
+                    <div class="step-image">
+                        <img src="/assets/images/process/cura-resina.webp" alt="Cura da Resina" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">06</span>
+                        <h2>Cura da Resina</h2>
+                        <p>Após a aplicação da resina, começa o processo de cura. A peça é mantida em ambiente controlado de temperatura e umidade para garantir a cura perfeita da resina.</p>
+                        <p>Este processo é cuidadosamente monitorado para evitar bolhas de ar, reações indesejadas ou defeitos na cura. A cura completa é essencial para garantir a durabilidade e beleza da peça final.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Condições de Cura:</strong>
+                                <ul>
+                                    <li>Temperatura controlada</li>
+                                    <li>Ausência de poeira</li>
+                                    <li>Monitoramento periódico</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>3 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-image">
+                        <img src="/assets/images/process/lixamento-polimento.webp" alt="Lixamento e Polimento" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">07</span>
+                        <h2>Lixamento e Polimento</h2>
+                        <p>Com a resina completamente curada, iniciamos o minucioso processo de lixamento e polimento. Utilizamos lixas de diferentes granulações, começando com as mais grossas e progredindo para as mais finas.</p>
+                        <p>O polimento final é feito com compostos especiais que garantem um acabamento cristalino à resina e realçam a beleza natural da madeira.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Etapas de Acabamento:</strong>
+                                <ul>
+                                    <li>Lixamento progressivo</li>
+                                    <li>Polimento manual</li>
+                                    <li>Polimento mecânico</li>
+                                    <li>Acabamento cristalino</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>2-3 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step reversed">
+                    <div class="step-image">
+                        <img src="/assets/images/process/acabamento-final.webp" alt="Acabamento Final" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">08</span>
+                        <h2>Acabamento Final</h2>
+                        <p>O acabamento final inclui a aplicação de seladores e vernizes de alta qualidade que protegem tanto a madeira quanto a resina. Utilizamos produtos específicos que não amarelam com o tempo e oferecem proteção UV.</p>
+                        <p>Nesta etapa também fabricamos e instalamos a base da mesa, seja ela em madeira, metal ou vidro, de acordo com o design planejado.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Processos Finais:</strong>
+                                <ul>
+                                    <li>Aplicação de seladores</li>
+                                    <li>Verniz de proteção UV</li>
+                                    <li>Montagem da base</li>
+                                    <li>Ajustes finais</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>2-3 dias</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="process-step">
+                    <div class="step-image">
+                        <img src="/assets/images/process/controle-qualidade.webp" alt="Controle de Qualidade" width="500" height="350">
+                    </div>
+                    <div class="step-content">
+                        <span class="step-number">09</span>
+                        <h2>Controle de Qualidade</h2>
+                        <p>Antes de considerar uma peça finalizada, ela passa por rigorosos critérios de controle de qualidade. Verificamos cada detalhe do acabamento, estabilidade estrutural e aparência geral.</p>
+                        <p>Apenas as peças que atendem aos nossos padrões de excelência recebem a placa ResinArt e são liberadas para entrega ao cliente.</p>
+                        <div class="step-details">
+                            <div class="detail">
+                                <strong>Critérios Avaliados:</strong>
+                                <ul>
+                                    <li>Acabamento perfeito</li>
+                                    <li>Estabilidade estrutural</li>
+                                    <li>Ausência de defeitos</li>
+                                    <li>Conformidade com o design</li>
+                                </ul>
+                            </div>
+                            <div class="detail">
+                                <strong>Tempo da Etapa:</strong>
+                                <p>1 dia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Materiais Utilizados -->
+        <section class="materials-used">
+            <div class="container">
                 <h2>Materiais Premium</h2>
-                <p>Utilizamos apenas materiais de alta qualidade, selecionados cuidadosamente para garantir beleza e durabilidade em cada peça.</p>
+                <p class="section-intro">Utilizamos apenas materiais da mais alta qualidade em nossas criações, garantindo beleza duradoura e resistência excepecional.</p>
+                
+                <div class="materials-grid">
+                    <div class="material-card">
+                        <div class="material-image">
+                            <img src="/assets/images/materials/madeiras.webp" alt="Madeiras Nobres" width="300" height="200">
+                        </div>
+                        <div class="material-info">
+                            <h3>Madeiras Nobres</h3>
+                            <p>Trabalhamos com madeiras certificadas como imbuia, pequiá, cedro, freijó, carvalho e nogueira, selecionadas por sua beleza e durabilidade.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-image">
+                            <img src="/assets/images/materials/resina.webp" alt="Resina Epóxi Premium" width="300" height="200">
+                        </div>
+                        <div class="material-info">
+                            <h3>Resina Epóxi Premium</h3>
+                            <p>Utilizamos resina epóxi de grau artístico com proteção UV, que mantém sua transparência cristalina e não amarela com o tempo.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-image">
+                            <img src="/assets/images/materials/pigmentos.webp" alt="Pigmentos Especiais" width="300" height="200">
+                        </div>
+                        <div class="material-info">
+                            <h3>Pigmentos Especiais</h3>
+                            <p>Nossos pigmentos são importados, específicos para resina epóxi, oferecendo cores vibrantes e efeitos únicos como perolado e metálico.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="material-card">
+                        <div class="material-image">
+                            <img src="/assets/images/materials/acabamentos.webp" alt="Acabamentos Protetores" width="300" height="200">
+                        </div>
+                        <div class="material-info">
+                            <h3>Acabamentos Protetores</h3>
+                            <p>Seladores e vernizes de poliuretano de alta performance que garantem resistência a riscos, manchas e proteção contra raios UV.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="materials-grid">
-                <div class="material-card">
-                    <div class="material-image">
-                        <img src="/api/placeholder/400/300" alt="Madeira de Jequitibá" />
-                    </div>
-                    <div class="material-info">
-                        <h3 class="material-title">Madeira de Jequitibá</h3>
-                        <p class="material-description">Madeira nobre brasileira conhecida por sua tonalidade única que varia do marrom-rosado ao avermelhado. Possui densidade média e excelente estabilidade, ideal para mesas e tampos.</p>
-                    </div>
-                </div>
-                
-                <div class="material-card">
-                    <div class="material-image">
-                        <img src="/api/placeholder/400/300" alt="Madeira de Pequiá" />
-                    </div>
-                    <div class="material-info">
-                        <h3 class="material-title">Madeira de Pequiá</h3>
-                        <p class="material-description">Madeira de alta densidade com coloração amarelada e veios marcantes. Muito resistente e estável, é perfeita para peças que exigem durabilidade e beleza natural.</p>
-                    </div>
-                </div>
-                
-                <div class="material-card">
-                    <div class="material-image">
-                        <img src="/api/placeholder/400/300" alt="Resina Epóxi Crystal Clear" />
-                    </div>
-                    <div class="material-info">
-                        <h3 class="material-title">Resina Epóxi Crystal Clear</h3>
-                        <p class="material-description">Resina de alta qualidade, transparente e resistente a UV, que não amarela com o tempo. Permite criar efeitos de profundidade e transparência, ideal para projetos que buscam simular água ou cristal.</p>
-                    </div>
-                </div>
-                
-                <div class="material-card">
-                    <div class="material-image">
-                        <img src="/api/placeholder/400/300" alt="Pigmentos Especiais" />
-                    </div>
-                    <div class="material-info">
-                        <h3 class="material-title">Pigmentos Especiais</h3>
-                        <p class="material-description">Utilizamos pigmentos importados de alta qualidade que garantem cores vibrantes e duradouras. Estes pigmentos são especialmente formulados para uso em resina, mantendo a transparência e os efeitos desejados.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Workshop Section -->
-    <section class="workshop-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nosso Ateliê</h2>
-                <p>Um espaço dedicado à criação e à experimentação, onde nossas ideias ganham forma.</p>
-            </div>
-            
-            <div class="workshop-content">
-                <div class="workshop-item">
-                    <div class="workshop-image">
-                        <img src="/api/placeholder/600/400" alt="Ateliê de Marcenaria" />
-                    </div>
-                    <div class="workshop-text">
-                        <h3 class="workshop-title">Área de Marcenaria</h3>
-                        <p class="workshop-description">Nossa área de marcenaria é equipada com maquinário de alta precisão que permite cortes perfeitos e acabamentos impecáveis. Aqui, a madeira é preparada e trabalhada antes de receber a resina.</p>
-                        <p class="workshop-description">Dispomos de serras de mesa, tupias, lixadeiras e outras ferramentas especializadas que nos permitem transformar a madeira bruta em peças prontas para a próxima fase do processo.</p>
-                    </div>
-                </div>
-                
-                <div class="workshop-item">
-                    <div class="workshop-image">
-                        <img src="/api/placeholder/600/400" alt="Laboratório de Resina" />
-                    </div>
-                    <div class="workshop-text">
-                        <h3 class="workshop-title">Laboratório de Resina</h3>
-                        <p class="workshop-description">No laboratório de resina, controlamos rigorosamente temperatura e umidade para garantir a cura perfeita. É aqui que a magia acontece, com a mistura de cores e a aplicação cuidadosa de camadas de resina.</p>
-                        <p class="workshop-description">Contamos com mesas especiais para nivelamento, câmaras de vácuo para remoção de bolhas e equipamentos para mistura precisa de resina e catalisadores.</p>
-                    </div>
-                </div>
-                
-                <div class="workshop-item">
-                    <div class="workshop-image">
-                        <img src="/api/placeholder/600/400" alt="Área de Acabamento" />
-                    </div>
-                    <div class="workshop-text">
-                        <h3 class="workshop-title">Área de Acabamento</h3>
-                        <p class="workshop-description">Na área de acabamento, cada peça recebe um tratamento detalhado, com lixamento progressivo e polimento. É nesta etapa que o brilho característico de nossas peças é obtido.</p>
-                        <p class="workshop-description">Utilizamos equipamentos profissionais de polimento e uma variedade de abrasivos que garantem um acabamento perfeito tanto na madeira quanto na resina.</p>
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Cada Mesa Conta uma História</h2>
+                    <p>Descubra nossa coleção de peças exclusivas ou entre em contato para criar algo personalizado para seu espaço</p>
+                    <div class="cta-buttons">
+                        <a href="/catalogo.html" class="btn btn-secondary">Ver Catálogo</a>
+                        <a href="/contato.html" class="btn btn-primary">Solicitar Orçamento</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Craftsmen Section -->
-    <section class="craftsmen-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Nossa Equipe</h2>
-                <p>Conheça os artesãos que colocam paixão e expertise em cada peça criada pela LD Studio.</p>
-            </div>
-            
-            <div class="craftsmen-grid">
-                <div class="craftsman-card">
-                    <div class="craftsman-image">
-                        <img src="/api/placeholder/200/200" alt="Lucas Duarte" />
-                    </div>
-                    <h3 class="craftsman-name">Lucas Duarte</h3>
-                    <div class="craftsman-role">Fundador e Designer</div>
-                    <p class="craftsman-bio">Com formação em design de móveis e mais de 10 anos de experiência em marcenaria, Lucas é o visionário por trás de cada conceito. Sua paixão por unir madeira e resina começou em 2015, após uma viagem à Europa onde conheceu a técnica.</p>
-                </div>
-                
-                <div class="craftsman-card">
-                    <div class="craftsman-image">
-                        <img src="/api/placeholder/200/200" alt="Mariana Silva" />
-                    </div>
-                    <h3 class="craftsman-name">Mariana Silva</h3>
-                    <div class="craftsman-role">Artista de Resina</div>
-                    <p class="craftsman-bio">Especialista em coloração e efeitos em resina, Mariana é responsável pela paleta de cores e pela criação dos efeitos que tornam nossas peças únicas. Com background em artes plásticas, ela traz uma perspectiva artística para o processo.</p>
-                </div>
-                
-                <div class="craftsman-card">
-                    <div class="craftsman-image">
-                        <img src="/api/placeholder/200/200" alt="Carlos Mendes" />
-                    </div>
-                    <h3 class="craftsman-name">Carlos Mendes</h3>
-                    <div class="craftsman-role">Mestre Marceneiro</div>
-                    <p class="craftsman-bio">Com 25 anos de experiência em marcenaria tradicional, Carlos é especialista em trabalhar com madeiras nobras brasileiras. Seu conhecimento técnico e olhar apurado garantem a perfeição em cada corte e encaixe.</p>
-                </div>
-                
-                <div class="craftsman-card">
-                    <div class="craftsman-image">
-                        <img src="/api/placeholder/200/200" alt="Ana Costa" />
-                    </div>
-                    <h3 class="craftsman-name">Ana Costa</h3>
-                    <div class="craftsman-role">Especialista em Acabamento</div>
-                    <p class="craftsman-bio">Ana é a responsável pela etapa final que transforma nossas peças em obras de arte. Sua atenção aos detalhes e técnica refinada de polimento garantem o acabamento impecável característico da LD Studio.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Custom Orders Section -->
-    <section class="custom-orders-section">
-        <div class="container">
-            <h2 class="custom-orders-title">Projetos Personalizados</h2>
-            <p class="custom-orders-description">Quer uma peça exclusiva, criada especialmente para você? Oferecemos serviços de design e produção de peças sob medida, adaptadas ao seu espaço e às suas preferências.</p>
-            <a href="index.html#contact" class="btn">Solicite um Orçamento</a>
-        </div>
-    </section>
-
-    <!-- Video Section -->
-    <section class="video-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Veja Nosso Processo em Ação</h2>
-                <p>Acompanhe a transformação da madeira e resina em uma obra de arte funcional.</p>
-            </div>
-            
-            <div class="video-container">
-                <div class="video-placeholder">
-                    <img src="/api/placeholder/800/450" alt="Vídeo do Processo de Criação" />
-                </div>
-                <div class="play-button">
-                    <div class="play-icon"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Perguntas Frequentes sobre o Processo</h2>
-                <p>Tire suas dúvidas sobre como criamos nossas peças exclusivas.</p>
-            </div>
-            
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">Quanto tempo leva para produzir uma mesa de resina?</div>
-                    <div class="faq-answer">
-                        <p>O tempo de produção varia conforme o tamanho e a complexidade do projeto. Em média, uma mesa de centro leva de 2 a 3 semanas para ser finalizada, enquanto uma mesa de jantar pode levar de 4 a 6 semanas. Isso inclui o tempo de secagem da madeira, aplicação da resina em camadas, cura completa e acabamento.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">As mesas de resina são resistentes ao uso diário?</div>
-                    <div class="faq-answer">
-                        <p>Sim, nossas mesas são projetadas para uso diário. A resina epóxi, quando corretamente aplicada e curada, forma uma superfície extremamente durável e resistente a manchas. A madeira recebe tratamentos que garantem sua estabilidade e durabilidade. Com os cuidados básicos recomendados, nossas peças mantêm sua beleza por muitos anos.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">É possível personalizar a cor da resina?</div>
-                    <div class="faq-answer">
-                        <p>Absolutamente! Oferecemos uma ampla gama de cores e efeitos para a resina. Podemos criar tons específicos para combinar com sua decoração, adicionar efeitos metálicos, translúcidos ou opacos, e até mesmo criar degradês ou combinações de cores. Para projetos personalizados, trabalhamos com amostras para garantir que a cor atenda exatamente às suas expectativas.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">Vocês trabalham com madeiras específicas solicitadas pelo cliente?</div>
-                    <div class="faq-answer">
-                        <p>Sim, podemos trabalhar com madeiras específicas solicitadas pelo cliente, desde que sejam adequadas para a técnica de resina e estejam disponíveis legalmente. Temos preferência por madeiras brasileiras de origem certificada, mas podemos avaliar outras opções conforme o projeto. Em alguns casos, podemos até mesmo trabalhar com madeiras de valor sentimental fornecidas pelo cliente, como árvores de família.</p>
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">Como é feita a manutenção das peças de resina?</div>
-                    <div class="faq-answer">
-                        <p>A manutenção é simples. Para limpeza diária, recomendamos usar um pano macio e úmido com detergente neutro. Evite produtos abrasivos ou à base de álcool que podem danificar o acabamento. A cada 6 meses, recomendamos a aplicação de cera específica para móveis na parte de madeira. Para a resina, oferecemos kits de manutenção que ajudam a manter o brilho e proteger a superfície.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="cta-title">Pronto para ter uma peça exclusiva?</h2>
-            <p class="cta-description">Explore nosso catálogo ou entre em contato para criar uma peça personalizada que contará sua história e transformará seu ambiente.</p>
-            <a href="catalogo.html" class="btn cta-button">Ver Catálogo</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
+    <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-column">
-                    <h3>LD Studio</h3>
+                <div class="footer-logo">
+                    <img src="/assets/images/logo/resinart-logo-white.svg" alt="ResinArt" width="150" height="50">
+                    <p>Transformando madeira e resina em arte desde 2018</p>
+                </div>
+                <div class="footer-nav">
+                    <h3>Navegação</h3>
                     <ul>
-                        <li><a href="index.html#about">Sobre Nós</a></li>
-                        <li><a href="catalogo.html">Produtos</a></li>
-                        <li><a href="processo.html">Processo</a></li>
-                        <li><a href="index.html#contact">Contato</a></li>
+                        <li><a href="/">Início</a></li>
+                        <li><a href="/catalogo.html">Catálogo</a></li>
+                        <li><a href="/processo.html">Processo</a></li>
+                        <li><a href="/sobre.html">Sobre</a></li>
+                        <li><a href="/blog/">Blog</a></li>
+                        <li><a href="/contato.html">Contato</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-column">
-                    <h3>Produtos</h3>
-                    <ul>
-                        <li><a href="#">Mesas de Centro</a></li>
-                        <li><a href="#">Mesas de Jantar</a></li>
-                        <li><a href="#">Aparadores</a></li>
-                        <li><a href="#">Escrivaninhas</a></li>
-                    </ul>
+                <div class="footer-contact">
+                    <h3>Contato</h3>
+                    <p>email: contato@resinart.com.br</p>
+                    <p>telefone: (11) 99999-9999</p>
+                    <p>São Paulo - SP</p>
                 </div>
-                
-                <div class="footer-column">
+                <div class="footer-social">
                     <h3>Redes Sociais</h3>
-                    <ul>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Pinterest</a></li>
-                        <li><a href="#">YouTube</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Informações</h3>
-                    <ul>
-                        <li><a href="#">Política de Privacidade</a></li>
-                        <li><a href="#">Termos de Uso</a></li>
-                        <li><a href="#">Política de Entrega</a></li>
-                        <li><a href="faq.html">FAQs</a></li>
-                    </ul>
+                    <div class="social-icons">
+                        <a href="https://instagram.com/resinart" aria-label="Instagram">
+                            <img src="/assets/images/icons/instagram.svg" alt="Instagram" width="24" height="24">
+                        </a>
+                        <a href="https://facebook.com/resinart" aria-label="Facebook">
+                            <img src="/assets/images/icons/facebook.svg" alt="Facebook" width="24" height="24">
+                        </a>
+                        <a href="https://pinterest.com/resinart" aria-label="Pinterest">
+                            <img src="/assets/images/icons/pinterest.svg" alt="Pinterest" width="24" height="24">
+                        </a>
+                    </div>
                 </div>
             </div>
-            
             <div class="footer-bottom">
-                <p>&copy; 2025 LD Studio - Todos os direitos reservados</p>
+                <p>&copy; 2025 ResinArt. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
-    <script>
-        // FAQ Accordion
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqQuestions = document.querySelectorAll('.faq-question');
-            
-            faqQuestions.forEach(question => {
-                question.addEventListener('click', function() {
-                    const answer = this.nextElementSibling;
-                    
-                    // Toggle active class on question
-                    this.classList.toggle('active');
-                    
-                    // Toggle active class on answer to show/hide
-                    answer.classList.toggle('active');
-                });
-            });
-            
-            // Video Play Button
-            const playButton = document.querySelector('.play-button');
-            if (playButton) {
-                playButton.addEventListener('click', function() {
-                    alert('Funcionalidade de vídeo simulada neste protótipo');
-                });
-            }
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="/assets/js/main.min.js"></script>
+    <script src="/assets/js/src/pages/process.js"></script>
 </body>
 </html>

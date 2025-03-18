@@ -1,0 +1,44 @@
+// Main SCSS File
+// Este arquivo importa todos os componentes SCSS do site ResinArt
+
+// Base
+@import 'base/reset';
+@import 'base/typography';
+@import 'base/colors';
+@import 'base/animations';
+
+// Utils
+@import 'utils/mixins';
+@import 'utils/functions';
+@import 'utils/helpers';
+
+// Layout
+@import 'layout/grid';
+@import 'layout/header';
+@import 'layout/footer';
+
+// Components
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/forms';
+@import 'components/navigation';
+@import 'components/hero';
+@import 'components/testimonials';
+@import 'components/product-cards';
+@import 'components/pagination';
+@import 'components/breadcrumb';
+@import 'components/gallery';
+@import 'components/tabs';
+@import 'components/carousel';
+@import 'components/filters';
+@import 'components/badges';
+@import 'components/cta';
+
+// Pages
+@import 'pages/home';
+@import 'pages/catalog';
+@import 'pages/product';
+@import 'pages/process';
+@import 'pages/about';
+@import 'pages/contact';
+@import 'pages/blog';

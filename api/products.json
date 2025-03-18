@@ -1,0 +1,560 @@
+[
+    {
+      "id": "mesa-rio-azul",
+      "name": "Mesa Rio Azul",
+      "description": "Mesa de centro com desenho de rio em resina azul turquesa sobre madeira de imbuia maciça, criando um efeito visual único que remete a um rio cristalino cortando a paisagem natural.",
+      "details": "Cada mesa é uma peça única, com variações naturais na madeira e no padrão da resina, tornando seu móvel verdadeiramente exclusivo.",
+      "price": 3890,
+      "discount_price": null,
+      "dimensions": {
+        "length": 100,
+        "width": 60,
+        "height": 45,
+        "unit": "cm"
+      },
+      "weight": 35,
+      "type": "mesa-centro",
+      "material": "madeira",
+      "wood_type": "Imbuia",
+      "resin_type": "Epóxi",
+      "resin_color": "azul",
+      "base_type": "Madeira maciça",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 30,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-rio-azul.webp",
+        "/assets/images/products/mesa-rio-azul-detalhe1.webp",
+        "/assets/images/products/mesa-rio-azul-detalhe2.webp",
+        "/assets/images/products/mesa-rio-azul-ambiente.webp"
+      ],
+      "features": [
+        "Design exclusivo",
+        "Madeira de origem certificada",
+        "Resina epóxi com proteção UV",
+        "Acabamento premium",
+        "Peça única artesanal"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Azul Turquesa", "value": "azul", "default": true},
+            {"name": "Verde Esmeralda", "value": "verde", "default": false},
+            {"name": "Âmbar", "value": "ambar", "default": false},
+            {"name": "Transparente", "value": "transparente", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 100 x 60 x 45 cm", "value": "padrao", "default": true},
+            {"name": "Pequeno: 80 x 50 x 40 cm", "value": "pequeno", "default": false},
+            {"name": "Grande: 120 x 70 x 45 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Madeira (padrão)", "value": "madeira", "default": true},
+            {"name": "Metal", "value": "metal", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": true,
+      "bestseller": false,
+      "stock": "available",
+      "rating": 4.9,
+      "review_count": 24,
+      "related_products": ["mesa-galaxia", "mesa-ambar", "mesa-floresta"]
+    },
+    {
+      "id": "mesa-oceano",
+      "name": "Mesa Oceano",
+      "description": "Mesa de jantar com efeito de ondas oceânicas em resina sobre madeira de carvalho maciça. O design exclusivo reproduz a beleza e serenidade do mar, com diferentes tons de azul que criam profundidade e movimento.",
+      "details": "Cada mesa é produzida artesanalmente e possui características únicas, graças à combinação do desenho natural da madeira com o trabalho artístico em resina.",
+      "price": 6750,
+      "discount_price": null,
+      "dimensions": {
+        "length": 180,
+        "width": 90,
+        "height": 76,
+        "unit": "cm"
+      },
+      "weight": 85,
+      "type": "mesa-jantar",
+      "material": "metal",
+      "wood_type": "Carvalho",
+      "resin_type": "Epóxi",
+      "resin_color": "azul",
+      "base_type": "Metal preto fosco",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 45,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-oceano.webp",
+        "/assets/images/products/mesa-oceano-detalhe1.webp",
+        "/assets/images/products/mesa-oceano-detalhe2.webp",
+        "/assets/images/products/mesa-oceano-ambiente.webp"
+      ],
+      "features": [
+        "Design inspirado em ondas oceânicas",
+        "Estrutura robusta para uso diário",
+        "Madeira de origem certificada",
+        "Base em metal com design contemporâneo",
+        "Acabamento resistente a manchas"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Azul Oceano", "value": "azul", "default": true},
+            {"name": "Verde Água", "value": "verde", "default": false},
+            {"name": "Turquesa", "value": "turquesa", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "6 lugares: 180 x 90 x 76 cm", "value": "6-lugares", "default": true},
+            {"name": "8 lugares: 220 x 100 x 76 cm", "value": "8-lugares", "default": false},
+            {"name": "4 lugares: 150 x 80 x 76 cm", "value": "4-lugares", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Metal preto (padrão)", "value": "metal-preto", "default": true},
+            {"name": "Metal dourado", "value": "metal-dourado", "default": false},
+            {"name": "Madeira", "value": "madeira", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": false,
+      "bestseller": true,
+      "stock": "available",
+      "rating": 4.8,
+      "review_count": 16,
+      "related_products": ["mesa-cristal", "mesa-coral", "mesa-horizonte"]
+    },
+    {
+      "id": "mesa-galaxia",
+      "name": "Mesa Galáxia",
+      "description": "Mesa lateral com efeito de galáxia em resina roxa e azul sobre madeira de cedro. O design recria a beleza cósmica de uma galáxia distante com efeitos de profundidade e brilho.",
+      "details": "Produzida com técnicas especiais que criam um efeito tridimensional na resina, garantindo uma peça única e surpreendente que parece conter um pequeno universo.",
+      "price": 2450,
+      "discount_price": null,
+      "dimensions": {
+        "length": 60,
+        "width": 60,
+        "height": 55,
+        "unit": "cm"
+      },
+      "weight": 18,
+      "type": "mesa-lateral",
+      "material": "madeira",
+      "wood_type": "Cedro",
+      "resin_type": "Epóxi",
+      "resin_color": "roxo",
+      "base_type": "Madeira maciça",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 25,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-galaxia.webp",
+        "/assets/images/products/mesa-galaxia-detalhe1.webp",
+        "/assets/images/products/mesa-galaxia-detalhe2.webp",
+        "/assets/images/products/mesa-galaxia-ambiente.webp"
+      ],
+      "features": [
+        "Design inspirado em nebulosas e galáxias",
+        "Efeito tridimensional na resina",
+        "Pigmentos especiais com brilho",
+        "Peça compacta ideal para espaços menores",
+        "Acabamento artesanal premium"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Roxo e Azul", "value": "roxo", "default": true},
+            {"name": "Azul e Turquesa", "value": "azul", "default": false},
+            {"name": "Preto e Dourado", "value": "preto-dourado", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 60 x 60 x 55 cm", "value": "padrao", "default": true},
+            {"name": "Pequeno: 45 x 45 x 50 cm", "value": "pequeno", "default": false},
+            {"name": "Grande: 70 x 70 x 55 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Madeira (padrão)", "value": "madeira", "default": true},
+            {"name": "Metal", "value": "metal", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": false,
+      "bestseller": false,
+      "stock": "available",
+      "rating": 4.7,
+      "review_count": 13,
+      "related_products": ["mesa-rio-azul", "mesa-nebula", "mesa-aurora"]
+    },
+    {
+      "id": "aparador-esmeralda",
+      "name": "Aparador Esmeralda",
+      "description": "Aparador com resina verde esmeralda e base em metal preto. O design elegante combina a beleza natural da madeira de freijó com o tom vibrante da resina, criando um móvel marcante.",
+      "details": "Ideal para entradas, salas de jantar ou como divisória em ambientes integrados. A combinação de materiais nobres garante durabilidade e sofisticação.",
+      "price": 5290,
+      "discount_price": 4790,
+      "dimensions": {
+        "length": 140,
+        "width": 40,
+        "height": 85,
+        "unit": "cm"
+      },
+      "weight": 45,
+      "type": "aparador",
+      "material": "metal",
+      "wood_type": "Freijó",
+      "resin_type": "Epóxi",
+      "resin_color": "verde",
+      "base_type": "Metal preto fosco",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 30,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/aparador-esmeralda.webp",
+        "/assets/images/products/aparador-esmeralda-detalhe1.webp",
+        "/assets/images/products/aparador-esmeralda-detalhe2.webp",
+        "/assets/images/products/aparador-esmeralda-ambiente.webp"
+      ],
+      "features": [
+        "Design elegante e contemporâneo",
+        "Verde esmeralda vibrante",
+        "Base em metal com acabamento premium",
+        "Madeira de origem certificada",
+        "Gavetas com corrediças de fechamento suave"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Verde Esmeralda", "value": "verde", "default": true},
+            {"name": "Azul Royal", "value": "azul", "default": false},
+            {"name": "Âmbar", "value": "ambar", "default": false},
+            {"name": "Transparente", "value": "transparente", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 140 x 40 x 85 cm", "value": "padrao", "default": true},
+            {"name": "Compacto: 110 x 40 x 85 cm", "value": "compacto", "default": false},
+            {"name": "Grande: 180 x 45 x 85 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Metal preto (padrão)", "value": "metal-preto", "default": true},
+            {"name": "Metal dourado", "value": "metal-dourado", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": false,
+      "bestseller": true,
+      "stock": "available",
+      "rating": 4.9,
+      "review_count": 28,
+      "related_products": ["mesa-rio-azul", "mesa-esmeralda", "console-verde"]
+    },
+    {
+      "id": "mesa-ambar",
+      "name": "Mesa Âmbar",
+      "description": "Mesa de centro com resina âmbar e base de vidro transparente. O tom dourado da resina cria um efeito de luz e calor, reminiscente do âmbar fossilizado.",
+      "details": "A combinação da madeira de pequiá com a resina âmbar translúcida resulta em uma peça que parece capturar a luz do sol, ideal para ambientes sofisticados.",
+      "price": 4150,
+      "discount_price": null,
+      "dimensions": {
+        "length": 110,
+        "width": 70,
+        "height": 40,
+        "unit": "cm"
+      },
+      "weight": 40,
+      "type": "mesa-centro",
+      "material": "vidro",
+      "wood_type": "Pequiá",
+      "resin_type": "Epóxi",
+      "resin_color": "ambar",
+      "base_type": "Vidro temperado",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 35,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-ambar.webp",
+        "/assets/images/products/mesa-ambar-detalhe1.webp",
+        "/assets/images/products/mesa-ambar-detalhe2.webp",
+        "/assets/images/products/mesa-ambar-ambiente.webp"
+      ],
+      "features": [
+        "Tom âmbar translúcido exclusivo",
+        "Base em vidro temperado de 10mm",
+        "Aparência de âmbar fossilizado",
+        "Madeira de origem certificada",
+        "Peça focal para ambientes sofisticados"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Âmbar", "value": "ambar", "default": true},
+            {"name": "Âmbar Escuro", "value": "ambar-escuro", "default": false},
+            {"name": "Transparente com detalhes âmbar", "value": "transparente-ambar", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 110 x 70 x 40 cm", "value": "padrao", "default": true},
+            {"name": "Pequeno: 90 x 60 x 40 cm", "value": "pequeno", "default": false},
+            {"name": "Grande: 130 x 80 x 40 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Vidro (padrão)", "value": "vidro", "default": true},
+            {"name": "Metal dourado", "value": "metal-dourado", "default": false},
+            {"name": "Madeira", "value": "madeira", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": false,
+      "bestseller": false,
+      "stock": "available",
+      "rating": 4.6,
+      "review_count": 15,
+      "related_products": ["mesa-rio-azul", "mesa-galaxia", "mesa-sol"]
+    },
+    {
+      "id": "mesa-cristal",
+      "name": "Mesa Cristal",
+      "description": "Mesa de jantar com resina transparente e veios de madeira aparentes. A transparência da resina cristalina valoriza a beleza natural dos veios da madeira de nogueira, criando uma peça de elegância atemporal.",
+      "details": "A resina cristalina de alta transparência preserva e destaca as características naturais da madeira, como se a visse através de uma lente de aumento, permitindo que cada detalhe seja apreciado.",
+      "price": 8750,
+      "discount_price": null,
+      "dimensions": {
+        "length": 200,
+        "width": 100,
+        "height": 75,
+        "unit": "cm"
+      },
+      "weight": 90,
+      "type": "mesa-jantar",
+      "material": "madeira",
+      "wood_type": "Nogueira",
+      "resin_type": "Epóxi",
+      "resin_color": "transparente",
+      "base_type": "Madeira maciça",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 45,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-cristal.webp",
+        "/assets/images/products/mesa-cristal-detalhe1.webp",
+        "/assets/images/products/mesa-cristal-detalhe2.webp",
+        "/assets/images/products/mesa-cristal-ambiente.webp"
+      ],
+      "features": [
+        "Resina cristalina de alta transparência",
+        "Madeira de nogueira premium",
+        "Destaque para os veios naturais da madeira",
+        "Base robusta em madeira maciça",
+        "Acabamento impecável com múltiplas camadas de verniz"
+      ],
+      "customization_options": [
+        {
+          "type": "transparency",
+          "options": [
+            {"name": "Cristalina (padrão)", "value": "cristalina", "default": true},
+            {"name": "Levemente azulada", "value": "azulada", "default": false},
+            {"name": "Levemente âmbar", "value": "ambar", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "8 lugares: 200 x 100 x 75 cm", "value": "8-lugares", "default": true},
+            {"name": "6 lugares: 180 x 90 x 75 cm", "value": "6-lugares", "default": false},
+            {"name": "10 lugares: 240 x 110 x 75 cm", "value": "10-lugares", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Madeira (padrão)", "value": "madeira", "default": true},
+            {"name": "Metal", "value": "metal", "default": false}
+          ]
+        }
+      ],
+      "featured": true,
+      "new": false,
+      "bestseller": true,
+      "stock": "available",
+      "rating": 4.9,
+      "review_count": 22,
+      "related_products": ["mesa-oceano", "mesa-rio-azul", "mesa-floresta"]
+    },
+    {
+      "id": "mesa-floresta",
+      "name": "Mesa Floresta",
+      "description": "Mesa de centro com tons de verde musgo e base rústica. Inspirada nas cores e texturas de uma floresta antiga, essa peça traz a essência da natureza para ambientes internos.",
+      "details": "Utilizando diferentes tons de verde e técnicas especiais para criar textura e profundidade, esta mesa recria a atmosfera serena e misteriosa de uma floresta densa.",
+      "price": 3690,
+      "discount_price": null,
+      "dimensions": {
+        "length": 100,
+        "width": 70,
+        "height": 42,
+        "unit": "cm"
+      },
+      "weight": 38,
+      "type": "mesa-centro",
+      "material": "madeira",
+      "wood_type": "Jequitibá",
+      "resin_type": "Epóxi",
+      "resin_color": "verde",
+      "base_type": "Madeira rústica",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 30,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-floresta.webp",
+        "/assets/images/products/mesa-floresta-detalhe1.webp",
+        "/assets/images/products/mesa-floresta-detalhe2.webp",
+        "/assets/images/products/mesa-floresta-ambiente.webp"
+      ],
+      "features": [
+        "Tons de verde que remetem à natureza",
+        "Texturas que imitam musgos e plantas",
+        "Base com acabamento rústico",
+        "Madeira de origem certificada",
+        "Técnicas especiais de coloração da resina"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Verde Floresta", "value": "verde", "default": true},
+            {"name": "Verde Musgo", "value": "verde-musgo", "default": false},
+            {"name": "Verde Oliva", "value": "verde-oliva", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 100 x 70 x 42 cm", "value": "padrao", "default": true},
+            {"name": "Pequeno: 80 x 60 x 42 cm", "value": "pequeno", "default": false},
+            {"name": "Grande: 120 x 80 x 42 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Madeira rústica (padrão)", "value": "madeira-rustica", "default": true},
+            {"name": "Madeira envelhecida", "value": "madeira-envelhecida", "default": false},
+            {"name": "Metal", "value": "metal", "default": false}
+          ]
+        }
+      ],
+      "featured": false,
+      "new": false,
+      "bestseller": false,
+      "stock": "available",
+      "rating": 4.7,
+      "review_count": 14,
+      "related_products": ["mesa-rio-azul", "mesa-ambar", "mesa-cristal"]
+    },
+    {
+      "id": "mesa-coral",
+      "name": "Mesa Coral",
+      "description": "Mesa lateral com efeito de recife de coral em resina laranja e vermelha. As cores vibrantes e formas orgânicas remetem à beleza dos recifes de coral em águas tropicais.",
+      "details": "Utilizamos técnicas especiais para criar texturas e formas que imitam corais naturais, com gradientes de cor que vão do laranja ao vermelho.",
+      "price": 2890,
+      "discount_price": null,
+      "dimensions": {
+        "length": 55,
+        "width": 55,
+        "height": 50,
+        "unit": "cm"
+      },
+      "weight": 22,
+      "type": "mesa-lateral",
+      "material": "madeira",
+      "wood_type": "Tauari",
+      "resin_type": "Epóxi",
+      "resin_color": "laranja",
+      "base_type": "Madeira maciça",
+      "finish": "Verniz poliuretano de alta resistência",
+      "production_time": 25,
+      "warranty": 5,
+      "images": [
+        "/assets/images/products/mesa-coral.webp",
+        "/assets/images/products/mesa-coral-detalhe1.webp",
+        "/assets/images/products/mesa-coral-detalhe2.webp",
+        "/assets/images/products/mesa-coral-ambiente.webp"
+      ],
+      "features": [
+        "Cores vibrantes inspiradas em recifes de coral",
+        "Texturas orgânicas tridimensionais",
+        "Peça compacta para espaços menores",
+        "Contraste entre madeira clara e resina colorida",
+        "Ponto focal para ambientes contemporâneos"
+      ],
+      "customization_options": [
+        {
+          "type": "color",
+          "options": [
+            {"name": "Laranja Coral", "value": "laranja", "default": true},
+            {"name": "Vermelho Coral", "value": "vermelho", "default": false},
+            {"name": "Rosa Coral", "value": "rosa", "default": false}
+          ]
+        },
+        {
+          "type": "size",
+          "options": [
+            {"name": "Padrão: 55 x 55 x 50 cm", "value": "padrao", "default": true},
+            {"name": "Pequeno: 45 x 45 x 45 cm", "value": "pequeno", "default": false},
+            {"name": "Grande: 65 x 65 x 55 cm", "value": "grande", "default": false}
+          ]
+        },
+        {
+          "type": "base",
+          "options": [
+            {"name": "Madeira (padrão)", "value": "madeira", "default": true},
+            {"name": "Metal branco", "value": "metal-branco", "default": false},
+            {"name": "Metal dourado", "value": "metal-dourado", "default": false}
+          ]
+        }
+      ],
+      "featured": false,
+      "new": true,
+      "bestseller": false,
+      "stock": "available",
+      "rating": 4.6,
+      "review_count": 9,
+      "related_products": ["mesa-oceano", "mesa-galaxia", "mesa-fogo"]
+    }
+  ]

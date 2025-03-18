@@ -1,0 +1,395 @@
+// Grid System
+// Sistema de grid responsivo para layout do site
+
+// Container principal
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    @media (min-width: 576px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    
+    @media (min-width: 992px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  // Container fluido (largura total)
+  .container-fluid {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    
+    @media (min-width: 576px) {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    
+    @media (min-width: 992px) {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  // Row (linha) do grid
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -1rem;
+    margin-right: -1rem;
+  }
+  
+  // Colunas do grid
+  .col,
+  .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+  .col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+  .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
+  .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+  .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
+  .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+  .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+  .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+  .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6,
+  .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
+    position: relative;
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  // Coluna flexível
+  .col {
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
+  }
+  
+  // Larguras de coluna fixas
+  @mixin make-col($size, $columns: 12) {
+    flex: 0 0 percentage($size / $columns);
+    max-width: percentage($size / $columns);
+  }
+  
+  // Colunas para todos os breakpoints
+  @for $i from 1 through 12 {
+    .col-#{$i} {
+      @include make-col($i, 12);
+    }
+  }
+  
+  // Breakpoint para dispositivos pequenos (sm)
+  @media (min-width: 576px) {
+    @for $i from 1 through 12 {
+      .col-sm-#{$i} {
+        @include make-col($i, 12);
+      }
+    }
+  }
+  
+  // Breakpoint para dispositivos médios (md)
+  @media (min-width: 768px) {
+    @for $i from 1 through 12 {
+      .col-md-#{$i} {
+        @include make-col($i, 12);
+      }
+    }
+  }
+  
+  // Breakpoint para dispositivos grandes (lg)
+  @media (min-width: 992px) {
+    @for $i from 1 through 12 {
+      .col-lg-#{$i} {
+        @include make-col($i, 12);
+      }
+    }
+  }
+  
+  // Breakpoint para dispositivos extra grandes (xl)
+  @media (min-width: 1200px) {
+    @for $i from 1 through 12 {
+      .col-xl-#{$i} {
+        @include make-col($i, 12);
+      }
+    }
+  }
+  
+  // Utilitários de espaçamento
+  .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  // Classes de offset
+  @mixin make-offset($size, $columns: 12) {
+    margin-left: percentage($size / $columns);
+  }
+  
+  @for $i from 0 through 11 {
+    .offset-#{$i} {
+      @include make-offset($i, 12);
+    }
+  }
+  
+  @media (min-width: 576px) {
+    @for $i from 0 through 11 {
+      .offset-sm-#{$i} {
+        @include make-offset($i, 12);
+      }
+    }
+  }
+  
+  @media (min-width: 768px) {
+    @for $i from 0 through 11 {
+      .offset-md-#{$i} {
+        @include make-offset($i, 12);
+      }
+    }
+  }
+  
+  @media (min-width: 992px) {
+    @for $i from 0 through 11 {
+      .offset-lg-#{$i} {
+        @include make-offset($i, 12);
+      }
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    @for $i from 0 through 11 {
+      .offset-xl-#{$i} {
+        @include make-offset($i, 12);
+      }
+    }
+  }
+  
+  // Utilitários de alinhamento
+  .align-items-start {
+    align-items: flex-start !important;
+  }
+  
+  .align-items-center {
+    align-items: center !important;
+  }
+  
+  .align-items-end {
+    align-items: flex-end !important;
+  }
+  
+  .justify-content-start {
+    justify-content: flex-start !important;
+  }
+  
+  .justify-content-center {
+    justify-content: center !important;
+  }
+  
+  .justify-content-end {
+    justify-content: flex-end !important;
+  }
+  
+  .justify-content-between {
+    justify-content: space-between !important;
+  }
+  
+  .justify-content-around {
+    justify-content: space-around !important;
+  }
+  
+  // Grid específico para o catálogo de produtos
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    
+    @media (max-width: 576px) {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+  
+  // Grid para galeria de imagens
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    
+    @media (max-width: 991px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (max-width: 576px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  // Layout para páginas com sidebar
+  .page-with-sidebar {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .main-content {
+      overflow: hidden;
+    }
+    
+    .sidebar {
+      @media (max-width: 991px) {
+        order: 1;
+      }
+    }
+  }
+  
+  // Layout para blog
+  .posts-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+    
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  
+  // Layout para formulário de contato
+  .contact-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2rem;
+    
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+  
+  // Layout para página de produto
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  
+  // Layout para seção de processo
+  .process-step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 5rem;
+    
+    &.reversed {
+      grid-template-areas: 
+        "content image";
+      
+      .step-image {
+        grid-area: image;
+      }
+      
+      .step-content {
+        grid-area: content;
+      }
+    }
+    
+    @media (max-width: 991px) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      
+      &.reversed {
+        grid-template-areas: 
+          "image"
+          "content";
+      }
+    }
+  }
+  
+  // Layout para destaque na home
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "main main"
+      "secondary secondary";
+    gap: 2rem;
+    
+    .featured-main {
+      grid-area: main;
+    }
+    
+    .featured-secondary {
+      grid-area: secondary;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    
+    @media (min-width: 992px) {
+      grid-template-areas:
+        "main secondary"
+        "main secondary";
+    }
+    
+    @media (max-width: 768px) {
+      .featured-secondary {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+  
+  // Flexboxes para layouts mais simples
+  .flex-row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .flex-between {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  // Utilidades de visibilidade responsiva
+  .hide-on-mobile {
+    @media (max-width: 767px) {
+      display: none !important;
+    }
+  }
+  
+  .hide-on-desktop {
+    @media (min-width: 768px) {
+      display: none !important;
+    }
+  }
+  
+  // Centralizador de texto
+  .text-center {
+    text-align: center;
+  }

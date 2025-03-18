@@ -1,0 +1,258 @@
+/* Reset CSS para ResinArt
+   Normaliza estilos entre os navegadores */
+
+/* Box sizing para todos os elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove as margens e preenchimentos padrão */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Define HTML5 como exibição em bloco para navegadores antigos */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* Define o line-height padrão */
+body {
+  line-height: 1.5;
+}
+
+/* Remove estilos de lista */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Reset de blockquote e q */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: '';
+  content: none;
+}
+
+/* Reset de tabelas */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Configura a aparência de texto selecionado */
+::selection {
+  background-color: $primary;
+  color: $white;
+  text-shadow: none;
+}
+
+/* Remove o outline padrão do link ativo/em foco para usuários de mouse */
+a:active,
+a:hover {
+  outline: 0;
+}
+
+/* Preserva outline para teclado, mas deixa mais elegante */
+:focus {
+  outline: 3px solid rgba($primary, 0.5);
+  outline-offset: 2px;
+}
+
+/* Remove o outline para os cliques do mouse, mantendo para teclado */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid rgba($primary, 0.5);
+  outline-offset: 2px;
+}
+
+/* Configura imagens para serem responsivas por padrão */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Configura o HTML e o Body para ocupar o espaço completo */
+html,
+body {
+  height: 100%;
+}
+
+/* Configura a aparência da barra de rolagem */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $light;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray-medium;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $primary;
+}
+
+/* Remove o estilo padrão dos botões */
+button {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: normal;
+  overflow: visible;
+  padding: 0;
+  appearance: none;
+}
+
+/* Remove a aparência padrão do iOS para elementos de formulário */
+input,
+textarea,
+select,
+button {
+  appearance: none;
+  border-radius: 0;
+  font-family: inherit;
+}
+
+/* Acessibilidade - classe para esconder visualmente, mas manter acessível para leitores de tela */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Remove declarações de itálico para endereço e citações */
+address,
+cite {
+  font-style: normal;
+}
+
+/* Define estilo base do body */
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: $gray-dark;
+  background-color: $white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}

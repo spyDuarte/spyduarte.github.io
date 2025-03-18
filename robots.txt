@@ -1,0 +1,26 @@
+# robots.txt para ResinArt
+
+User-agent: *
+Allow: /
+Allow: /catalogo.html
+Allow: /produto.html
+Allow: /processo.html
+Allow: /sobre.html
+Allow: /contato.html
+Allow: /blog/
+Allow: /sitemap.xml
+
+# Diretórios e arquivos para não indexar
+Disallow: /assets/css/src/
+Disallow: /assets/js/src/
+Disallow: /assets/fonts/
+Disallow: /api/
+Disallow: /docs/
+Disallow: /sw.js
+
+# Bloquear agentes específicos
+User-agent: Baiduspider
+Disallow: /
+
+# Sitemap
+Sitemap: https://www.resinart.com.br/sitemap.xml

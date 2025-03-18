@@ -1,0 +1,409 @@
+// Forms Component
+// Estilos para formulários em todo o site
+
+// Estilos gerais para formulários
+form {
+    width: 100%;
+  }
+  
+  // Grupos de campos
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+    
+    // Labels
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $gray-dark;
+      
+      // Indicador de campo obrigatório
+      &::after {
+        content: '*';
+        margin-left: 0.25rem;
+        color: $error;
+      }
+      
+      // Remove o asterisco para campos não obrigatórios
+      &:not([for$="-required"]):not([for$="*"]) {
+        &::after {
+          content: none;
+        }
+      }
+    }
+    
+    // Inputs, textareas e selects
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      font-size: 1rem;
+      color: $gray-dark;
+      background-color: $white;
+      border: 1px solid $gray-light;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      
+      &:focus {
+        outline: none;
+        border-color: $primary;
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      }
+      
+      &:disabled {
+        background-color: $light;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      
+      &.error {
+        border-color: $error;
+        
+        &:focus {
+          box-shadow: 0 0 0 3px rgba($error, 0.1);
+        }
+      }
+    }
+    
+    // Textarea específico
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    // Select específico
+    select {
+      appearance: none;
+      background-image: url('/assets/images/icons/arrow-down.svg');
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 12px 12px;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+    
+    // Checkbox e Radio
+    input[type="checkbox"],
+    input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      
+      & + label {
+        position: relative;
+        padding-left: 2rem;
+        cursor: pointer;
+        display: inline-block;
+        margin-bottom: 0;
+        
+        &::after {
+          content: none;
+        }
+        
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0.25rem;
+          width: 1.25rem;
+          height: 1.25rem;
+          border: 1px solid $gray-light;
+          background-color: $white;
+          transition: all 0.2s ease;
+        }
+      }
+      
+      &:checked + label::before {
+        background-color: $primary;
+        border-color: $primary;
+      }
+      
+      &:focus + label::before {
+        box-shadow: 0 0 0 3px rgba($primary, 0.1);
+      }
+      
+      &:disabled + label {
+        opacity: 0.7;
+        cursor: not-allowed;
+        
+        &::before {
+          background-color: $light;
+        }
+      }
+    }
+    
+    // Estilo específico para checkbox
+    input[type="checkbox"] {
+      & + label::before {
+        border-radius: 4px;
+      }
+      
+      &:checked + label::after {
+        content: '';
+        position: absolute;
+        left: 0.4rem;
+        top: 0.45rem;
+        width: 0.5rem;
+        height: 0.85rem;
+        border: solid $white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+    
+    // Estilo específico para radio
+    input[type="radio"] {
+      & + label::before {
+        border-radius: 50%;
+      }
+      
+      &:checked + label::after {
+        content: '';
+        position: absolute;
+        left: 0.375rem;
+        top: 0.625rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background-color: $white;
+      }
+    }
+    
+    // Mensagem de erro
+    .error-message {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: $error;
+    }
+    
+    // Input de arquivo
+    input[type="file"] {
+      padding: 0;
+      height: auto;
+      border: none;
+      background: none;
+      
+      &::-webkit-file-upload-button {
+        visibility: hidden;
+        width: 0;
+      }
+      
+      &::before {
+        content: 'Escolher arquivo';
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: $light;
+        border: 1px solid $gray-light;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        margin-right: 0.5rem;
+        transition: all 0.2s ease;
+      }
+      
+      &:hover::before {
+        background-color: darken($light, 5%);
+      }
+    }
+    
+    // Texto adicional para inputs de arquivo
+    .file-format {
+      margin-top: 0.5rem;
+      font-size: 0.75rem;
+      color: $gray-medium;
+    }
+  }
+  
+  // Layout de múltiplos campos na mesma linha
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    
+    .form-group {
+      flex: 1;
+      min-width: 0; // Fix para flex overflow
+      
+      @media (max-width: 767px) {
+        flex: 0 0 100%;
+      }
+    }
+  }
+  
+  // Grupo de formulário para anexos
+  .form-attachment {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid $gray-light;
+  }
+  
+  // Grupo de formulário para consentimento
+  .form-consent {
+    margin-top: 2rem;
+    
+    label {
+      font-size: 0.813rem;
+      line-height: 1.4;
+      
+      a {
+        color: $primary;
+        text-decoration: underline;
+        
+        &:hover {
+          color: darken($primary, 10%);
+        }
+      }
+    }
+  }
+  
+  // Ações do formulário
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    
+    .btn {
+      min-width: 150px;
+    }
+    
+    @media (max-width: 575px) {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+  
+  // Container para mensagens de erro ou sucesso
+  .form-messages {
+    margin-bottom: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+    
+    &.success {
+      background-color: rgba($success, 0.1);
+      color: $success;
+      border-left: 4px solid $success;
+    }
+    
+    &.error {
+      background-color: rgba($error, 0.1);
+      color: $error;
+      border-left: 4px solid $error;
+    }
+    
+    &.warning {
+      background-color: rgba($warning, 0.1);
+      color: darken($warning, 20%);
+      border-left: 4px solid $warning;
+    }
+    
+    &.info {
+      background-color: rgba($info, 0.1);
+      color: $info;
+      border-left: 4px solid $info;
+    }
+  }
+  
+  // Estilos específicos para o formulário de contato
+  .contact-form {
+    .form-wrapper {
+      background-color: $white;
+      padding: 2.5rem;
+      border-radius: 8px;
+      box-shadow: $shadow-md;
+      
+      h2 {
+        margin-bottom: 2rem;
+        font-size: 1.75rem;
+        color: $dark;
+      }
+      
+      @media (max-width: 767px) {
+        padding: 1.5rem;
+      }
+    }
+  }
+  
+  // Estilos específicos para o formulário de busca
+  .search-form {
+    display: flex;
+    
+    input[type="text"] {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border-radius: 4px 0 0 4px;
+      border-right: none;
+    }
+    
+    button {
+      padding: 0.75rem 1rem;
+      background-color: $primary;
+      border: 1px solid $primary;
+      border-radius: 0 4px 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      
+      img {
+        filter: brightness(0) invert(1);
+      }
+      
+      &:hover {
+        background-color: darken($primary, 10%);
+      }
+    }
+  }
+  
+  // Estilos específicos para o formulário de newsletter
+  .newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    
+    input[type="email"] {
+      padding: 0.75rem 1rem;
+    }
+    
+    .btn {
+      width: 100%;
+    }
+  }
+  
+  // Estilo para select e opcões nativas
+  option {
+    padding: 0.5rem;
+  }
+  
+  // Estilo para placeholder
+  ::placeholder {
+    color: $gray-medium;
+    opacity: 0.7;
+  }
+  
+  // Estilo para formulário de comentários no blog
+  .comment-form {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid $gray-light;
+    
+    h3 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+  }
+  
+  // Estilo para formulário de pesquisa no sidebar
+  .sidebar-widget {
+    .search-form {
+      margin-top: 1rem;
+    }
+  }

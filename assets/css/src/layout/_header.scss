@@ -1,0 +1,386 @@
+// Header Component
+// Estilos para o cabeçalho do site
+
+.site-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: $white;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba($gray-light, 0.5);
+    
+    // Versão com scroll
+    &.scrolled {
+      box-shadow: $shadow-md;
+      
+      .container {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+      }
+      
+      .logo img {
+        max-height: 50px;
+        width: auto;
+      }
+    }
+    
+    // Container do header
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+      transition: all 0.3s ease;
+    }
+    
+    // Logo
+    .logo {
+      display: flex;
+      align-items: center;
+      
+      a {
+        display: block;
+        line-height: 0;
+      }
+      
+      img {
+        max-height: 60px;
+        width: auto;
+        transition: all 0.3s ease;
+      }
+    }
+    
+    // Navegação principal
+    .main-nav {
+      display: flex;
+      align-items: center;
+      
+      @media (max-width: 991px) {
+        justify-content: flex-end;
+      }
+      
+      // Menu
+      .menu {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        
+        @media (max-width: 991px) {
+          position: fixed;
+          top: 0;
+          right: -100%;
+          width: 80%;
+          max-width: 320px;
+          height: 100vh;
+          background-color: $white;
+          flex-direction: column;
+          padding: 5rem 2rem 2rem;
+          transition: right 0.3s ease;
+          box-shadow: -5px 0 15px rgba($dark, 0.1);
+          overflow-y: auto;
+          z-index: 1000;
+          
+          &.active {
+            right: 0;
+          }
+        }
+        
+        // Itens do menu
+        li {
+          margin: 0 1rem;
+          position: relative;
+          
+          @media (max-width: 991px) {
+            margin: 0;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid $gray-light;
+          }
+          
+          // Links do menu
+          a {
+            color: $gray-dark;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 0;
+            display: block;
+            position: relative;
+            transition: all 0.3s ease;
+            
+            &:after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 0;
+              height: 2px;
+              background-color: $primary;
+              transition: width 0.3s ease;
+            }
+            
+            &:hover {
+              color: $primary;
+              
+              &:after {
+                width: 100%;
+              }
+            }
+            
+            @media (max-width: 991px) {
+              padding: 0.5rem 0;
+              
+              &:after {
+                display: none;
+              }
+            }
+          }
+          
+          // Item ativo do menu
+          &.current-menu-item a {
+            color: $primary;
+            font-weight: 600;
+            
+            &:after {
+              width: 100%;
+            }
+          }
+        }
+      }
+      
+      // Botão do menu mobile
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        padding: 0.75rem;
+        cursor: pointer;
+        z-index: 1001;
+        
+        @media (max-width: 991px) {
+          display: block;
+        }
+        
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+        
+        .icon-bar {
+          display: block;
+          width: 25px;
+          height: 2px;
+          background-color: $gray-dark;
+          transition: all 0.3s ease;
+          border-radius: 2px;
+          
+          & + .icon-bar {
+            margin-top: 5px;
+          }
+        }
+        
+        // Estado aberto do menu
+        &[aria-expanded="true"] {
+          .icon-bar:nth-child(2) {
+            opacity: 0;
+          }
+          
+          .icon-bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+          }
+          
+          .icon-bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+          }
+        }
+      }
+    }
+  }
+  
+  // Overlay para menu mobile
+  .menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($dark, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    
+    &.active {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+  
+  // Prevenção de scroll quando menu mobile está aberto
+  body.menu-open {
+    overflow: hidden;
+  }
+  
+  // Variante do header para páginas internas (opcional)
+  .site-header.internal-page {
+    background-color: $white;
+    border-bottom: 1px solid $gray-light;
+  }
+  
+  // Submenu para caso de haver categorias
+  .menu-item-has-children {
+    // Seta indicadora de submenu
+    > a:after {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-left: 0.5rem;
+      border: 2px solid currentColor;
+      border-width: 0 2px 2px 0;
+      transform: translateY(-2px) rotate(45deg);
+    }
+    
+    // Container do submenu
+    .sub-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background-color: $white;
+      padding: 1rem 0;
+      box-shadow: $shadow-md;
+      border-radius: 4px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s ease;
+      z-index: 100;
+      
+      // Itens do submenu
+      li {
+        margin: 0;
+        padding: 0;
+        
+        a {
+          padding: 0.5rem 1.5rem;
+          
+          &:after {
+            display: none;
+          }
+          
+          &:hover {
+            background-color: rgba($primary, 0.05);
+          }
+        }
+      }
+      
+      // Submenu ativo
+      &.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      @media (max-width: 991px) {
+        position: static;
+        box-shadow: none;
+        padding: 0 0 0 1rem;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        
+        &.active {
+          max-height: 500px;
+        }
+      }
+    }
+    
+    // Hover para desktop
+    @media (min-width: 992px) {
+      &:hover {
+        > a {
+          color: $primary;
+        }
+        
+        > .sub-menu {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+  
+  // Botão de toggle do submenu para mobile
+  .submenu-toggle {
+    display: none;
+    
+    @media (max-width: 991px) {
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0.5rem;
+      width: 30px;
+      height: 30px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      
+      .icon {
+        position: relative;
+        
+        &:before,
+        &:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 12px;
+          height: 2px;
+          background-color: $gray-dark;
+          transition: all 0.3s ease;
+        }
+        
+        &:before {
+          transform: translate(-50%, -50%);
+        }
+        
+        &:after {
+          transform: translate(-50%, -50%) rotate(90deg);
+        }
+      }
+      
+      &[aria-expanded="true"] {
+        .icon:after {
+          transform: translate(-50%, -50%) rotate(0);
+        }
+      }
+    }
+  }

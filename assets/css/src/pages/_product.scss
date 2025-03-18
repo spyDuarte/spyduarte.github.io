@@ -1,0 +1,433 @@
+// Product Page Styles
+// Estilos específicos para a página de produto individual
+
+.page-product {
+    background-color: $light;
+    
+    .breadcrumb {
+      padding: 1rem 0;
+      background-color: $white;
+      border-bottom: 1px solid $gray-light;
+      
+      ul {
+        display: flex;
+        list-style: none;
+        
+        li {
+          display: flex;
+          align-items: center;
+          font-size: 0.875rem;
+          color: $gray-medium;
+          
+          &:not(:last-child)::after {
+            content: '/';
+            margin: 0 0.5rem;
+            color: $gray-light;
+          }
+          
+          &:last-child {
+            color: $gray-dark;
+            font-weight: 500;
+          }
+          
+          a {
+            color: $gray-medium;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            
+            &:hover {
+              color: $primary;
+            }
+          }
+        }
+      }
+    }
+    
+    .product-detail {
+      padding: 3rem 0;
+      
+      .product-layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      // Galeria de Imagens
+      .product-gallery {
+        .main-image {
+          margin-bottom: 1rem;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: $shadow-md;
+          
+          img {
+            width: 100%;
+            height: auto;
+            display: block;
+          }
+        }
+        
+        .thumbnail-gallery {
+          display: flex;
+          gap: 0.75rem;
+          
+          .thumbnail {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            padding: 0;
+            background: none;
+            transition: all 0.2s ease;
+            
+            &.active {
+              border-color: $primary;
+            }
+            
+            &:hover {
+              transform: translateY(-2px);
+            }
+            
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              display: block;
+            }
+          }
+        }
+      }
+      
+      // Informações do Produto
+      .product-info {
+        h1 {
+          font-size: 2.25rem;
+          color: $dark;
+          margin-bottom: 1rem;
+        }
+        
+        .product-badges {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 1.5rem;
+          
+          .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            
+            &.new {
+              background-color: $primary;
+              color: $white;
+            }
+            
+            &.handmade {
+              background-color: $accent;
+              color: $dark;
+            }
+          }
+        }
+        
+        .product-price {
+          margin-bottom: 1.5rem;
+          
+          .current-price {
+            display: block;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: $gray-dark;
+          }
+          
+          .installment {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: $gray-medium;
+          }
+        }
+        
+        .product-description {
+          margin-bottom: 2rem;
+          
+          p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: $gray-dark;
+          }
+        }
+        
+        .product-details {
+          margin-bottom: 2rem;
+          padding: 1.5rem;
+          background-color: $white;
+          border-radius: 8px;
+          box-shadow: $shadow-sm;
+          
+          h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: $dark;
+          }
+          
+          ul {
+            list-style: none;
+            
+            li {
+              padding: 0.5rem 0;
+              border-bottom: 1px solid $gray-light;
+              display: flex;
+              justify-content: space-between;
+              flex-wrap: wrap;
+              
+              &:last-child {
+                border-bottom: none;
+              }
+              
+              strong {
+                color: $gray-dark;
+              }
+            }
+          }
+        }
+        
+        .product-customization {
+          margin-bottom: 2rem;
+          
+          h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: $dark;
+          }
+          
+          .customization-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            
+            .option {
+              margin-bottom: 1rem;
+              
+              label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 500;
+                color: $gray-dark;
+              }
+              
+              .custom-select {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: 1px solid $gray-light;
+                border-radius: 4px;
+                background-color: $white;
+                font-size: 0.875rem;
+                color: $gray-dark;
+                appearance: none;
+                background-image: url('/assets/images/icons/arrow-down.svg');
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 12px;
+                
+                &:focus {
+                  outline: none;
+                  border-color: $primary;
+                }
+              }
+            }
+          }
+        }
+        
+        .product-actions {
+          display: flex;
+          gap: 1rem;
+          margin-bottom: 2rem;
+          
+          .btn-primary {
+            flex: 1;
+          }
+          
+          .btn-wishlist {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0 1rem;
+            background: none;
+            border: 1px solid $gray-light;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: $gray-dark;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            
+            &:hover {
+              border-color: $highlight;
+              color: $highlight;
+              
+              img {
+                filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+              }
+            }
+          }
+        }
+        
+        .product-meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+          
+          .delivery-info,
+          .warranty-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: $gray-dark;
+          }
+        }
+        
+        .share-product {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid $gray-light;
+          
+          span {
+            font-size: 0.875rem;
+            color: $gray-dark;
+          }
+          
+          .social-share {
+            display: flex;
+            gap: 0.75rem;
+            
+            a {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              background-color: $light;
+              transition: all 0.2s ease;
+              
+              &:hover {
+                background-color: $gray-light;
+                transform: translateY(-2px);
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    // Abas de Informações
+    .product-tabs {
+      background-color: $white;
+      padding: 3rem 0;
+      border-top: 1px solid $gray-light;
+      
+      .tabs {
+        .tab-headers {
+          display: flex;
+          border-bottom: 1px solid $gray-light;
+          margin-bottom: 1.5rem;
+          
+          .tab-header {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            color: $gray-medium;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s ease;
+            
+            &:after {
+              content: '';
+              position: absolute;
+              bottom: -1px;
+              left: 0;
+              width: 100%;
+              height: 3px;
+              background-color: transparent;
+              transition: background-color 0.2s ease;
+            }
+            
+            &.active {
+              color: $primary;
+              
+              &:after {
+                background-color: $primary;
+              }
+            }
+            
+            &:hover {
+              color: $primary;
+            }
+          }
+        }
+        
+        .tab-content {
+          display: none;
+          padding: 1rem 0;
+          
+          &.active {
+            display: block;
+          }
+          
+          h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: $dark;
+          }
+          
+          p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+          }
+          
+          ul, ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            
+            li {
+              margin-bottom: 0.5rem;
+              line-height: 1.6;
+            }
+          }
+        }
+      }
+    }
+    
+    // Produtos Relacionados
+    .related-products {
+      padding: 3rem 0;
+      background-color: $light;
+      border-top: 1px solid $gray-light;
+      
+      h2 {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.75rem;
+        color: $dark;
+      }
+      
+      .product-carousel {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+    }
+  }

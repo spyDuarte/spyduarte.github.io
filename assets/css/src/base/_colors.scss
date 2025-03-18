@@ -1,0 +1,47 @@
+// Colors
+// Definição das variáveis de cores para o site ResinArt
+
+// Cores Principais
+$primary: #005F73;     // Azul-esverdeado escuro
+$secondary: #0A9396;   // Azul-esverdeado médio
+$accent: #EE9B00;      // Dourado/Âmbar
+$highlight: #BB3E03;   // Laranja/Vermelho terroso
+
+// Cores Neutras
+$dark: #001219;        // Quase preto com tom azulado
+$gray-dark: #333333;   // Cinza escuro
+$gray-medium: #666666; // Cinza médio
+$gray-light: #CCCCCC;  // Cinza claro
+$light: #F8F8F8;       // Quase branco
+$white: #FFFFFF;       // Branco puro
+
+// Cores de Status
+$success: #2D6A4F;     // Verde escuro
+$warning: #D9A21B;     // Amarelo/Âmbar
+$error: #9B2226;       // Vermelho escuro
+$info: #457B9D;        // Azul médio
+
+// Cores de Resina (para demonstrações e filtros)
+$resin-blue: #48CAE4;        // Azul turquesa
+$resin-green: #40916C;       // Verde esmeralda
+$resin-amber: #E5A534;       // Âmbar
+$resin-turquoise: #80FFDB;   // Turquesa claro
+$resin-purple: #7400B8;      // Roxo
+$resin-transparent: rgba(240, 248, 255, 0.8); // Transparente com leve azul
+$resin-red: #D62828;         // Vermelho
+
+// Transparências
+$overlay-dark: rgba(0, 18, 25, 0.7);
+$overlay-light: rgba(255, 255, 255, 0.8);
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// Gradientes
+$gradient-primary: linear-gradient(135deg, $primary 0%, $secondary 100%);
+$gradient-accent: linear-gradient(135deg, $accent 0%, $highlight 100%);
+$gradient-dark: linear-gradient(135deg, $dark 0%, $gray-dark 100%);
+$gradient-resin: linear-gradient(135deg, $resin-blue 0%, $resin-turquoise 100%);
+
+// Sombras
+$shadow-sm: 0 2px 4px $shadow-color;
+$shadow-md: 0 4px 8px $shadow-color;
+$shadow-lg: 0 8px 16px $shadow-color;

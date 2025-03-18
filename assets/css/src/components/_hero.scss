@@ -1,0 +1,701 @@
+// Hero Component
+// Estilos para banners principais e seções hero
+
+// Hero básica
+.hero {
+    position: relative;
+    background-color: $light;
+    padding: 5rem 0;
+    overflow: hidden;
+    
+    // Conteúdo do hero
+    .hero-content {
+      max-width: 650px;
+      position: relative;
+      z-index: 2;
+      
+      h1 {
+        margin-bottom: 1.5rem;
+        color: $dark;
+        font-size: $font-size-4xl;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-5xl;
+        }
+      }
+      
+      p {
+        font-size: $font-size-lg;
+        margin-bottom: 2rem;
+        color: $gray-dark;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-xl;
+        }
+      }
+    }
+    
+    // Imagem do hero
+    .hero-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 1;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      @media (max-width: 991px) {
+        position: relative;
+        width: 100%;
+        height: 350px;
+        margin-top: 2rem;
+      }
+    }
+    
+    // Versão para hero com imagem a esquerda
+    &.hero-image-left {
+      .hero-content {
+        margin-left: auto;
+      }
+      
+      .hero-image {
+        right: auto;
+        left: 0;
+      }
+    }
+    
+    // Media queries para responsividade
+    @media (max-width: 991px) {
+      padding: 4rem 0;
+      
+      &.hero-image-left .hero-content {
+        margin-left: 0;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      padding: 3rem 0;
+    }
+  }
+  
+  // Hero com background de imagem
+  .hero-bg-image {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: $white;
+    padding: 6rem 0;
+    
+    // Overlay escuro
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($dark, 0.6);
+      z-index: 1;
+    }
+    
+    // Conteúdo
+    .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .hero-content {
+      max-width: 650px;
+      
+      h1 {
+        color: $white;
+        margin-bottom: 1.5rem;
+        font-size: $font-size-4xl;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-5xl;
+        }
+      }
+      
+      p {
+        color: rgba($white, 0.9);
+        font-size: $font-size-lg;
+        margin-bottom: 2rem;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-xl;
+        }
+      }
+    }
+    
+    // Centralizado
+    &.hero-center {
+      text-align: center;
+      
+      .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+    }
+    
+    // Media queries
+    @media (max-width: 767px) {
+      padding: 4rem 0;
+    }
+  }
+  
+  // Hero com vídeo de fundo
+  .hero-video {
+    position: relative;
+    height: 80vh;
+    min-height: 600px;
+    color: $white;
+    overflow: hidden;
+    
+    // Container de vídeo
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      
+      video {
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        object-fit: cover;
+      }
+      
+      // Fallback para imagem quando vídeo não funciona
+      .video-fallback {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        display: none;
+      }
+      
+      // Overlay escuro
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba($dark, 0.5);
+        z-index: 2;
+      }
+    }
+    
+    // Conteúdo
+    .hero-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+      .container {
+        max-width: 800px;
+      }
+      
+      h1 {
+        color: $white;
+        margin-bottom: 1.5rem;
+        font-size: $font-size-4xl;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-5xl;
+        }
+      }
+      
+      p {
+        color: rgba($white, 0.9);
+        font-size: $font-size-lg;
+        margin-bottom: 2rem;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-xl;
+        }
+      }
+    }
+    
+    // Botão para mutar/desmutar vídeo
+    .video-mute-button {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 3;
+      background-color: rgba($white, 0.2);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      img {
+        width: 24px;
+        height: 24px;
+        filter: brightness(0) invert(1);
+      }
+      
+      &:hover {
+        background-color: rgba($white, 0.3);
+      }
+    }
+    
+    // Mobile adaptação
+    @media (max-width: 767px) {
+      height: 60vh;
+      min-height: 500px;
+      
+      .hero-content {
+        text-align: center;
+        
+        h1 {
+          font-size: $font-size-3xl;
+        }
+        
+        p {
+          font-size: $font-size-base;
+        }
+      }
+      
+      .video-mute-button {
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+  
+  // Hero específico para página inicial com efeito específico para o tema
+  .home-hero {
+    position: relative;
+    background-color: $light;
+    padding: 6rem 0;
+    overflow: hidden;
+    
+    // Efeito de resina (decorativo)
+    &::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 60%;
+      height: 140%;
+      background: linear-gradient(135deg, rgba($resin-blue, 0.1) 0%, rgba($resin-turquoise, 0.1) 100%);
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      filter: blur(40px);
+      z-index: 1;
+      animation: morphing 15s ease-in-out infinite alternate;
+    }
+    
+    // Container conteúdo
+    .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      
+      @media (max-width: 991px) {
+        flex-direction: column;
+      }
+    }
+    
+    // Conteúdo
+    .hero-content {
+      flex: 1;
+      max-width: 550px;
+      margin-right: 2rem;
+      
+      h1 {
+        font-size: $font-size-4xl;
+        margin-bottom: 1.5rem;
+        color: $dark;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-5xl;
+        }
+        
+        span {
+          color: $primary;
+        }
+      }
+      
+      p {
+        font-size: $font-size-lg;
+        margin-bottom: 2rem;
+        color: $gray-dark;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-xl;
+        }
+      }
+      
+      .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        
+        @media (max-width: 575px) {
+          flex-direction: column;
+          
+          .btn {
+            width: 100%;
+          }
+        }
+      }
+      
+      @media (max-width: 991px) {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 3rem;
+        text-align: center;
+        
+        .hero-buttons {
+          justify-content: center;
+        }
+      }
+    }
+    
+    // Imagem do produto em destaque
+    .hero-product {
+      flex: 1;
+      position: relative;
+      
+      .product-image {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: $shadow-lg;
+        transform: perspective(800px) rotateY(-15deg) rotateX(5deg) rotate(1deg);
+        transition: all 0.6s ease;
+        margin: 0 auto;
+        
+        &:hover {
+          transform: perspective(800px) rotateY(0deg) rotateX(0deg) rotate(0deg);
+        }
+      }
+      
+      // Efeito de brilho na resina
+      .resin-glow {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba($resin-blue, 0.4) 0%, rgba($resin-blue, 0) 70%);
+        border-radius: 50%;
+        top: 35%;
+        left: 30%;
+        filter: blur(20px);
+        z-index: -1;
+        animation: pulsate 4s ease-in-out infinite;
+      }
+      
+      @media (max-width: 991px) {
+        width: 100%;
+        
+        .product-image {
+          max-width: 400px;
+          transform: none;
+          
+          &:hover {
+            transform: none;
+          }
+        }
+      }
+    }
+    
+    // Animação de morfagem para efeito de resina
+    @keyframes morphing {
+      0% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+      25% {
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+      }
+      50% {
+        border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+      }
+      75% {
+        border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+      }
+      100% {
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      }
+    }
+    
+    // Animação de pulsar para brilho
+    @keyframes pulsate {
+      0% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+      }
+      100% {
+        opacity: 0.4;
+        transform: scale(1);
+      }
+    }
+    
+    // Media queries
+    @media (max-width: 767px) {
+      padding: 4rem 0;
+    }
+  }
+  
+  // Hero para página de produto
+  .product-hero {
+    background-color: $light;
+    padding: 4rem 0;
+    
+    .container {
+      display: flex;
+      align-items: center;
+      
+      @media (max-width: 991px) {
+        flex-direction: column;
+      }
+    }
+    
+    .product-images {
+      flex: 1;
+      margin-right: 3rem;
+      position: relative;
+      
+      .main-image {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: $shadow-md;
+        
+        img {
+          width: 100%;
+          height: auto;
+          display: block;
+        }
+      }
+      
+      .product-thumbnails {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        
+        .thumbnail {
+          width: 80px;
+          height: 80px;
+          border-radius: 4px;
+          overflow: hidden;
+          cursor: pointer;
+          
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+          }
+          
+          &.active {
+            border: 2px solid $primary;
+          }
+          
+          &:hover img {
+            transform: scale(1.1);
+          }
+        }
+      }
+      
+      @media (max-width: 991px) {
+        margin-right: 0;
+        margin-bottom: 2rem;
+        width: 100%;
+      }
+    }
+    
+    .product-details {
+      flex: 1;
+      
+      h1 {
+        font-size: $font-size-3xl;
+        margin-bottom: 1rem;
+        
+        @media (min-width: 992px) {
+          font-size: $font-size-4xl;
+        }
+      }
+      
+      .product-price {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $primary;
+        margin-bottom: 1.5rem;
+      }
+      
+      .product-description {
+        margin-bottom: 2rem;
+        
+        p {
+          margin-bottom: 1rem;
+        }
+      }
+      
+      .product-options {
+        margin-bottom: 2rem;
+        
+        .option-group {
+          margin-bottom: 1.5rem;
+          
+          label {
+            display: block;
+            font-weight: $font-weight-medium;
+            margin-bottom: 0.5rem;
+          }
+          
+          .color-options {
+            display: flex;
+            gap: 0.75rem;
+            
+            .color-option {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              cursor: pointer;
+              position: relative;
+              
+              &.active::after {
+                content: '';
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                right: -4px;
+                bottom: -4px;
+                border: 2px solid $primary;
+                border-radius: 50%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Hero para página de processo/como funciona
+  .process-hero {
+    background-color: $light;
+    padding: 5rem 0;
+    text-align: center;
+    
+    h1 {
+      margin-bottom: 1.5rem;
+    }
+    
+    p {
+      font-size: $font-size-lg;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      
+      @media (min-width: 992px) {
+        font-size: $font-size-xl;
+      }
+    }
+    
+    // Indicador de scroll para conteúdo abaixo
+    .scroll-indicator {
+      display: inline-block;
+      margin-top: 2rem;
+      animation: bounce 2s infinite;
+      
+      img {
+        width: 32px;
+        height: 32px;
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+  }
+  
+  // Headers para páginas internas
+  .page-header {
+    background-color: $light;
+    padding: 4rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('/assets/images/header-pattern.svg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.05;
+    }
+    
+    h1 {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      position: relative;
+      z-index: 1;
+      font-size: $font-size-lg;
+      max-width: 700px;
+      margin: 0 auto;
+      color: $gray-medium;
+    }
+    
+    @media (max-width: 767px) {
+      padding: 3rem 0;
+    }
+  }

@@ -1,0 +1,245 @@
+// Buttons Component
+// Estilos para todos os botões do site
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    line-height: 1.5;
+    
+    // Garante que o conteúdo do botão fique centralizado
+    > * {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    // Ícones dentro de botões
+    .icon {
+      margin-right: 0.5rem;
+      
+      &.icon-right {
+        margin-right: 0;
+        margin-left: 0.5rem;
+      }
+    }
+    
+    // Variante principal (cor primária)
+    &.btn-primary {
+      background-color: $primary;
+      color: $white;
+      
+      &:hover, &:focus {
+        background-color: darken($primary, 10%);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    // Variante secundária
+    &.btn-secondary {
+      background-color: $secondary;
+      color: $white;
+      
+      &:hover, &:focus {
+        background-color: darken($secondary, 10%);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    // Variante de contorno
+    &.btn-outline {
+      background-color: transparent;
+      border: 2px solid $primary;
+      color: $primary;
+      
+      &:hover, &:focus {
+        background-color: rgba($primary, 0.1);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    // Variante de destaque (cor de destaque)
+    &.btn-accent {
+      background-color: $accent;
+      color: $dark;
+      
+      &:hover, &:focus {
+        background-color: darken($accent, 10%);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    // Variante de texto (sem fundo ou borda)
+    &.btn-text {
+      background-color: transparent;
+      color: $primary;
+      padding: 0.5rem 0.75rem;
+      
+      &:hover, &:focus {
+        background-color: rgba($primary, 0.1);
+      }
+    }
+    
+    // Tamanhos
+    &.btn-small {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+    
+    &.btn-large {
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+    }
+    
+    // Estados
+    &.btn-full {
+      width: 100%;
+    }
+    
+    &:disabled, &.disabled {
+      background-color: $gray-light;
+      color: $gray-medium;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+  }
+  
+  // Botão com ícone apenas
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background-color: rgba($gray-dark, 0.1);
+    }
+    
+    &.btn-icon-primary {
+      background-color: $primary;
+      color: $white;
+      
+      &:hover {
+        background-color: darken($primary, 10%);
+      }
+    }
+    
+    &.btn-icon-small {
+      width: 2rem;
+      height: 2rem;
+    }
+    
+    &.btn-icon-large {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+  
+  // Grupo de botões
+  .btn-group {
+    display: flex;
+    
+    .btn {
+      border-radius: 0;
+      
+      &:first-child {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      
+      &:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+      
+      &:not(:last-child) {
+        border-right: 1px solid rgba($white, 0.2);
+      }
+    }
+  }
+  
+  // Alinhamento de botões
+  .text-center {
+    text-align: center;
+    
+    .btn {
+      margin: 0 0.25rem;
+    }
+  }
+  
+  // CTA específicos
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+  
+  // Botão Voltar ao Topo
+  .btn-back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: $primary;
+    color: $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: $shadow-md;
+    z-index: 99;
+    
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    &:hover {
+      background-color: darken($primary, 10%);
+      transform: translateY(-5px);
+    }
+  }

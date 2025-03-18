@@ -1,0 +1,480 @@
+// Animations
+// Definição de animações utilizadas em todo o site
+
+// Fade in
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  // Fade in up
+  @keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, 30px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  // Fade in down
+  @keyframes fadeInDown {
+    0% {
+      opacity: 0;
+      transform: translate3d(0, -30px, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  // Fade in left
+  @keyframes fadeInLeft {
+    0% {
+      opacity: 0;
+      transform: translate3d(-30px, 0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  // Fade in right
+  @keyframes fadeInRight {
+    0% {
+      opacity: 0;
+      transform: translate3d(30px, 0, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+  
+  // Zoom in
+  @keyframes zoomIn {
+    0% {
+      opacity: 0;
+      transform: scale3d(0.3, 0.3, 0.3);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  
+  // Bounce
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-30px);
+    }
+    60% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  // Pulse
+  @keyframes pulse {
+    0% {
+      transform: scale3d(1, 1, 1);
+    }
+    50% {
+      transform: scale3d(1.05, 1.05, 1.05);
+    }
+    100% {
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  
+  // Shimmer (efeito brilhante para skeleton loaders)
+  @keyframes shimmer {
+    0% {
+      background-position: -100% 0;
+    }
+    100% {
+      background-position: 100% 0;
+    }
+  }
+  
+  // Spin
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  // Shake (para alertas e validações)
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-10px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(10px);
+    }
+  }
+  
+  // Float
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  // Wave (para efeitos de água/oceano)
+  @keyframes wave {
+    0% {
+      transform: translateX(0) translateZ(0) scaleY(1);
+    }
+    50% {
+      transform: translateX(-25%) translateZ(0) scaleY(0.55);
+    }
+    100% {
+      transform: translateX(-50%) translateZ(0) scaleY(1);
+    }
+  }
+  
+  // Classes utilitárias para animações
+  
+  // Fade In
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease forwards;
+  }
+  
+  // Fade In Up
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease forwards;
+  }
+  
+  // Fade In Down
+  .animate-fadeInDown {
+    animation: fadeInDown 0.8s ease forwards;
+  }
+  
+  // Fade In Left
+  .animate-fadeInLeft {
+    animation: fadeInLeft 0.8s ease forwards;
+  }
+  
+  // Fade In Right
+  .animate-fadeInRight {
+    animation: fadeInRight 0.8s ease forwards;
+  }
+  
+  // Zoom In
+  .animate-zoomIn {
+    animation: zoomIn 0.8s ease forwards;
+  }
+  
+  // Bounce
+  .animate-bounce {
+    animation: bounce 2s infinite;
+  }
+  
+  // Pulse
+  .animate-pulse {
+    animation: pulse 2s infinite;
+  }
+  
+  // Spin
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  // Shake
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  // Float
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  // Timed and delayed animations
+  @for $i from 1 through 5 {
+    .delay-#{$i}00 {
+      animation-delay: #{$i * 100}ms !important;
+    }
+    
+    .duration-#{$i}00 {
+      animation-duration: #{$i * 100}ms !important;
+    }
+  }
+  
+  // Animações para scroll
+  .animate-on-scroll {
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    
+    &.animated {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    &.fade-up {
+      transform: translateY(30px);
+    }
+    
+    &.fade-down {
+      transform: translateY(-30px);
+    }
+    
+    &.fade-left {
+      transform: translateX(-30px);
+    }
+    
+    &.fade-right {
+      transform: translateX(30px);
+    }
+    
+    &.zoom-in {
+      transform: scale(0.8);
+    }
+  }
+  
+  // Animações específicas para componentes
+  
+  // Ripple para botões (ao clicar)
+  .btn {
+    position: relative;
+    overflow: hidden;
+    
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: ripple 0.6s linear;
+      pointer-events: none;
+    }
+    
+    @keyframes ripple {
+      to {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+  }
+  
+  // Loader de carregamento
+  .loader {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba($primary, 0.3);
+    border-radius: 50%;
+    border-top-color: $primary;
+    animation: spin 1s linear infinite;
+  }
+  
+  // Skeleton loader para conteúdo em carregamento
+  .skeleton-loader {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background-color: rgba($gray-light, 0.2);
+    border-radius: 4px;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba($white, 0.2), transparent);
+      animation: shimmer 1.5s infinite;
+      background-size: 200% 100%;
+    }
+    
+    &.text {
+      height: 16px;
+      margin-bottom: 8px;
+      width: 100%;
+      
+      &.short {
+        width: 70%;
+      }
+      
+      &.medium {
+        width: 85%;
+      }
+    }
+    
+    &.title {
+      height: 24px;
+      margin-bottom: 12px;
+      width: 90%;
+    }
+    
+    &.image {
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+    
+    &.avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+  
+  // Efeito de foco nas imagens
+  .hover-zoom {
+    overflow: hidden;
+    
+    img {
+      transition: transform 0.5s ease;
+    }
+    
+    &:hover img {
+      transform: scale(1.1);
+    }
+  }
+  
+  // Efeito de overlay para cards
+  .hover-overlay {
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba($dark, 0);
+      transition: background-color 0.3s ease;
+    }
+    
+    .overlay-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+    
+    &:hover {
+      &::after {
+        background-color: rgba($dark, 0.6);
+      }
+      
+      .overlay-content {
+        opacity: 1;
+      }
+    }
+  }
+  
+  // Flip card
+  .flip-card {
+    perspective: 1000px;
+    height: 400px;
+    
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    
+    &:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .flip-card-front {
+      background-color: $white;
+    }
+    
+    .flip-card-back {
+      background-color: $primary;
+      color: $white;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+    }
+  }
+  
+  // Animação específica para resina (efeitos de água)
+  .resin-animation {
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba($resin-blue, 0.1);
+      animation: wave 10s infinite linear;
+      opacity: 0.3;
+      z-index: 1;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba($resin-turquoise, 0.1);
+      animation: wave 15s infinite linear reverse;
+      opacity: 0.2;
+      z-index: 1;
+    }
+    
+    .resin-content {
+      position: relative;
+      z-index: 2;
+    }
+  }
