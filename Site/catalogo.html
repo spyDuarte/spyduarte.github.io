@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Produtos - LD Studio</title>
+    <style>
+        /* Cores e fontes */
+        :root {
+            --primary: #2a6478;
+            --secondary: #61dafb;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --accent: #e6a756;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-2px);
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* Page Banner */
+        .page-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/api/placeholder/1200/300') center/cover no-repeat;
+            padding: 80px 0;
+            color: white;
+            text-align: center;
+        }
+        
+        .page-banner h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .page-banner p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        /* Filter Section */
+        .filter-section {
+            padding: 40px 0;
+            background-color: white;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            margin: 10px;
+        }
+        
+        .filter-group label {
+            margin-right: 10px;
+            font-weight: 500;
+        }
+        
+        .filter-group select {
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            max-width: 300px;
+            margin: 10px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Products Grid */
+        .products-section {
+            padding: 40px 0 80px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .product-image {
+            height: 220px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .product-category {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .product-rating {
+            color: var(--accent);
+            font-weight: 500;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .pagination-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            border-radius: 4px;
+            background-color: white;
+            color: var(--dark);
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-item.active,
+        .pagination-item:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .page-banner h1 {
+                font-size: 36px;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">LD <span>Studio</span></a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="catalogo.html">Catálogo</a></li>
+                        <li><a href="index.html#about">Sobre Nós</a></li>
+                        <li><a href="processo.html">Processo</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="index.html#contact">Contato</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <h1>Catálogo de Produtos</h1>
+            <p>Explore nossa coleção exclusiva de mesas e móveis em resina, cada peça é única e feita artesanalmente para transformar seu ambiente.</p>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="container">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="category">Categoria:</label>
+                    <select id="category">
+                        <option value="all">Todas as Categorias</option>
+                        <option value="dining">Mesas de Jantar</option>
+                        <option value="coffee">Mesas de Centro</option>
+                        <option value="side">Mesas Laterais</option>
+                        <option value="console">Aparadores</option>
+                        <option value="desk">Escrivaninhas</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="price">Preço:</label>
+                    <select id="price">
+                        <option value="all">Todos os Preços</option>
+                        <option value="0-2000">Até R$ 2.000</option>
+                        <option value="2000-4000">R$ 2.000 - R$ 4.000</option>
+                        <option value="4000-6000">R$ 4.000 - R$ 6.000</option>
+                        <option value="6000+">Acima de R$ 6.000</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sort">Ordenar por:</label>
+                    <select id="sort">
+                        <option value="featured">Destaque</option>
+                        <option value="newest">Mais Recentes</option>
+                        <option value="price-low">Menor Preço</option>
+                        <option value="price-high">Maior Preço</option>
+                    </select>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar produtos...">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section class="products-section">
+        <div class="container">
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Mesa de Centro Oceano" />
+                        <div class="product-badge">Mais Vendido</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Mesa de Centro Oceano</h3>
+                        <div class="product-category">Mesa de Centro</div>
+                        <div class="product-price">R$ 3.499,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★★ (24)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Mesa de Jantar Aurora" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Mesa de Jantar Aurora</h3>
+                        <div class="product-category">Mesa de Jantar</div>
+                        <div class="product-price">R$ 5.890,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★☆ (18)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Aparador Cosmos" />
+                        <div class="product-badge">Novo</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Aparador Cosmos</h3>
+                        <div class="product-category">Aparador</div>
+                        <div class="product-price">R$ 4.250,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★★ (7)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Mesa Lateral Esmeralda" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Mesa Lateral Esmeralda</h3>
+                        <div class="product-category">Mesa Lateral</div>
+                        <div class="product-price">R$ 1.890,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★☆ (12)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Escrivaninha Lagoa" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Escrivaninha Lagoa</h3>
+                        <div class="product-category">Escrivaninha</div>
+                        <div class="product-price">R$ 4.790,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★★ (15)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Mesa de Centro Cristal" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Mesa de Centro Cristal</h3>
+                        <div class="product-category">Mesa de Centro</div>
+                        <div class="product-price">R$ 2.990,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★☆ (9)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 7 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Mesa de Jantar Floresta" />
+                        <div class="product-badge">Bestseller</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Mesa de Jantar Floresta</h3>
+                        <div class="product-category">Mesa de Jantar</div>
+                        <div class="product-price">R$ 6.490,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★★ (28)</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 8 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="/api/placeholder/400/300" alt="Aparador Onda" />
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Aparador Onda</h3>
+                        <div class="product-category">Aparador</div>
+                        <div class="product-price">R$ 3.750,00</div>
+                        <a href="produto.html" class="btn">Ver Detalhes</a>
+                        <div class="product-meta">
+                            <div class="product-rating">★★★★☆ (14)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="pagination">
+                <a href="#" class="pagination-item active">1</a>
+                <a href="#" class="pagination-item">2</a>
+                <a href="#" class="pagination-item">3</a>
+                <a href="#" class="pagination-item">4</a>
+                <a href="#" class="pagination-item">→</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LD Studio</h3>
+                    <ul>
+                        <li><a href="index.html#about">Sobre Nós</a></li>
+                        <li><a href="catalogo.html">Produtos</a></li>
+                        <li><a href="processo.html">Processo</a></li>
+                        <li><a href="index.html#contact">Contato</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Produtos</h3>
+                    <ul>
+                        <li><a href="#">Mesas de Centro</a></li>
+                        <li><a href="#">Mesas de Jantar</a></li>
+                        <li><a href="#">Aparadores</a></li>
+                        <li><a href="#">Escrivaninhas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Redes Sociais</h3>
+                    <ul>
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Pinterest</a></li>
+                        <li><a href="#">YouTube</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Informações</h3>
+                    <ul>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Entrega</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 LD Studio - Todos os direitos reservados</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
