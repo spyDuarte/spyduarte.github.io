@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Slot Machine Game - Uma máquina caça-níquel profissional">
+    <title>Máquina Caça-Níquel Profissional</title>
+    <style>
+        /* RESET E VARIÁVEIS */
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --secondary-color: #e63946;
+            --secondary-hover: #c1121f;
+            --background-dark: #121212;
+            --background-medium: #222;
+            --background-light: #333;
+            --border-color: gold;
+            --text-color: white;
+            --accent-color: gold;
+            --win-color: #4CAF50;
+            --lose-color: #f44336;
+            --jackpot-color: gold;
+            --disabled-color: #cccccc;
+            --reel-background: white;
+            --font-primary: 'Arial', sans-serif;
+            --transition-speed: 0.3s;
+            --border-radius: 10px;
+        }
+
+        /* Tema escuro - padrão */
+        [data-theme="dark"] {
+            --background-dark: #121212;
+            --background-medium: #222;
+            --background-light: #333;
+            --text-color: white;
+        }
+
+        /* Tema claro */
+        [data-theme="light"] {
+            --background-dark: #f5f5f5;
+            --background-medium: #e0e0e0;
+            --background-light: #d0d0d0;
+            --text-color: #333;
+        }
+
+        /* Tema Neon */
+        [data-theme="neon"] {
+            --primary-color: #00ff00;
+            --secondary-color: #ff00ff;
+            --border-color: #00ffff;
+            --background-dark: #000000;
+            --background-medium: #111;
+            --background-light: #222;
+            --accent-color: #00ffff;
+            --win-color: #00ff00;
+            --lose-color: #ff0000;
+            --jackpot-color: #ffff00;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--background-dark);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: background-color var(--transition-speed);
+        }
+
+        /* ELEMENTOS DE ACESSIBILIDADE */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .slot-machine {
+            background-color: var(--background-medium);
+            border: 4px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            transition: all var(--transition-speed);
+        }
+
+        h1 {
+            margin-bottom: 15px;
+            font-size: 28px;
+            text-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* PAINEL DE INFORMAÇÕES */
+        .info-panel {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            background-color: var(--background-light);
+            padding: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .balance, .bet, .stats {
+            flex: 1;
+            padding: 5px;
+        }
+
+        .balance-amount {
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* ROLETAS */
+        .reels-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .reels {
+            display: flex;
+            justify-content: space-between;
+            height: 120px;
+            background-color: var(--background-light);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .reel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 2px solid #444;
+            font-size: 48px;
+            background-color: var(--reel-background);
+            color: black;
+            position: relative;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .reel:last-child {
+            border-right: none;
+        }
+
+        /* CONTROLES */
+        .controls {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bet-label {
+            font-weight: bold;
+        }
+
+        .bet-value {
+            background-color: var(--background-light);
+            padding: 5px 10px;
+            border-radius: 4px;
+            min-width: 50px;
+            display: inline-block;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color var(--transition-speed), transform 0.1s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:focus {
+            outline: 3px solid rgba(255, 215, 0, 0.5);
+            outline-offset: 2px;
+        }
+
+        button:disabled {
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Efeito de onda ao clicar */
+        button::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+            background-repeat: no-repeat;
+            background-position: 50%;
+            transform: scale(10, 10);
+            opacity: 0;
+            transition: transform .5s, opacity 1s;
+        }
+
+        button:active::after {
+            transform: scale(0, 0);
+            opacity: 0.3;
+            transition: 0s;
+        }
+
+        #spin-button {
+            background-color: var(--primary-color);
+            font-size: 18px;
+            padding: 15px 30px;
+            margin: 20px auto;
+            display: block;
+            width: 80%;
+            max-width: 200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #spin-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* AUTO-SPIN */
+        .auto-spin-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .auto-spin-count {
+            font-weight: bold;
+            background-color: var(--background-light);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        /* MENSAGENS DE RESULTADOS */
+        .message-area {
+            height: 50px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message {
+            font-weight: bold;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+            max-width: 100%;
+        }
+
+        .win {
+            color: var(--win-color);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .lose {
+            color: var(--lose-color);
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .jackpot {
+            color: var(--jackpot-color);
+            background-color: rgba(255, 215, 0, 0.2);
+            animation: blink 0.5s infinite, pulse 1s infinite;
+        }
+
+        @keyframes blink {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* HISTÓRIO E ESTATÍSTICAS */
+        .history-stats-tabs {
+            margin-top: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .tab-button {
+            background-color: var(--background-light);
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            margin: 0 2px;
+        }
+
+        .tab-button.active {
+            background-color: var(--accent-color);
+            color: black;
+        }
+
+        .tab-content {
+            background-color: var(--background-light);
+            padding: 15px;
+            border-radius: 0 0 5px 5px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .tab-content:not(.active) {
+            display: none;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        /* TABELA DE PAGAMENTO */
+        .paytable {
+            font-size: 14px;
+            text-align: left;
+            margin-top: 20px;
+            background-color: var(--background-light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .paytable-title {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .paytable-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 5px 15px;
+        }
+
+        .paytable-row {
+            display: contents;
+        }
+
+        .paytable-row span:first-child {
+            font-size: 20px;
+        }
+
+        /* CONFIGURAÇÕES */
+        .settings-panel {
+            margin-top: 20px;
+            background-color: var(--background-light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .settings-title {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .theme-option {
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .theme-option:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-option[data-theme="dark"] {
+            background-color: #121212;
+            color: white;
+        }
+
+        .theme-option[data-theme="light"] {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .theme-option[data-theme="neon"] {
+            background-color: black;
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+            border: 1px solid #00ffff;
+        }
+
+        .sound-toggle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 600px) {
+            .slot-machine {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .info-panel {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .reel {
+                font-size: 36px;
+            }
+
+            .message {
+                font-size: 16px;
+            }
+
+            .tab-button {
+                padding: 5px 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* ANIMAÇÕES E EFEITOS */
+        .win-animation {
+            animation: winPulse 0.5s 3;
+        }
+
+        @keyframes winPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Efeito de giro para as roletas */
+        .spinning {
+            animation: spin-effect 0.1s infinite;
+        }
+
+        @keyframes spin-effect {
+            0% { transform: translateY(-2px); filter: blur(0px); }
+            25% { transform: translateY(0px); filter: blur(1px); }
+            50% { transform: translateY(2px); filter: blur(2px); }
+            75% { transform: translateY(0px); filter: blur(1px); }
+            100% { transform: translateY(-2px); filter: blur(0px); }
+        }
+
+        /* Alto contraste */
+        [data-highcontrast="true"] {
+            --background-dark: black;
+            --background-medium: black;
+            --background-light: #333;
+            --text-color: white;
+            --accent-color: yellow;
+            --win-color: lime;
+            --lose-color: red;
+        }
+    </style>
+</head>
+<body>
+    <main id="app" class="slot-machine" data-theme="dark" role="application" aria-label="Máquina Caça-Níquel">
+        <h1>Caça-Níquel Profissional</h1>
+        
+        <!-- Painel de informações -->
+        <div class="info-panel">
+            <div class="balance">
+                <div>Saldo</div>
+                <div class="balance-amount" id="balance">1000</div>
+            </div>
+            <div class="stats">
+                <div>RTP</div>
+                <div id="rtp">0%</div>
+            </div>
+            <div class="stats">
+                <div>Vitórias</div>
+                <div id="win-rate">0/0</div>
+            </div>
+        </div>
+        
+        <!-- Controles de aposta -->
+        <div class="controls">
+            <div class="control-group">
+                <span class="bet-label">Aposta:</span>
+                <button id="decrease-bet" aria-label="Diminuir aposta">-</button>
+                <span class="bet-value" id="bet">10</span>
+                <button id="increase-bet" aria-label="Aumentar aposta">+</button>
+            </div>
+        </div>
+        
+        <!-- Auto-spin controls -->
+        <div class="auto-spin-controls">
+            <button id="auto-spin-toggle" aria-label="Iniciar ou parar giros automáticos">Auto-Spin: Off</button>
+            <button id="decrease-auto-spins" aria-label="Diminuir número de giros automáticos">-</button>
+            <span class="auto-spin-count" id="auto-spin-count">10</span>
+            <button id="increase-auto-spins" aria-label="Aumentar número de giros automáticos">+</button>
+        </div>
+        
+        <!-- Roletas -->
+        <div class="reels-container">
+            <div class="reels">
+                <div class="reel" id="reel1" aria-live="polite">🍒</div>
+                <div class="reel" id="reel2" aria-live="polite">🍋</div>
+                <div class="reel" id="reel3" aria-live="polite">🍊</div>
+            </div>
+        </div>
+        
+        <!-- Botão de giro -->
+        <button id="spin-button" aria-label="Girar roletas">GIRAR</button>
+        
+        <!-- Área de mensagens -->
+        <div class="message-area">
+            <div class="message" id="message" aria-live="assertive"></div>
+        </div>
+        
+        <!-- Abas de histórico e estatísticas -->
+        <div class="history-stats-tabs">
+            <div class="tabs" role="tablist">
+                <button class="tab-button active" role="tab" aria-selected="true" aria-controls="history-tab" id="history-tab-btn">Histórico</button>
+                <button class="tab-button" role="tab" aria-selected="false" aria-controls="stats-tab" id="stats-tab-btn">Estatísticas</button>
+            </div>
+            
+            <div class="tab-content active" id="history-tab" role="tabpanel" aria-labelledby="history-tab-btn">
+                <div id="history-list">
+                    <!-- Histórico será inserido aqui via JavaScript -->
+                    <div class="history-item">
+                        <span>Inicie o jogo para ver o histórico</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="stats-tab" role="tabpanel" aria-labelledby="stats-tab-btn">
+                <div id="stats-content">
+                    <p>Total apostado: <span id="total-bet">0</span></p>
+                    <p>Total ganho: <span id="total-win">0</span></p>
+                    <p>Maior vitória: <span id="max-win">0</span></p>
+                    <p>Frequência de símbolos:</p>
+                    <div id="symbol-frequency"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tabela de pagamentos -->
+        <div class="paytable" aria-label="Tabela de Pagamentos">
+            <h2 class="paytable-title">Tabela de Pagamentos</h2>
+            <div class="paytable-grid">
+                <div class="paytable-row">
+                    <span>💰💰💰</span>
+                    <span>50x a aposta (JACKPOT!)</span>
+                </div>
+                <div class="paytable-row">
+                    <span>🍇🍇🍇</span>
+                    <span>20x a aposta</span>
+                </div>
+                <div class="paytable-row">
+                    <span>🍊🍊🍊</span>
+                    <span>15x a aposta</span>
+                </div>
+                <div class="paytable-row">
+                    <span>🍋🍋🍋</span>
+                    <span>10x a aposta</span>
+                </div>
+                <div class="paytable-row">
+                    <span>🍒🍒🍒</span>
+                    <span>5x a aposta</span>
+                </div>
+                <div class="paytable-row">
+                    <span>XX XX</span>
+                    <span>2x a aposta (dois símbolos iguais)</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Configurações -->
+        <div class="settings-panel">
+            <h2 class="settings-title">Configurações</h2>
+            
+            <div class="setting-option">
+                <p>Tema:</p>
+                <div class="theme-selector">
+                    <div class="theme-option" data-theme="dark">Escuro</div>
+                    <div class="theme-option" data-theme="light">Claro</div>
+                    <div class="theme-option" data-theme="neon">Neon</div>
+                </div>
+            </div>
+            
+            <div class="setting-option">
+                <div class="sound-toggle">
+                    <span>Sons:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="setting-option">
+                <div class="sound-toggle">
+                    <span>Alto Contraste:</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="high-contrast-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // =============================================================================
+        // Arquitetura MVC - Modelo, Visualização e Controlador separados
+        // =============================================================================
+
+        // Constantes
+        const SYMBOLS = ['🍒', '🍋', '🍊', '🍇', '💰'];
+        const MULTIPLIERS = { '🍒': 5, '🍋': 10, '🍊': 15, '🍇': 20, '💰': 50 };
+        const MIN_BET = 10;
+        const MAX_BET = 100;
+        const INITIAL_BALANCE = 1000;
+        const MIN_AUTO_SPINS = 5;
+        const MAX_AUTO_SPINS = 50;
+        const STORAGE_KEY = 'slot_machine_data';
+        const SPIN_SPEEDS = [1000, 1500, 2000]; // Tempos para cada roleta
+        
+        // ============= MODELO (Model) =============
+        class SlotMachineModel {
+            constructor() {
+                // Verificar se localStorage está disponível
+                this.storageAvailable = this.isStorageAvailable();
+                
+                // Inicializar sistema de eventos
+                this.eventListeners = {};
+                
+                // Inicializar dados padrão
+                this.resetData(false); // Sem salvar
+                
+                // Tentar carregar dados salvos, se disponível
+                if (this.storageAvailable) {
+                    this.loadData();
+                }
+            }
+            
+            // Verifica se o localStorage está disponível no ambiente
+            isStorageAvailable() {
+                try {
+                    const test = '__storage_test__';
+                    window.localStorage.setItem(test, test);
+                    window.localStorage.removeItem(test);
+                    return true;
+                } catch (e) {
+                    console.log('localStorage não está disponível neste ambiente');
+                    return false;
+                }
+            }
+            
+            resetData(shouldSave = true) {
+                this.balance = INITIAL_BALANCE;
+                this.bet = MIN_BET;
+                this.autoSpinCount = 10;
+                this.isAutoSpinActive = false;
+                this.soundEnabled = true;
+                this.currentTheme = 'dark';
+                this.highContrast = false;
+                this.statistics = {
+                    totalBet: 0,
+                    totalWin: 0,
+                    maxWin: 0,
+                    gamesPlayed: 0,
+                    wins: 0,
+                    symbolFrequency: {}
+                };
+                
+                // Inicializar frequências de símbolos
+                SYMBOLS.forEach(symbol => {
+                    this.statistics.symbolFrequency[symbol] = 0;
+                });
+                
+                this.history = [];
+                
+                // Salvar somente se necessário e disponível
+                if (shouldSave) {
+                    this.saveData();
+                }
+            }
+            
+            loadData() {
+                if (!this.storageAvailable) return;
+                
+                try {
+                    const savedData = localStorage.getItem(STORAGE_KEY);
+                    if (savedData) {
+                        const parsedData = JSON.parse(savedData);
+                        this.balance = parsedData.balance || INITIAL_BALANCE;
+                        this.bet = parsedData.bet || MIN_BET;
+                        this.autoSpinCount = parsedData.autoSpinCount || 10;
+                        this.isAutoSpinActive = false; // Sempre começa desativado
+                        this.soundEnabled = parsedData.soundEnabled !== undefined ? parsedData.soundEnabled : true;
+                        this.currentTheme = parsedData.currentTheme || 'dark';
+                        this.highContrast = parsedData.highContrast || false;
+                        this.statistics = parsedData.statistics || this.statistics;
+                        this.history = parsedData.history || [];
+                    }
+                } catch (error) {
+                    console.log('Não foi possível carregar dados salvos, usando valores padrão');
+                    // Mantém os valores padrão já definidos no resetData
+                }
+            }
+            
+            saveData() {
+                if (!this.storageAvailable) return; // Não tenta salvar se storage não estiver disponível
+                
+                try {
+                    const dataToSave = {
+                        balance: this.balance,
+                        bet: this.bet,
+                        autoSpinCount: this.autoSpinCount,
+                        soundEnabled: this.soundEnabled,
+                        currentTheme: this.currentTheme,
+                        highContrast: this.highContrast,
+                        statistics: this.statistics,
+                        history: this.history
+                    };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+                } catch (error) {
+                    console.log('Não foi possível salvar dados');
+                    // Apenas ignora o erro de salvamento
+                }
+            }
+            
+            // Métodos para manipular o modelo
+            increaseBet() {
+                if (this.bet + MIN_BET <= MAX_BET && this.bet + MIN_BET <= this.balance) {
+                    this.bet += MIN_BET;
+                    this.saveData();
+                    this.emit('betChanged', this.bet);
+                }
+            }
+            
+            decreaseBet() {
+                if (this.bet - MIN_BET >= MIN_BET) {
+                    this.bet -= MIN_BET;
+                    this.saveData();
+                    this.emit('betChanged', this.bet);
+                }
+            }
+            
+            increaseAutoSpins() {
+                if (this.autoSpinCount + 5 <= MAX_AUTO_SPINS) {
+                    this.autoSpinCount += 5;
+                    this.saveData();
+                    this.emit('autoSpinCountChanged', this.autoSpinCount);
+                }
+            }
+            
+            decreaseAutoSpins() {
+                if (this.autoSpinCount - 5 >= MIN_AUTO_SPINS) {
+                    this.autoSpinCount -= 5;
+                    this.saveData();
+                    this.emit('autoSpinCountChanged', this.autoSpinCount);
+                }
+            }
+            
+            toggleAutoSpin() {
+                this.isAutoSpinActive = !this.isAutoSpinActive;
+                this.emit('autoSpinToggled', this.isAutoSpinActive);
+                return this.isAutoSpinActive;
+            }
+            
+            toggleSound() {
+                this.soundEnabled = !this.soundEnabled;
+                this.saveData();
+                this.emit('soundToggled', this.soundEnabled);
+                return this.soundEnabled;
+            }
+            
+            setTheme(theme) {
+                this.currentTheme = theme;
+                this.saveData();
+                this.emit('themeChanged', this.currentTheme);
+            }
+            
+            toggleHighContrast() {
+                this.highContrast = !this.highContrast;
+                this.saveData();
+                this.emit('highContrastToggled', this.highContrast);
+                return this.highContrast;
+            }
+            
+            getRandomSymbol() {
+                return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+            }
+            
+            spin() {
+                if (this.balance < this.bet) {
+                    this.emit('error', 'Saldo insuficiente para girar!');
+                    return null;
+                }
+                
+                // Deduzir a aposta
+                this.balance -= this.bet;
+                
+                // Gerar resultados aleatórios
+                const results = [
+                    this.getRandomSymbol(),
+                    this.getRandomSymbol(),
+                    this.getRandomSymbol()
+                ];
+                
+                // Atualizar estatísticas
+                this.statistics.totalBet += this.bet;
+                this.statistics.gamesPlayed++;
+                
+                // Atualizar frequência de símbolos
+                results.forEach(symbol => {
+                    this.statistics.symbolFrequency[symbol] = 
+                        (this.statistics.symbolFrequency[symbol] || 0) + 1;
+                });
+                
+                // Verificar resultado
+                const winResult = this.checkWin(results);
+                
+                // Atualizar saldo e estatísticas
+                if (winResult.win) {
+                    this.balance += winResult.amount;
+                    this.statistics.totalWin += winResult.amount;
+                    this.statistics.wins++;
+                    
+                    if (winResult.amount > this.statistics.maxWin) {
+                        this.statistics.maxWin = winResult.amount;
+                    }
+                }
+                
+                // Adicionar ao histórico (limitando a 20 itens)
+                const historyItem = {
+                    results: results,
+                    bet: this.bet,
+                    win: winResult.win,
+                    amount: winResult.amount,
+                    timestamp: new Date().toISOString()
+                };
+                
+                this.history.unshift(historyItem);
+                if (this.history.length > 20) {
+                    this.history.pop();
+                }
+                
+                // Salvar dados
+                this.saveData();
+                
+                // Emitir eventos
+                this.emit('spin', {
+                    results,
+                    winResult,
+                    balance: this.balance
+                });
+                
+                this.emit('statisticsUpdated', this.statistics);
+                this.emit('historyUpdated', this.history);
+                
+                return {
+                    results,
+                    winResult,
+                    balance: this.balance
+                };
+            }
+            
+            checkWin(results) {
+                const [symbol1, symbol2, symbol3] = results;
+                
+                // Três símbolos iguais
+                if (symbol1 === symbol2 && symbol2 === symbol3) {
+                    const multiplier = MULTIPLIERS[symbol1];
+                    const winAmount = this.bet * multiplier;
+                    
+                    if (symbol1 === '💰') {
+                        return {
+                            win: true,
+                            amount: winAmount,
+                            message: `JACKPOT! Você ganhou ${winAmount} créditos!`,
+                            isJackpot: true
+                        };
+                    }
+                    
+                    return {
+                        win: true,
+                        amount: winAmount,
+                        message: `Você ganhou ${winAmount} créditos!`,
+                        isJackpot: false
+                    };
+                }
+                
+                // Dois símbolos iguais
+                if (symbol1 === symbol2 || symbol2 === symbol3 || symbol1 === symbol3) {
+                    const winAmount = this.bet * 2;
+                    return {
+                        win: true,
+                        amount: winAmount,
+                        message: `Dois iguais! Você ganhou ${winAmount} créditos!`,
+                        isJackpot: false
+                    };
+                }
+                
+                // Sem combinação vencedora
+                return {
+                    win: false,
+                    amount: 0,
+                    message: "Tente novamente!",
+                    isJackpot: false
+                };
+            }
+            
+            // Sistema de eventos
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    this.eventListeners[event] = [];
+                }
+                this.eventListeners[event].push(callback);
+            }
+            
+            emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(callback => callback(data));
+                }
+            }
+        }
+        
+        // ============= VISUALIZAÇÃO (View) =============
+        class SlotMachineView {
+            constructor() {
+                this.initElements();
+                this.initSounds();
+                this.isSpinning = false;
+            }
+            
+            initElements() {
+                // Elementos da UI
+                this.balanceElement = document.getElementById('balance');
+                this.betElement = document.getElementById('bet');
+                this.rtpElement = document.getElementById('rtp');
+                this.winRateElement = document.getElementById('win-rate');
+                this.spinButton = document.getElementById('spin-button');
+                this.decreaseBetButton = document.getElementById('decrease-bet');
+                this.increaseBetButton = document.getElementById('increase-bet');
+                this.messageElement = document.getElementById('message');
+                this.autoSpinButton = document.getElementById('auto-spin-toggle');
+                this.autoSpinCountElement = document.getElementById('auto-spin-count');
+                this.decreaseAutoSpinsButton = document.getElementById('decrease-auto-spins');
+                this.increaseAutoSpinsButton = document.getElementById('increase-auto-spins');
+                this.soundToggle = document.getElementById('sound-toggle');
+                this.highContrastToggle = document.getElementById('high-contrast-toggle');
+                this.themeOptions = document.querySelectorAll('.theme-option');
+                this.historyList = document.getElementById('history-list');
+                this.statsContent = document.getElementById('stats-content');
+                this.totalBetElement = document.getElementById('total-bet');
+                this.totalWinElement = document.getElementById('total-win');
+                this.maxWinElement = document.getElementById('max-win');
+                this.symbolFrequencyElement = document.getElementById('symbol-frequency');
+                this.tabButtons = document.querySelectorAll('.tab-button');
+                this.tabContents = document.querySelectorAll('.tab-content');
+                this.appContainer = document.getElementById('app');
+                
+                // Elementos das roletas
+                this.reels = [
+                    document.getElementById('reel1'),
+                    document.getElementById('reel2'),
+                    document.getElementById('reel3')
+                ];
+                
+                // Configurar as roletas iniciais
+                this.initReels();
+            }
+            
+            initReels() {
+                // Definir símbolos iniciais diretamente nas roletas
+                this.reels.forEach((reel, index) => {
+                    // Definir um símbolo aleatório para cada roleta
+                    reel.textContent = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+                });
+            }
+            
+            initSounds() {
+                // Criar elementos de áudio
+                this.sounds = {
+                    spin: new Audio(),
+                    win: new Audio(),
+                    jackpot: new Audio(),
+                    buttonClick: new Audio()
+                };
+                
+                // Definir origem dos sons (para um projeto real, adicionaria os arquivos)
+                // Aqui estou usando comentários para mostrar a estrutura, em um projeto real
+                // colocaria arquivos reais
+                /*
+                this.sounds.spin.src = 'sounds/spin.mp3';
+                this.sounds.win.src = 'sounds/win.mp3';
+                this.sounds.jackpot.src = 'sounds/jackpot.mp3';
+                this.sounds.buttonClick.src = 'sounds/click.mp3';
+                */
+                
+                // Pré-carregar sons
+                for (const sound in this.sounds) {
+                    this.sounds[sound].load();
+                }
+            }
+            
+            playSound(soundName) {
+                if (this.soundEnabled && this.sounds[soundName]) {
+                    // Reiniciar o som para permitir reprodução repetida
+                    this.sounds[soundName].currentTime = 0;
+                    this.sounds[soundName].play().catch(e => {
+                        // Ignorar erros de reprodução (comuns em navegadores que bloqueiam áudio automático)
+                        console.log('Reprodução de áudio bloqueada pelo navegador');
+                    });
+                }
+            }
+            
+            updateBalance(balance) {
+                this.balanceElement.textContent = balance;
+                
+                // Animação de mudança
+                this.balanceElement.classList.add('win-animation');
+                setTimeout(() => {
+                    this.balanceElement.classList.remove('win-animation');
+                }, 1500);
+            }
+            
+            updateBet(bet) {
+                this.betElement.textContent = bet;
+            }
+            
+            updateAutoSpinCount(count) {
+                this.autoSpinCountElement.textContent = count;
+            }
+            
+            updateAutoSpinButton(isActive) {
+                this.autoSpinButton.textContent = isActive ? 'Auto-Spin: On' : 'Auto-Spin: Off';
+                this.autoSpinButton.style.backgroundColor = isActive ? '#e63946' : '#4CAF50';
+            }
+            
+            updateSoundToggle(enabled) {
+                this.soundToggle.checked = enabled;
+            }
+            
+            updateHighContrastToggle(enabled) {
+                this.highContrastToggle.checked = enabled;
+                if (enabled) {
+                    this.appContainer.setAttribute('data-highcontrast', 'true');
+                } else {
+                    this.appContainer.removeAttribute('data-highcontrast');
+                }
+            }
+            
+            updateTheme(theme) {
+                this.appContainer.setAttribute('data-theme', theme);
+                
+                // Destacar a opção do tema selecionado
+                this.themeOptions.forEach(option => {
+                    if (option.getAttribute('data-theme') === theme) {
+                        option.style.outline = '2px solid var(--accent-color)';
+                    } else {
+                        option.style.outline = 'none';
+                    }
+                });
+            }
+            
+            displayMessage(message, type) {
+                this.messageElement.textContent = message;
+                this.messageElement.className = 'message';
+                
+                if (type) {
+                    this.messageElement.classList.add(type);
+                }
+                
+                // Animação de entrada
+                this.messageElement.classList.add('fade-in');
+                setTimeout(() => {
+                    this.messageElement.classList.remove('fade-in');
+                }, 500);
+            }
+            
+            clearMessage() {
+                this.messageElement.textContent = '';
+                this.messageElement.className = 'message';
+            }
+            
+            async spinReels(results) {
+                this.isSpinning = true;
+                this.playSound('spin');
+                
+                // Método simplificado de animação que garante a visibilidade dos símbolos
+                const animationPromises = this.reels.map((reel, index) => {
+                    return new Promise(resolve => {
+                        // Efeito visual de giro
+                        reel.classList.add('spinning');
+                        
+                        // Salvar o símbolo atual
+                        const currentSymbol = reel.textContent || SYMBOLS[0];
+                        
+                        // Criar array de símbolos para animação
+                        const spinSymbols = [];
+                        for (let i = 0; i < 10; i++) {
+                            spinSymbols.push(SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]);
+                        }
+                        // Garantir que o último símbolo seja o resultado
+                        spinSymbols.push(results[index]);
+                        
+                        // Configurar intervalo para troca rápida de símbolos
+                        let step = 0;
+                        const totalSteps = spinSymbols.length;
+                        const interval = Math.floor(SPIN_SPEEDS[index] / totalSteps);
+                        
+                        const animationInterval = setInterval(() => {
+                            if (step < totalSteps) {
+                                reel.textContent = spinSymbols[step];
+                                step++;
+                            } else {
+                                clearInterval(animationInterval);
+                                reel.classList.remove('spinning');
+                                resolve();
+                            }
+                        }, interval);
+                    });
+                });
+                
+                // Aguardar todas as animações terminarem
+                await Promise.all(animationPromises);
+                
+                this.isSpinning = false;
+                return true;
+            }
+            
+            updateStatistics(stats) {
+                // Atualizar RTP (Return to Player)
+                const rtp = stats.totalBet > 0 
+                    ? ((stats.totalWin / stats.totalBet) * 100).toFixed(1) 
+                    : '0';
+                this.rtpElement.textContent = `${rtp}%`;
+                
+                // Atualizar taxa de vitória
+                this.winRateElement.textContent = `${stats.wins}/${stats.gamesPlayed}`;
+                
+                // Atualizar estatísticas na aba
+                this.totalBetElement.textContent = stats.totalBet;
+                this.totalWinElement.textContent = stats.totalWin;
+                this.maxWinElement.textContent = stats.maxWin;
+                
+                // Atualizar frequência de símbolos
+                this.symbolFrequencyElement.innerHTML = '';
+                for (const symbol in stats.symbolFrequency) {
+                    const count = stats.symbolFrequency[symbol];
+                    const percentage = stats.gamesPlayed > 0 
+                        ? ((count / (stats.gamesPlayed * 3)) * 100).toFixed(1)
+                        : '0';
+                    
+                    const symbolDiv = document.createElement('div');
+                    symbolDiv.innerHTML = `${symbol}: ${count} (${percentage}%)`;
+                    this.symbolFrequencyElement.appendChild(symbolDiv);
+                }
+            }
+            
+            updateHistory(history) {
+                this.historyList.innerHTML = '';
+                
+                if (history.length === 0) {
+                    const emptyItem = document.createElement('div');
+                    emptyItem.className = 'history-item';
+                    emptyItem.textContent = 'Sem histórico de jogadas';
+                    this.historyList.appendChild(emptyItem);
+                    return;
+                }
+                
+                history.forEach(item => {
+                    const historyItem = document.createElement('div');
+                    historyItem.className = 'history-item';
+                    
+                    const date = new Date(item.timestamp);
+                    const timeString = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                    
+                    const resultSpan = document.createElement('span');
+                    resultSpan.innerHTML = `${item.results.join(' ')}`;
+                    
+                    const betSpan = document.createElement('span');
+                    betSpan.innerHTML = `Aposta: ${item.bet}`;
+                    
+                    const resultText = item.win 
+                        ? `<span style="color: var(--win-color)">+${item.amount}</span>` 
+                        : `<span style="color: var(--lose-color)">-${item.bet}</span>`;
+                    
+                    const winSpan = document.createElement('span');
+                    winSpan.innerHTML = resultText;
+                    
+                    historyItem.appendChild(resultSpan);
+                    historyItem.appendChild(betSpan);
+                    historyItem.appendChild(winSpan);
+                    
+                    this.historyList.appendChild(historyItem);
+                });
+            }
+            
+            setButtonsState(balance, bet, isSpinning) {
+                // Desativar botões durante o giro
+                const buttonsDisabled = isSpinning;
+                this.spinButton.disabled = buttonsDisabled || balance < bet;
+                this.decreaseBetButton.disabled = buttonsDisabled || bet <= MIN_BET;
+                this.increaseBetButton.disabled = buttonsDisabled || bet >= MAX_BET || bet + MIN_BET > balance;
+                this.decreaseAutoSpinsButton.disabled = buttonsDisabled;
+                this.increaseAutoSpinsButton.disabled = buttonsDisabled;
+                this.autoSpinButton.disabled = buttonsDisabled || balance < bet;
+            }
+            
+            setupTabNavigation() {
+                this.tabButtons.forEach((button, index) => {
+                    button.addEventListener('click', () => {
+                        // Remover classe active de todos os botões e conteúdos
+                        this.tabButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.setAttribute('aria-selected', 'false');
+                        });
+                        
+                        this.tabContents.forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        
+                        // Adicionar classe active ao botão e conteúdo clicado
+                        button.classList.add('active');
+                        button.setAttribute('aria-selected', 'true');
+                        this.tabContents[index].classList.add('active');
+                    });
+                });
+            }
+        }
+        
+        // ============= CONTROLADOR (Controller) =============
+        class SlotMachineController {
+            constructor(model, view) {
+                this.model = model;
+                this.view = view;
+                this.autoSpinTimer = null;
+                this.remainingAutoSpins = 0;
+                
+                this.initView();
+                this.addEventListeners();
+            }
+            
+            initView() {
+                // Inicializar a visualização com os dados do modelo
+                this.view.updateBalance(this.model.balance);
+                this.view.updateBet(this.model.bet);
+                this.view.updateAutoSpinCount(this.model.autoSpinCount);
+                this.view.updateAutoSpinButton(this.model.isAutoSpinActive);
+                this.view.updateSoundToggle(this.model.soundEnabled);
+                this.view.soundEnabled = this.model.soundEnabled;
+                this.view.updateTheme(this.model.currentTheme);
+                this.view.updateHighContrastToggle(this.model.highContrast);
+                this.view.updateStatistics(this.model.statistics);
+                this.view.updateHistory(this.model.history);
+                this.view.setupTabNavigation();
+                this.updateButtonStates();
+            }
+            
+            addEventListeners() {
+                // Eventos do modelo
+                this.model.on('spin', data => {
+                    this.view.updateBalance(data.balance);
+                    this.updateButtonStates();
+                    
+                    if (data.winResult.win) {
+                        const soundType = data.winResult.isJackpot ? 'jackpot' : 'win';
+                        this.view.playSound(soundType);
+                        this.view.displayMessage(data.winResult.message, data.winResult.isJackpot ? 'jackpot' : 'win');
+                    } else {
+                        this.view.displayMessage(data.winResult.message, 'lose');
+                    }
+                });
+                
+                this.model.on('betChanged', bet => {
+                    this.view.updateBet(bet);
+                    this.updateButtonStates();
+                });
+                
+                this.model.on('autoSpinCountChanged', count => {
+                    this.view.updateAutoSpinCount(count);
+                });
+                
+                this.model.on('autoSpinToggled', isActive => {
+                    this.view.updateAutoSpinButton(isActive);
+                    
+                    if (isActive) {
+                        this.startAutoSpin();
+                    } else {
+                        this.stopAutoSpin();
+                    }
+                });
+                
+                this.model.on('soundToggled', enabled => {
+                    this.view.updateSoundToggle(enabled);
+                    this.view.soundEnabled = enabled;
+                });
+                
+                this.model.on('themeChanged', theme => {
+                    this.view.updateTheme(theme);
+                });
+                
+                this.model.on('highContrastToggled', enabled => {
+                    this.view.updateHighContrastToggle(enabled);
+                });
+                
+                this.model.on('statisticsUpdated', stats => {
+                    this.view.updateStatistics(stats);
+                });
+                
+                this.model.on('historyUpdated', history => {
+                    this.view.updateHistory(history);
+                });
+                
+                this.model.on('error', message => {
+                    this.view.displayMessage(message, 'lose');
+                });
+                
+                // Eventos da interface
+                this.view.spinButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.spin();
+                });
+                
+                this.view.decreaseBetButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.model.decreaseBet();
+                });
+                
+                this.view.increaseBetButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.model.increaseBet();
+                });
+                
+                this.view.autoSpinButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.model.toggleAutoSpin();
+                });
+                
+                this.view.decreaseAutoSpinsButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.model.decreaseAutoSpins();
+                });
+                
+                this.view.increaseAutoSpinsButton.addEventListener('click', () => {
+                    this.view.playSound('buttonClick');
+                    this.model.increaseAutoSpins();
+                });
+                
+                this.view.soundToggle.addEventListener('change', () => {
+                    this.model.toggleSound();
+                });
+                
+                this.view.highContrastToggle.addEventListener('change', () => {
+                    this.model.toggleHighContrast();
+                });
+                
+                this.view.themeOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.view.playSound('buttonClick');
+                        const theme = option.getAttribute('data-theme');
+                        this.model.setTheme(theme);
+                    });
+                });
+                
+                // Eventos de teclado para acessibilidade
+                document.addEventListener('keydown', event => {
+                    if (event.code === 'Space') {
+                        event.preventDefault();
+                        if (!this.view.spinButton.disabled) {
+                            this.view.spinButton.click();
+                        }
+                    }
+                });
+            }
+            
+            async spin() {
+                if (this.view.isSpinning || this.model.balance < this.model.bet) {
+                    return;
+                }
+                
+                // Executar o giro no modelo (para cálculos)
+                const spinResult = this.model.spin();
+                if (!spinResult) return;
+                
+                // Desativar botões durante o giro
+                this.updateButtonStates(true);
+                
+                // Animar roletas
+                await this.view.spinReels(spinResult.results);
+                
+                // Reativar botões após o giro
+                this.updateButtonStates();
+                
+                // Verificar falência
+                if (this.model.balance === 0) {
+                    setTimeout(() => {
+                        if (confirm("Você perdeu todo seu dinheiro! Deseja começar um novo jogo?")) {
+                            this.model.resetData();
+                            this.initView();
+                        }
+                    }, 1000);
+                }
+                
+                // Continuar Auto-Spin se estiver ativo
+                if (this.model.isAutoSpinActive && this.remainingAutoSpins > 0) {
+                    this.remainingAutoSpins--;
+                    
+                    if (this.remainingAutoSpins > 0 && this.model.balance >= this.model.bet) {
+                        this.autoSpinTimer = setTimeout(() => {
+                            this.spin();
+                        }, 1000);
+                    } else {
+                        this.model.isAutoSpinActive = false;
+                        this.view.updateAutoSpinButton(false);
+                    }
+                }
+            }
+            
+            startAutoSpin() {
+                this.stopAutoSpin(); // Limpar qualquer auto-spin anterior
+                this.remainingAutoSpins = this.model.autoSpinCount;
+                
+                if (this.model.balance >= this.model.bet) {
+                    this.spin();
+                } else {
+                    this.model.isAutoSpinActive = false;
+                    this.view.updateAutoSpinButton(false);
+                    this.view.displayMessage('Saldo insuficiente para auto-spin!', 'lose');
+                }
+            }
+            
+            stopAutoSpin() {
+                if (this.autoSpinTimer) {
+                    clearTimeout(this.autoSpinTimer);
+                    this.autoSpinTimer = null;
+                }
+                this.remainingAutoSpins = 0;
+            }
+            
+            updateButtonStates(isSpinning = false) {
+                this.view.setButtonsState(
+                    this.model.balance,
+                    this.model.bet,
+                    isSpinning || this.view.isSpinning
+                );
+            }
+        }
+        
+        // ============= INICIALIZAÇÃO =============
+        document.addEventListener('DOMContentLoaded', function() {
+            // Criar instâncias MVC
+            const model = new SlotMachineModel();
+            const view = new SlotMachineView();
+            const controller = new SlotMachineController(model, view);
+            
+            // Verificar se navegador suporta vibração
+            if ('vibrate' in navigator) {
+                // Adicionar feedback tátil aos botões
+                const buttons = document.querySelectorAll('button');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        navigator.vibrate(30); // Vibrar por 30ms
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
