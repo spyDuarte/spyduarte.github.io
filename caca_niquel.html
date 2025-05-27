@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Slot Machine Game - Uma máquina caça-níquel profissional com recursos avançados">
+    <title>Máquina Caça-Níquel Profissional Premium</title>
+
+    <!-- ============================  CSS  ============================ -->
+    <style>
+        /* RESET E VARIÁVEIS */
+        :root {
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --secondary-color: #e63946;
+            --secondary-hover: #c1121f;
+            --background-dark: #121212;
+            --background-medium: #222;
+            --background-light: #333;
+            --border-color: gold;
+            --text-color: white;
+            --accent-color: gold;
+            --win-color: #4CAF50;
+            --lose-color: #f44336;
+            --jackpot-color: gold;
+            --disabled-color: #666;
+            --reel-background: white;
+            --font-primary: 'Arial', sans-serif;
+            --transition-speed: 0.3s;
+            --border-radius: 10px;
+            --glow-color: rgba(255, 215, 0, 0.6);
+        }
+
+        /* Tema escuro - padrão */
+        [data-theme="dark"] {
+            --background-dark: #121212;
+            --background-medium: #222;
+            --background-light: #333;
+            --text-color: white;
+            --glow-color: rgba(255, 215, 0, 0.6);
+        }
+
+        /* Tema claro */
+        [data-theme="light"] {
+            --background-dark: #f5f5f5;
+            --background-medium: #e0e0e0;
+            --background-light: #d0d0d0;
+            --text-color: #333;
+            --glow-color: rgba(255, 215, 0, 0.3);
+        }
+
+        /* Tema Neon */
+        [data-theme="neon"] {
+            --primary-color: #00ff00;
+            --secondary-color: #ff00ff;
+            --border-color: #00ffff;
+            --background-dark: #000000;
+            --background-medium: #111;
+            --background-light: #222;
+            --accent-color: #00ffff;
+            --win-color: #00ff00;
+            --lose-color: #ff0000;
+            --jackpot-color: #ffff00;
+            --glow-color: rgba(0, 255, 255, 0.8);
+        }
+
+        /* Tema Luxo */
+        [data-theme="luxury"] {
+            --primary-color: #B8860B;
+            --secondary-color: #8B0000;
+            --border-color: #FFD700;
+            --background-dark: #1a0f0f;
+            --background-medium: #2a1515;
+            --background-light: #3a2020;
+            --accent-color: #FFD700;
+            --text-color: #F5DEB3;
+            --glow-color: rgba(255, 215, 0, 0.8);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: var(--background-dark);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(120, 120, 120, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(120, 120, 120, 0.1) 0%, transparent 50%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            transition: all var(--transition-speed);
+            overflow-x: hidden;
+        }
+
+        /* Partículas de fundo */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* ELEMENTOS DE ACESSIBILIDADE */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .slot-machine {
+            background: linear-gradient(145deg, var(--background-medium), var(--background-light));
+            border: 4px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 
+                0 0 30px var(--glow-color),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-speed);
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        .slot-machine::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--accent-color), transparent, var(--accent-color));
+            border-radius: var(--border-radius);
+            opacity: 0.5;
+            z-index: -1;
+            animation: glow-rotate 3s linear infinite;
+        }
+
+        @keyframes glow-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+            text-shadow: 
+                0 0 10px var(--accent-color),
+                0 0 20px var(--accent-color),
+                0 0 30px var(--accent-color);
+            animation: title-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes title-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* PAINEL DE INFORMAÇÕES */
+        .info-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: linear-gradient(145deg, var(--background-light), var(--background-medium));
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            font-size: 12px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 5px;
+        }
+
+        /* NÍVEL E EXPERIÊNCIA */
+        .level-section {
+            margin-bottom: 20px;
+            background: var(--background-light);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .exp-bar {
+            width: 100%;
+            height: 20px;
+            background: var(--background-medium);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .exp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .exp-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ROLETAS */
+        .reels-container {
+            position: relative;
+            margin: 25px 0;
+            perspective: 1000px;
+        }
+
+        .reels {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            height: 150px;
+            padding: 10px;
+            background: linear-gradient(145deg, var(--background-dark), var(--background-medium));
+            border-radius: 10px;
+            box-shadow: 
+                inset 0 5px 15px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .reel {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            background: linear-gradient(145deg, #fff, #f0f0f0);
+            color: black;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                inset 0 2px 5px rgba(0, 0, 0, 0.2),
+                0 0 10px rgba(255, 255, 255, 0.5);
+            transition: transform 0.1s;
+        }
+
+        .reel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .reel.winning {
+            animation: win-glow 0.5s ease 3;
+            box-shadow: 
+                0 0 30px var(--win-color),
+                inset 0 0 20px rgba(76, 175, 80, 0.3);
+        }
+
+        @keyframes win-glow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* CONTROLES */
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--background-light);
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        button {
+            background: linear-gradient(145deg, var(--secondary-color), var(--secondary-hover));
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 6px 12px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                inset 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        button:disabled {
+            background: var(--disabled-color);
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.6;
+        }
+
+        /* Botão principal de girar */
+        #spin-button {
+            background: linear-gradient(145deg, var(--primary-color), var(--primary-hover));
+            font-size: 24px;
+            padding: 20px 60px;
+            margin: 20px auto;
+            display: block;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            overflow: hidden;
+        }
+
+        #spin-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        #spin-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        #spin-button.spinning {
+            animation: spin-button-pulse 0.5s infinite;
+        }
+
+        @keyframes spin-button-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+        }
+
+        /* MENSAGENS */
+        .message-area {
+            min-height: 60px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message {
+            font-weight: bold;
+            font-size: 22px;
+            padding: 15px 30px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message.win {
+            background: linear-gradient(145deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.3));
+            color: var(--win-color);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .message.lose {
+            background: linear-gradient(145deg, rgba(244, 67, 54, 0.2), rgba(244, 67, 54, 0.3));
+            color: var(--lose-color);
+        }
+
+        .message.jackpot {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.3), rgba(255, 215, 0, 0.4));
+            color: var(--jackpot-color);
+            animation: jackpot-animation 0.5s infinite;
+        }
+
+        @keyframes jackpot-animation {
+            0%, 100% { 
+                transform: scale(1) rotate(0deg);
+                box-shadow: 0 0 30px var(--jackpot-color);
+            }
+            25% { transform: scale(1.05) rotate(1deg); }
+            50% { 
+                transform: scale(1.1) rotate(0deg);
+                box-shadow: 0 0 50px var(--jackpot-color);
+            }
+            75% { transform: scale(1.05) rotate(-1deg); }
+        }
+
+        /* CONQUISTAS */
+        .achievement-popup {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(145deg, var(--background-medium), var(--background-light));
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 300px;
+            box-shadow: 0 0 30px var(--accent-color);
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+        }
+
+        .achievement-popup.show {
+            transform: translateX(0);
+        }
+
+        .achievement-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .achievement-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .achievement-description {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* CONQUISTAS LISTA */
+        .achievements-section {
+            margin-top: 20px;
+            background: var(--background-light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .achievement-badge {
+            width: 60px;
+            height: 60px;
+            background: var(--background-medium);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .achievement-badge.unlocked {
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .achievement-badge.locked {
+            opacity: 0.3;
+            filter: grayscale(100%);
+        }
+
+        .achievement-badge:hover {
+            transform: scale(1.1);
+        }
+
+        /* MULTIPLICADOR */
+        .multiplier-display {
+            position: absolute;
+            top: -40px;
+            right: 10px;
+            background: linear-gradient(145deg, var(--accent-color), var(--primary-color));
+            color: black;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 20px var(--accent-color);
+            display: none;
+        }
+
+        .multiplier-display.show {
+            display: block;
+            animation: bounce-in 0.5s ease;
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0) translateY(20px); }
+            50% { transform: scale(1.2) translateY(-5px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        /* TABELAS E ESTATÍSTICAS */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .tab-button {
+            background: var(--background-light);
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .tab-button.active {
+            background: var(--accent-color);
+            color: black;
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: 0 8px 8px 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* CONFIGURAÇÕES */
+        .settings-panel {
+            margin-top: 20px;
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+        }
+
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .theme-option {
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .theme-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
+        }
+
+        .theme-option.active {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        /* TOGGLE SWITCHES */
+        .toggle-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: var(--background-medium);
+            border-radius: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--disabled-color);
+            transition: 0.4s;
+            border-radius: 30px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* SCROLLBAR CUSTOMIZADA */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-medium);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+
+        /* RESPONSIVIDADE */
+        @media (max-width: 768px) {
+            .slot-machine {
+                width: 95%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .info-panel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .reel {
+                font-size: 48px;
+            }
+
+            .reels {
+                height: 120px;
+            }
+
+            #spin-button {
+                font-size: 20px;
+                padding: 15px 40px;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .achievement-popup {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .reel {
+                font-size: 36px;
+            }
+
+            .message {
+                font-size: 18px;
+                padding: 10px 20px;
+            }
+        }
+
+        /* ANIMAÇÕES ESPECIAIS */
+        @keyframes coin-rain {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(720deg); }
+        }
+
+        .coin {
+            position: fixed;
+            font-size: 30px;
+            animation: coin-rain 2s linear;
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        /* LOADING */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* EFEITOS DE FOCO PARA ACESSIBILIDADE */
+        button:focus-visible,
+        .theme-option:focus-visible,
+        .toggle-switch:focus-within {
+            outline: 3px solid var(--accent-color);
+            outline-offset: 3px;
+        }
+
+        /* MODO ALTO CONTRASTE */
+        [data-highcontrast="true"] {
+            --background-dark: black;
+            --background-medium: #111;
+            --background-light: #222;
+            --text-color: white;
+            --accent-color: yellow;
+            --win-color: lime;
+            --lose-color: red;
+            --border-color: white;
+        }
+
+        [data-highcontrast="true"] .reel {
+            background: black;
+            color: white;
+            border: 2px solid white;
+        }
+
+        /* ANIMAÇÃO DE ENTRADA */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slot-machine {
+            animation: fadeInUp 0.8s ease;
+        }
+
+        /* MINI-JOGO BÔNUS */
+        .bonus-game-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .bonus-game-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .bonus-game-container {
+            background: var(--background-medium);
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid var(--accent-color);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .bonus-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .bonus-card {
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, var(--primary-color), var(--primary-hover));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bonus-card:hover {
+            transform: scale(1.05);
+        }
+
+        .bonus-card.revealed {
+            background: var(--accent-color);
+            color: black;
+            cursor: default;
+        }
+
+        .bonus-card.revealed::after {
+            content: attr(data-prize);
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Canvas para partículas de fundo -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Popup de conquistas -->
+    <div class="achievement-popup" id="achievement-popup">
+        <div class="achievement-icon" id="achievement-icon">🏆</div>
+        <div class="achievement-title" id="achievement-title">Conquista Desbloqueada!</div>
+        <div class="achievement-description" id="achievement-description">Descrição da conquista</div>
+    </div>
+
+    <!-- Overlay do mini-jogo bônus -->
+    <div class="bonus-game-overlay" id="bonus-game-overlay">
+        <div class="bonus-game-container">
+            <h2 style="color: var(--accent-color); margin-bottom: 20px;">🎁 JOGO BÔNUS! 🎁</h2>
+            <p style="margin-bottom: 20px;">Escolha 3 cartas para revelar seus prêmios!</p>
+            <div class="bonus-cards" id="bonus-cards"></div>
+            <button id="close-bonus" style="margin-top: 20px;">Coletar Prêmios</button>
+        </div>
+    </div>
+
+    <main id="app" class="slot-machine" role="application" aria-label="Máquina Caça-Níquel Premium">
+        <h1>🎰 Caça-Níquel Premium 🎰</h1>
+
+        <!-- Seção de nível -->
+        <div class="level-section">
+            <div class="level-info">
+                <span>Nível <span id="player-level">1</span></span>
+                <span id="exp-info">0 / 100 XP</span>
+            </div>
+            <div class="exp-bar">
+                <div class="exp-fill" id="exp-fill"></div>
+                <span class="exp-text" id="exp-percent">0%</span>
+            </div>
+        </div>
+
+        <!-- Painel de informações -->
+        <div class="info-panel">
+            <div class="info-item">
+                <div class="info-label">Saldo</div>
+                <div class="info-value" id="balance">1000</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Aposta</div>
+                <div class="info-value" id="bet-display">10</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">RTP</div>
+                <div class="info-value" id="rtp">0%</div>
+            </div>
+            <div class="info-item">
+                <div class="info-label">Vitórias</div>
+                <div class="info-value" id="win-rate">0/0</div>
+            </div>
+        </div>
+
+        <!-- Controles -->
+        <div class="controls">
+            <div class="control-group">
+                <button id="decrease-bet" aria-label="Diminuir aposta">➖</button>
+                <span style="min-width: 80px; text-align: center;">Aposta: <span id="bet">10</span></span>
+                <button id="increase-bet" aria-label="Aumentar aposta">➕</button>
+            </div>
+            <div class="control-group">
+                <button id="auto-spin-toggle" aria-label="Auto-Spin">Auto: OFF</button>
+                <button id="decrease-auto-spins" aria-label="Menos giros">-5</button>
+                <span id="auto-spin-count">10</span>
+                <button id="increase-auto-spins" aria-label="Mais giros">+5</button>
+            </div>
+        </div>
+
+        <!-- Roletas -->
+        <div class="reels-container">
+            <div class="multiplier-display" id="multiplier-display">2x</div>
+            <div class="reels">
+                <div class="reel" id="reel1" aria-live="polite">🍒</div>
+                <div class="reel" id="reel2" aria-live="polite">🍋</div>
+                <div class="reel" id="reel3" aria-live="polite">🍊</div>
+            </div>
+        </div>
+
+        <!-- Botão principal -->
+        <button id="spin-button" aria-label="Girar roletas">
+            <span id="spin-text">GIRAR</span>
+        </button>
+
+        <!-- Mensagens -->
+        <div class="message-area">
+            <div class="message" id="message" aria-live="assertive"></div>
+        </div>
+
+        <!-- Abas -->
+        <div class="tabs" role="tablist">
+            <button class="tab-button active" role="tab" data-tab="history">Histórico</button>
+            <button class="tab-button" role="tab" data-tab="stats">Estatísticas</button>
+            <button class="tab-button" role="tab" data-tab="paytable">Pagamentos</button>
+            <button class="tab-button" role="tab" data-tab="achievements">Conquistas</button>
+        </div>
+
+        <div class="tab-content active" id="history-tab" role="tabpanel">
+            <div id="history-list">
+                <p style="text-align: center; opacity: 0.7;">Inicie o jogo para ver o histórico</p>
+            </div>
+        </div>
+
+        <div class="tab-content" id="stats-tab" role="tabpanel" style="display: none;">
+            <div id="stats-content">
+                <p>Total apostado: <strong id="total-bet">0</strong></p>
+                <p>Total ganho: <strong id="total-win">0</strong></p>
+                <p>Maior vitória: <strong id="max-win">0</strong></p>
+                <p>Sequência atual: <strong id="current-streak">0</strong></p>
+                <p>Melhor sequência: <strong id="best-streak">0</strong></p>
+                <p style="margin-top: 15px;"><strong>Frequência de símbolos:</strong></p>
+                <div id="symbol-frequency" style="margin-top: 10px;"></div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="paytable-tab" role="tabpanel" style="display: none;">
+            <h3 style="color: var(--accent-color); margin-bottom: 15px;">Tabela de Pagamentos</h3>
+            <div style="display: grid; gap: 10px;">
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">💰💰💰</span>
+                    <span><strong>50x</strong> JACKPOT!</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🍇🍇🍇</span>
+                    <span><strong>20x</strong> a aposta</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🍊🍊🍊</span>
+                    <span><strong>15x</strong> a aposta</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🍋🍋🍋</span>
+                    <span><strong>10x</strong> a aposta</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🍒🍒🍒</span>
+                    <span><strong>5x</strong> a aposta</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🎲🎲</span>
+                    <span><strong>2x</strong> dois iguais</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: 10px; background: var(--background-medium); border-radius: 5px;">
+                    <span style="font-size: 24px;">🎁</span>
+                    <span><strong>BÔNUS</strong> mini-jogo</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="achievements-tab" role="tabpanel" style="display: none;">
+            <h3 style="color: var(--accent-color); margin-bottom: 15px;">Conquistas</h3>
+            <div class="achievements-grid" id="achievements-grid"></div>
+        </div>
+
+        <!-- Configurações -->
+        <div class="settings-panel">
+            <h2 class="settings-title" style="color: var(--accent-color); margin-bottom: 15px;">⚙️ Configurações</h2>
+
+            <div class="theme-selector">
+                <div class="theme-option" data-theme="dark" style="background: #121212; color: white;">Escuro</div>
+                <div class="theme-option" data-theme="light" style="background: #f5f5f5; color: #333;">Claro</div>
+                <div class="theme-option" data-theme="neon" style="background: black; color: #00ffff; text-shadow: 0 0 5px #00ffff;">Neon</div>
+                <div class="theme-option" data-theme="luxury" style="background: #1a0f0f; color: #FFD700;">Luxo</div>
+            </div>
+
+            <div class="toggle-group">
+                <span>🔊 Sons</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="sound-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <span>🎵 Música</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="music-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <span>✨ Partículas</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="particles-toggle" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="toggle-group">
+                <span>♿ Alto Contraste</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="high-contrast-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <button id="reset-game" style="margin-top: 15px; background: var(--secondary-color); width: 100%;">
+                🔄 Resetar Jogo
+            </button>
+        </div>
+    </main>
+
+    <!-- ============================  JavaScript  ============================ -->
+    <script>
+    // =============================================================================
+    // Sistema de Partículas de Fundo
+    // =============================================================================
+    class ParticleSystem {
+        constructor(canvas) {
+            this.canvas = canvas;
+            this.ctx = canvas.getContext('2d');
+            this.particles = [];
+            this.enabled = true;
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+        }
+
+        resize() {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+        }
+
+        createParticle() {
+            return {
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                size: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 0.5,
+                speedY: (Math.random() - 0.5) * 0.5,
+                opacity: Math.random() * 0.5 + 0.2
+            };
+        }
+
+        init() {
+            for (let i = 0; i < 50; i++) {
+                this.particles.push(this.createParticle());
+            }
+        }
+
+        update() {
+            if (!this.enabled) return;
+
+            this.particles.forEach(particle => {
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+
+                if (particle.x < 0 || particle.x > this.canvas.width) particle.speedX *= -1;
+                if (particle.y < 0 || particle.y > this.canvas.height) particle.speedY *= -1;
+            });
+        }
+
+        draw() {
+            if (!this.enabled) {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                return;
+            }
+
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            this.particles.forEach(particle => {
+                this.ctx.beginPath();
+                this.ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                this.ctx.fillStyle = `rgba(255, 215, 0, ${particle.opacity})`;
+                this.ctx.fill();
+            });
+        }
+
+        animate() {
+            this.update();
+            this.draw();
+            requestAnimationFrame(() => this.animate());
+        }
+
+        toggle(enabled) {
+            this.enabled = enabled;
+        }
+    }
+
+    // =============================================================================
+    // Sistema de Som Aprimorado
+    // =============================================================================
+    class SoundManager {
+        constructor() {
+            this.sounds = {
+                spin: this.createOscillatorSound(200, 0.1),
+                win: this.createOscillatorSound(800, 0.2),
+                jackpot: this.createOscillatorSound(1200, 0.5),
+                bonus: this.createOscillatorSound(1000, 0.3),
+                levelUp: this.createOscillatorSound(1500, 0.4),
+                coin: this.createOscillatorSound(1800, 0.1),
+                click: this.createOscillatorSound(600, 0.05)
+            };
+            this.enabled = true;
+            this.musicEnabled = false;
+            this.audioContext = null;
+        }
+
+        createOscillatorSound(frequency, duration) {
+            return { frequency, duration };
+        }
+
+        initAudioContext() {
+            if (!this.audioContext) {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        playSound(name) {
+            if (!this.enabled || !this.sounds[name]) return;
+            
+            try {
+                this.initAudioContext();
+                const sound = this.sounds[name];
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                
+                oscillator.frequency.value = sound.frequency;
+                gainNode.gain.setValueAtTime(0.3, this.audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + sound.duration);
+                
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + sound.duration);
+            } catch (e) {
+                console.log('Som não disponível');
+            }
+        }
+
+        toggle(enabled) {
+            this.enabled = enabled;
+        }
+
+        toggleMusic(enabled) {
+            this.musicEnabled = enabled;
+            // Aqui você poderia adicionar música de fundo real
+        }
+    }
+
+    // =============================================================================
+    // Sistema de Conquistas
+    // =============================================================================
+    class AchievementSystem {
+        constructor() {
+            this.achievements = {
+                firstWin: { id: 'firstWin', name: 'Primeira Vitória', description: 'Ganhe pela primeira vez', icon: '🎯', unlocked: false },
+                lucky7: { id: 'lucky7', name: 'Sortudo', description: 'Ganhe 7 vezes seguidas', icon: '🍀', unlocked: false },
+                jackpotWinner: { id: 'jackpotWinner', name: 'Jackpot!', description: 'Ganhe o jackpot', icon: '💰', unlocked: false },
+                bigSpender: { id: 'bigSpender', name: 'Apostador', description: 'Aposte 10.000 créditos', icon: '💸', unlocked: false },
+                level10: { id: 'level10', name: 'Veterano', description: 'Alcance o nível 10', icon: '⭐', unlocked: false },
+                bonusExpert: { id: 'bonusExpert', name: 'Expert em Bônus', description: 'Complete 5 jogos bônus', icon: '🎁', unlocked: false },
+                millionaire: { id: 'millionaire', name: 'Milionário', description: 'Acumule 10.000 créditos', icon: '🤑', unlocked: false },
+                survivor: { id: 'survivor', name: 'Sobrevivente', description: 'Chegue a 10 créditos e volte a 1000', icon: '💪', unlocked: false }
+            };
+        }
+
+        check(type, value, stats) {
+            const newUnlocks = [];
+
+            switch(type) {
+                case 'win':
+                    if (!this.achievements.firstWin.unlocked && stats.wins === 1) {
+                        this.unlock('firstWin');
+                        newUnlocks.push(this.achievements.firstWin);
+                    }
+                    if (!this.achievements.lucky7.unlocked && stats.currentStreak >= 7) {
+                        this.unlock('lucky7');
+                        newUnlocks.push(this.achievements.lucky7);
+                    }
+                    break;
+                case 'jackpot':
+                    if (!this.achievements.jackpotWinner.unlocked) {
+                        this.unlock('jackpotWinner');
+                        newUnlocks.push(this.achievements.jackpotWinner);
+                    }
+                    break;
+                case 'totalBet':
+                    if (!this.achievements.bigSpender.unlocked && value >= 10000) {
+                        this.unlock('bigSpender');
+                        newUnlocks.push(this.achievements.bigSpender);
+                    }
+                    break;
+                case 'level':
+                    if (!this.achievements.level10.unlocked && value >= 10) {
+                        this.unlock('level10');
+                        newUnlocks.push(this.achievements.level10);
+                    }
+                    break;
+                case 'balance':
+                    if (!this.achievements.millionaire.unlocked && value >= 10000) {
+                        this.unlock('millionaire');
+                        newUnlocks.push(this.achievements.millionaire);
+                    }
+                    break;
+                case 'bonusGames':
+                    if (!this.achievements.bonusExpert.unlocked && value >= 5) {
+                        this.unlock('bonusExpert');
+                        newUnlocks.push(this.achievements.bonusExpert);
+                    }
+                    break;
+                case 'survivor':
+                    if (!this.achievements.survivor.unlocked) {
+                        this.unlock('survivor');
+                        newUnlocks.push(this.achievements.survivor);
+                    }
+                    break;
+            }
+
+            return newUnlocks;
+        }
+
+        unlock(id) {
+            this.achievements[id].unlocked = true;
+        }
+
+        getAll() {
+            return Object.values(this.achievements);
+        }
+
+        getUnlocked() {
+            return Object.values(this.achievements).filter(a => a.unlocked);
+        }
+    }
+
+    // =============================================================================
+    // Modelo Principal Aprimorado
+    // =============================================================================
+    class SlotMachineModel {
+        constructor() {
+            this.storageAvailable = this.checkLocalStorage();
+            this.eventListeners = {};
+            
+            // Configurações base
+            this.SYMBOLS = ['🍒', '🍋', '🍊', '🍇', '💰'];
+            this.MULTIPLIERS = { '🍒': 5, '🍋': 10, '🍊': 15, '🍇': 20, '💰': 50 };
+            this.MIN_BET = 10;
+            this.MAX_BET = 500;
+            this.INITIAL_BALANCE = 1000;
+            
+            // Estado do jogo
+            this.balance = this.INITIAL_BALANCE;
+            this.bet = this.MIN_BET;
+            this.autoSpinCount = 10;
+            this.isAutoSpinActive = false;
+            this.soundEnabled = true;
+            this.musicEnabled = false;
+            this.particlesEnabled = true;
+            this.currentTheme = 'dark';
+            this.highContrast = false;
+            
+            // Sistema de nível
+            this.level = 1;
+            this.experience = 0;
+            this.experienceToNext = 100;
+            this.multiplier = 1;
+            this.bonusGamesCompleted = 0;
+            
+            // Estatísticas
+            this.statistics = {
+                totalBet: 0,
+                totalWin: 0,
+                maxWin: 0,
+                gamesPlayed: 0,
+                wins: 0,
+                currentStreak: 0,
+                bestStreak: 0,
+                symbolFrequency: {},
+                lowBalance: false
+            };
+            
+            this.SYMBOLS.forEach(s => this.statistics.symbolFrequency[s] = 0);
+            this.history = [];
+            
+            if (this.storageAvailable) this.loadData();
+        }
+
+        checkLocalStorage() {
+            try {
+                const test = '__test__';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        loadData() {
+            try {
+                const saved = localStorage.getItem('slot_machine_premium');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    Object.assign(this, data);
+                }
+            } catch (e) {
+                console.log('Erro ao carregar dados');
+            }
+        }
+
+        saveData() {
+            if (!this.storageAvailable) return;
+            
+            const data = {
+                balance: this.balance,
+                bet: this.bet,
+                level: this.level,
+                experience: this.experience,
+                experienceToNext: this.experienceToNext,
+                statistics: this.statistics,
+                history: this.history.slice(0, 50),
+                soundEnabled: this.soundEnabled,
+                musicEnabled: this.musicEnabled,
+                particlesEnabled: this.particlesEnabled,
+                currentTheme: this.currentTheme,
+                highContrast: this.highContrast,
+                bonusGamesCompleted: this.bonusGamesCompleted
+            };
+            
+            try {
+                localStorage.setItem('slot_machine_premium', JSON.stringify(data));
+            } catch (e) {
+                console.log('Erro ao salvar dados');
+            }
+        }
+
+        resetGame() {
+            if (confirm('Tem certeza que deseja resetar todo o progresso?')) {
+                this.balance = this.INITIAL_BALANCE;
+                this.bet = this.MIN_BET;
+                this.level = 1;
+                this.experience = 0;
+                this.experienceToNext = 100;
+                this.multiplier = 1;
+                this.statistics = {
+                    totalBet: 0,
+                    totalWin: 0,
+                    maxWin: 0,
+                    gamesPlayed: 0,
+                    wins: 0,
+                    currentStreak: 0,
+                    bestStreak: 0,
+                    symbolFrequency: {},
+                    lowBalance: false
+                };
+                this.SYMBOLS.forEach(s => this.statistics.symbolFrequency[s] = 0);
+                this.history = [];
+                this.bonusGamesCompleted = 0;
+                
+                this.saveData();
+                this.emit('gameReset');
+            }
+        }
+
+        // Sistema de nível
+        addExperience(amount) {
+            this.experience += amount;
+            
+            while (this.experience >= this.experienceToNext) {
+                this.experience -= this.experienceToNext;
+                this.level++;
+                this.experienceToNext = Math.floor(this.experienceToNext * 1.5);
+                
+                // Bônus por subir de nível
+                const bonus = this.level * 100;
+                this.balance += bonus;
+                
+                this.emit('levelUp', { level: this.level, bonus });
+            }
+            
+            this.emit('experienceChanged', {
+                level: this.level,
+                experience: this.experience,
+                experienceToNext: this.experienceToNext
+            });
+        }
+
+        // Multiplicador baseado em sequência
+        updateMultiplier() {
+            if (this.statistics.currentStreak >= 5) {
+                this.multiplier = 2;
+            } else if (this.statistics.currentStreak >= 3) {
+                this.multiplier = 1.5;
+            } else {
+                this.multiplier = 1;
+            }
+            
+            if (this.multiplier > 1) {
+                this.emit('multiplierActive', this.multiplier);
+            }
+        }
+
+        // Métodos de aposta
+        increaseBet() {
+            const increment = this.bet < 100 ? 10 : 50;
+            if (this.bet + increment <= this.MAX_BET && this.bet + increment <= this.balance) {
+                this.bet += increment;
+                this.saveData();
+                this.emit('betChanged', this.bet);
+            }
+        }
+
+        decreaseBet() {
+            const decrement = this.bet <= 100 ? 10 : 50;
+            if (this.bet - decrement >= this.MIN_BET) {
+                this.bet -= decrement;
+                this.saveData();
+                this.emit('betChanged', this.bet);
+            }
+        }
+
+        // Jogo principal
+        spin() {
+            if (this.balance < this.bet) {
+                this.emit('error', 'Saldo insuficiente!');
+                return null;
+            }
+
+            this.balance -= this.bet;
+            this.statistics.totalBet += this.bet;
+            this.statistics.gamesPlayed++;
+
+            // Gerar resultados com chance de bônus
+            const results = [];
+            for (let i = 0; i < 3; i++) {
+                if (Math.random() < 0.02) { // 2% de chance de símbolo bônus
+                    results.push('🎁');
+                } else {
+                    results.push(this.getRandomSymbol());
+                }
+            }
+
+            // Atualizar frequência
+            results.forEach(s => {
+                if (this.statistics.symbolFrequency[s] !== undefined) {
+                    this.statistics.symbolFrequency[s]++;
+                }
+            });
+
+            // Verificar vitória
+            const winResult = this.checkWin(results);
+
+            if (winResult.win) {
+                const totalWin = Math.floor(winResult.amount * this.multiplier);
+                this.balance += totalWin;
+                this.statistics.totalWin += totalWin;
+                this.statistics.wins++;
+                this.statistics.currentStreak++;
+                
+                if (this.statistics.currentStreak > this.statistics.bestStreak) {
+                    this.statistics.bestStreak = this.statistics.currentStreak;
+                }
+
+                if (totalWin > this.statistics.maxWin) {
+                    this.statistics.maxWin = totalWin;
+                }
+
+                // Adicionar experiência
+                this.addExperience(Math.floor(totalWin / 10));
+
+                winResult.amount = totalWin;
+                winResult.multiplier = this.multiplier;
+            } else {
+                this.statistics.currentStreak = 0;
+                this.addExperience(1); // Experiência mínima
+            }
+
+            // Verificar saldo baixo para conquista
+            if (this.balance <= 10) {
+                this.statistics.lowBalance = true;
+            } else if (this.balance >= 1000 && this.statistics.lowBalance) {
+                this.emit('achievementCheck', { type: 'survivor' });
+                this.statistics.lowBalance = false;
+            }
+
+            // Atualizar multiplicador
+            this.updateMultiplier();
+
+            // Adicionar ao histórico
+            this.history.unshift({
+                results,
+                bet: this.bet,
+                win: winResult.win,
+                amount: winResult.amount,
+                timestamp: new Date().toISOString()
+            });
+
+            if (this.history.length > 100) {
+                this.history = this.history.slice(0, 100);
+            }
+
+            // Verificar se deve ativar jogo bônus
+            const bonusCount = results.filter(s => s === '🎁').length;
+            if (bonusCount >= 2) {
+                winResult.bonusGame = true;
+            }
+
+            this.saveData();
+            this.emit('spin', { results, winResult, balance: this.balance });
+            this.emit('statisticsUpdated', this.statistics);
+            this.emit('historyUpdated', this.history);
+
+            return { results, winResult, balance: this.balance };
+        }
+
+        getRandomSymbol() {
+            // Probabilidades ajustadas por nível
+            const weights = {
+                '🍒': 35 - this.level,
+                '🍋': 30,
+                '🍊': 20,
+                '🍇': 10 + Math.floor(this.level / 2),
+                '💰': 5 + Math.floor(this.level / 3)
+            };
+
+            const total = Object.values(weights).reduce((a, b) => a + b, 0);
+            let random = Math.random() * total;
+
+            for (const [symbol, weight] of Object.entries(weights)) {
+                random -= weight;
+                if (random <= 0) return symbol;
+            }
+
+            return this.SYMBOLS[0];
+        }
+
+        checkWin(results) {
+            const [s1, s2, s3] = results;
+
+            // Três iguais
+            if (s1 === s2 && s2 === s3 && s1 !== '🎁') {
+                const baseAmount = this.bet * this.MULTIPLIERS[s1];
+                const isJackpot = s1 === '💰';
+                
+                return {
+                    win: true,
+                    amount: baseAmount,
+                    message: isJackpot ? '🎉 JACKPOT! 🎉' : `Você ganhou ${baseAmount} créditos!`,
+                    isJackpot,
+                    type: 'three'
+                };
+            }
+
+            // Dois iguais
+            if ((s1 === s2 || s2 === s3 || s1 === s3) && 
+                ![s1, s2, s3].includes('🎁')) {
+                const amount = this.bet * 2;
+                return {
+                    win: true,
+                    amount,
+                    message: `Dois iguais! +${amount}`,
+                    isJackpot: false,
+                    type: 'two'
+                };
+            }
+
+            return {
+                win: false,
+                amount: 0,
+                message: 'Tente novamente!',
+                isJackpot: false,
+                type: 'none'
+            };
+        }
+
+        // Auto-spin
+        toggleAutoSpin() {
+            this.isAutoSpinActive = !this.isAutoSpinActive;
+            this.emit('autoSpinToggled', this.isAutoSpinActive);
+            return this.isAutoSpinActive;
+        }
+
+        increaseAutoSpins() {
+            if (this.autoSpinCount < 50) {
+                this.autoSpinCount += 5;
+                this.emit('autoSpinCountChanged', this.autoSpinCount);
+            }
+        }
+
+        decreaseAutoSpins() {
+            if (this.autoSpinCount > 5) {
+                this.autoSpinCount -= 5;
+                this.emit('autoSpinCountChanged', this.autoSpinCount);
+            }
+        }
+
+        // Configurações
+        toggleSound() {
+            this.soundEnabled = !this.soundEnabled;
+            this.saveData();
+            this.emit('soundToggled', this.soundEnabled);
+        }
+
+        toggleMusic() {
+            this.musicEnabled = !this.musicEnabled;
+            this.saveData();
+            this.emit('musicToggled', this.musicEnabled);
+        }
+
+        toggleParticles() {
+            this.particlesEnabled = !this.particlesEnabled;
+            this.saveData();
+            this.emit('particlesToggled', this.particlesEnabled);
+        }
+
+        setTheme(theme) {
+            this.currentTheme = theme;
+            this.saveData();
+            this.emit('themeChanged', theme);
+        }
+
+        toggleHighContrast() {
+            this.highContrast = !this.highContrast;
+            this.saveData();
+            this.emit('highContrastToggled', this.highContrast);
+        }
+
+        // Sistema de eventos
+        on(event, callback) {
+            if (!this.eventListeners[event]) {
+                this.eventListeners[event] = [];
+            }
+            this.eventListeners[event].push(callback);
+        }
+
+        emit(event, data) {
+            if (this.eventListeners[event]) {
+                this.eventListeners[event].forEach(callback => callback(data));
+            }
+        }
+    }
+
+    // =============================================================================
+    // Visualização Aprimorada
+    // =============================================================================
+    class SlotMachineView {
+        constructor() {
+            this.initElements();
+            this.isSpinning = false;
+            this.soundManager = new SoundManager();
+            this.achievementQueue = [];
+            this.showingAchievement = false;
+        }
+
+        initElements() {
+            // Elementos principais
+            this.balanceElement = document.getElementById('balance');
+            this.betElement = document.getElementById('bet');
+            this.betDisplayElement = document.getElementById('bet-display');
+            this.rtpElement = document.getElementById('rtp');
+            this.winRateElement = document.getElementById('win-rate');
+            
+            // Nível e experiência
+            this.levelElement = document.getElementById('player-level');
+            this.expFillElement = document.getElementById('exp-fill');
+            this.expInfoElement = document.getElementById('exp-info');
+            this.expPercentElement = document.getElementById('exp-percent');
+            
+            // Botões
+            this.spinButton = document.getElementById('spin-button');
+            this.spinText = document.getElementById('spin-text');
+            this.decreaseBetButton = document.getElementById('decrease-bet');
+            this.increaseBetButton = document.getElementById('increase-bet');
+            this.autoSpinButton = document.getElementById('auto-spin-toggle');
+            this.autoSpinCountElement = document.getElementById('auto-spin-count');
+            this.decreaseAutoSpinsButton = document.getElementById('decrease-auto-spins');
+            this.increaseAutoSpinsButton = document.getElementById('increase-auto-spins');
+            this.resetButton = document.getElementById('reset-game');
+            
+            // Mensagens e multiplicador
+            this.messageElement = document.getElementById('message');
+            this.multiplierDisplay = document.getElementById('multiplier-display');
+            
+            // Abas
+            this.tabButtons = document.querySelectorAll('.tab-button');
+            this.tabContents = {
+                history: document.getElementById('history-tab'),
+                stats: document.getElementById('stats-tab'),
+                paytable: document.getElementById('paytable-tab'),
+                achievements: document.getElementById('achievements-tab')
+            };
+            
+            // Listas e conteúdo
+            this.historyList = document.getElementById('history-list');
+            this.statsContent = document.getElementById('stats-content');
+            this.achievementsGrid = document.getElementById('achievements-grid');
+            
+            // Estatísticas
+            this.totalBetElement = document.getElementById('total-bet');
+            this.totalWinElement = document.getElementById('total-win');
+            this.maxWinElement = document.getElementById('max-win');
+            this.currentStreakElement = document.getElementById('current-streak');
+            this.bestStreakElement = document.getElementById('best-streak');
+            this.symbolFrequencyElement = document.getElementById('symbol-frequency');
+            
+            // Configurações
+            this.soundToggle = document.getElementById('sound-toggle');
+            this.musicToggle = document.getElementById('music-toggle');
+            this.particlesToggle = document.getElementById('particles-toggle');
+            this.highContrastToggle = document.getElementById('high-contrast-toggle');
+            this.themeOptions = document.querySelectorAll('.theme-option');
+            
+            // Roletas
+            this.reels = [
+                document.getElementById('reel1'),
+                document.getElementById('reel2'),
+                document.getElementById('reel3')
+            ];
+            
+            // Conquistas
+            this.achievementPopup = document.getElementById('achievement-popup');
+            this.achievementIcon = document.getElementById('achievement-icon');
+            this.achievementTitle = document.getElementById('achievement-title');
+            this.achievementDescription = document.getElementById('achievement-description');
+            
+            // Jogo bônus
+            this.bonusOverlay = document.getElementById('bonus-game-overlay');
+            this.bonusCards = document.getElementById('bonus-cards');
+            this.closeBonusButton = document.getElementById('close-bonus');
+            
+            // Container principal
+            this.appContainer = document.getElementById('app');
+            
+            this.setupTabNavigation();
+        }
+
+        setupTabNavigation() {
+            this.tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.getAttribute('data-tab');
+                    this.switchTab(tabName);
+                });
+            });
+        }
+
+        switchTab(tabName) {
+            // Atualizar botões
+            this.tabButtons.forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabName) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Atualizar conteúdo
+            Object.entries(this.tabContents).forEach(([name, content]) => {
+                if (name === tabName) {
+                    content.style.display = 'block';
+                    content.classList.add('active');
+                } else {
+                    content.style.display = 'none';
+                    content.classList.remove('active');
+                }
+            });
+        }
+
+        // Atualização de UI
+        updateBalance(balance) {
+            this.balanceElement.textContent = balance;
+            this.balanceElement.style.animation = 'none';
+            setTimeout(() => {
+                this.balanceElement.style.animation = 'pulse 0.5s ease';
+            }, 10);
+        }
+
+        updateBet(bet) {
+            this.betElement.textContent = bet;
+            this.betDisplayElement.textContent = bet;
+        }
+
+        updateLevel(data) {
+            this.levelElement.textContent = data.level;
+            this.expInfoElement.textContent = `${data.experience} / ${data.experienceToNext} XP`;
+            
+            const percent = (data.experience / data.experienceToNext) * 100;
+            this.expFillElement.style.width = `${percent}%`;
+            this.expPercentElement.textContent = `${Math.floor(percent)}%`;
+        }
+
+        updateAutoSpinCount(count) {
+            this.autoSpinCountElement.textContent = count;
+        }
+
+        updateAutoSpinButton(active) {
+            this.autoSpinButton.textContent = active ? 'Auto: ON' : 'Auto: OFF';
+            this.autoSpinButton.style.background = active ? 
+                'linear-gradient(145deg, #e63946, #c1121f)' : 
+                'linear-gradient(145deg, #4CAF50, #45a049)';
+        }
+
+        showMultiplier(multiplier) {
+            if (multiplier > 1) {
+                this.multiplierDisplay.textContent = `${multiplier}x`;
+                this.multiplierDisplay.classList.add('show');
+            } else {
+                this.multiplierDisplay.classList.remove('show');
+            }
+        }
+
+        // Animação das roletas
+        async spinReels(results) {
+            this.isSpinning = true;
+            this.spinButton.classList.add('spinning');
+            this.spinText.textContent = 'GIRANDO...';
+            
+            this.soundManager.playSound('spin');
+
+            const promises = this.reels.map((reel, index) => {
+                return new Promise(resolve => {
+                    // Limpar classes anteriores
+                    reel.classList.remove('winning');
+                    
+                    // Criar sequência de símbolos para animação
+                    const symbols = ['🍒', '🍋', '🍊', '🍇', '💰', '🎁'];
+                    const spins = 20 + index * 5;
+                    let count = 0;
+                    
+                    const interval = setInterval(() => {
+                        if (count < spins) {
+                            reel.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                            reel.style.transform = `rotateX(${count * 20}deg)`;
+                            count++;
+                        } else {
+                            clearInterval(interval);
+                            reel.textContent = results[index];
+                            reel.style.transform = 'rotateX(0deg)';
+                            resolve();
+                        }
+                    }, 50);
+                });
+            });
+
+            await Promise.all(promises);
+
+            this.isSpinning = false;
+            this.spinButton.classList.remove('spinning');
+            this.spinText.textContent = 'GIRAR';
+
+            return true;
+        }
+
+        highlightWinningReels(results) {
+            const [s1, s2, s3] = results;
+            
+            if (s1 === s2 && s2 === s3) {
+                // Todos iguais
+                this.reels.forEach(reel => reel.classList.add('winning'));
+            } else if (s1 === s2) {
+                // Primeiros dois
+                this.reels[0].classList.add('winning');
+                this.reels[1].classList.add('winning');
+            } else if (s2 === s3) {
+                // Últimos dois
+                this.reels[1].classList.add('winning');
+                this.reels[2].classList.add('winning');
+            } else if (s1 === s3) {
+                // Primeiro e último
+                this.reels[0].classList.add('winning');
+                this.reels[2].classList.add('winning');
+            }
+        }
+
+        // Mensagens
+        displayMessage(message, type) {
+            this.messageElement.textContent = message;
+            this.messageElement.className = 'message';
+            
+            if (type) {
+                this.messageElement.classList.add(type);
+            }
+
+            this.messageElement.style.animation = 'none';
+            setTimeout(() => {
+                this.messageElement.style.animation = 'fadeInUp 0.5s ease';
+            }, 10);
+        }
+
+        clearMessage() {
+            setTimeout(() => {
+                this.messageElement.textContent = '';
+                this.messageElement.className = 'message';
+            }, 3000);
+        }
+
+        // Estatísticas
+        updateStatistics(stats) {
+            const rtp = stats.totalBet > 0 ? 
+                ((stats.totalWin / stats.totalBet) * 100).toFixed(1) : '0';
+            
+            this.rtpElement.textContent = `${rtp}%`;
+            this.winRateElement.textContent = `${stats.wins}/${stats.gamesPlayed}`;
+            this.totalBetElement.textContent = stats.totalBet;
+            this.totalWinElement.textContent = stats.totalWin;
+            this.maxWinElement.textContent = stats.maxWin;
+            this.currentStreakElement.textContent = stats.currentStreak;
+            this.bestStreakElement.textContent = stats.bestStreak;
+
+            // Frequência de símbolos
+            this.symbolFrequencyElement.innerHTML = '';
+            const totalSymbols = stats.gamesPlayed * 3;
+
+            Object.entries(stats.symbolFrequency).forEach(([symbol, count]) => {
+                const percent = totalSymbols > 0 ? 
+                    ((count / totalSymbols) * 100).toFixed(1) : '0';
+                
+                const row = document.createElement('div');
+                row.style.display = 'flex';
+                row.style.justifyContent = 'space-between';
+                row.style.padding = '5px 0';
+                row.innerHTML = `
+                    <span style="font-size: 20px;">${symbol}</span>
+                    <span>${count} (${percent}%)</span>
+                `;
+                
+                this.symbolFrequencyElement.appendChild(row);
+            });
+        }
+
+        // Histórico
+        updateHistory(history) {
+            this.historyList.innerHTML = '';
+
+            if (history.length === 0) {
+                this.historyList.innerHTML = '<p style="text-align: center; opacity: 0.7;">Sem histórico ainda</p>';
+                return;
+            }
+
+            history.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.style.display = 'grid';
+                row.style.gridTemplateColumns = '1fr auto auto';
+                row.style.gap = '10px';
+                row.style.padding = '10px';
+                row.style.background = index % 2 === 0 ? 'var(--background-medium)' : 'transparent';
+                row.style.borderRadius = '5px';
+
+                const resultSpan = document.createElement('span');
+                resultSpan.style.fontSize = '20px';
+                resultSpan.textContent = item.results.join(' ');
+
+                const betSpan = document.createElement('span');
+                betSpan.style.opacity = '0.8';
+                betSpan.textContent = `Aposta: ${item.bet}`;
+
+                const outcomeSpan = document.createElement('span');
+                outcomeSpan.style.fontWeight = 'bold';
+                
+                if (item.win) {
+                    outcomeSpan.style.color = 'var(--win-color)';
+                    outcomeSpan.textContent = `+${item.amount}`;
+                } else {
+                    outcomeSpan.style.color = 'var(--lose-color)';
+                    outcomeSpan.textContent = `-${item.bet}`;
+                }
+
+                row.appendChild(resultSpan);
+                row.appendChild(betSpan);
+                row.appendChild(outcomeSpan);
+
+                this.historyList.appendChild(row);
+            });
+        }
+
+        // Conquistas
+        showAchievement(achievement) {
+            this.achievementQueue.push(achievement);
+            
+            if (!this.showingAchievement) {
+                this.processAchievementQueue();
+            }
+        }
+
+        processAchievementQueue() {
+            if (this.achievementQueue.length === 0) {
+                this.showingAchievement = false;
+                return;
+            }
+
+            this.showingAchievement = true;
+            const achievement = this.achievementQueue.shift();
+
+            this.achievementIcon.textContent = achievement.icon;
+            this.achievementTitle.textContent = achievement.name;
+            this.achievementDescription.textContent = achievement.description;
+
+            this.achievementPopup.classList.add('show');
+            this.soundManager.playSound('levelUp');
+
+            setTimeout(() => {
+                this.achievementPopup.classList.remove('show');
+                setTimeout(() => {
+                    this.processAchievementQueue();
+                }, 500);
+            }, 3000);
+        }
+
+        updateAchievements(achievements) {
+            this.achievementsGrid.innerHTML = '';
+
+            achievements.forEach(achievement => {
+                const badge = document.createElement('div');
+                badge.className = 'achievement-badge';
+                badge.classList.add(achievement.unlocked ? 'unlocked' : 'locked');
+                badge.textContent = achievement.icon;
+                badge.title = `${achievement.name}: ${achievement.description}`;
+                
+                this.achievementsGrid.appendChild(badge);
+            });
+        }
+
+        // Jogo bônus
+        async showBonusGame() {
+            this.soundManager.playSound('bonus');
+            
+            const prizes = [50, 100, 200, 500, 1000, 2000];
+            const shuffled = prizes.sort(() => Math.random() - 0.5);
+            
+            this.bonusCards.innerHTML = '';
+            let selectedCount = 0;
+            let totalPrize = 0;
+
+            for (let i = 0; i < 6; i++) {
+                const card = document.createElement('div');
+                card.className = 'bonus-card';
+                card.textContent = '?';
+                card.dataset.prize = shuffled[i];
+                
+                card.addEventListener('click', () => {
+                    if (card.classList.contains('revealed') || selectedCount >= 3) return;
+                    
+                    card.classList.add('revealed');
+                    card.textContent = '';
+                    card.setAttribute('data-prize', shuffled[i]);
+                    
+                    totalPrize += shuffled[i];
+                    selectedCount++;
+                    
+                    this.soundManager.playSound('coin');
+                    
+                    if (selectedCount === 3) {
+                        setTimeout(() => {
+                            this.displayMessage(`Bônus: +${totalPrize} créditos!`, 'win');
+                        }, 500);
+                    }
+                });
+                
+                this.bonusCards.appendChild(card);
+            }
+
+            this.bonusOverlay.classList.add('show');
+            
+            return new Promise(resolve => {
+                this.closeBonusButton.onclick = () => {
+                    this.bonusOverlay.classList.remove('show');
+                    resolve(totalPrize);
+                };
+            });
+        }
+
+        // Estados dos botões
+        setButtonsState(balance, bet, spinning) {
+            this.spinButton.disabled = spinning || balance < bet;
+            this.decreaseBetButton.disabled = spinning || bet <= 10;
+            this.increaseBetButton.disabled = spinning || bet >= 500 || bet + 10 > balance;
+            this.autoSpinButton.disabled = spinning || balance < bet;
+            this.decreaseAutoSpinsButton.disabled = spinning;
+            this.increaseAutoSpinsButton.disabled = spinning;
+        }
+
+        // Efeitos visuais
+        createCoinRain() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const coin = document.createElement('div');
+                    coin.className = 'coin';
+                    coin.textContent = '🪙';
+                    coin.style.left = `${Math.random() * 100}%`;
+                    coin.style.animationDuration = `${2 + Math.random() * 2}s`;
+                    document.body.appendChild(coin);
+                    
+                    setTimeout(() => coin.remove(), 4000);
+                }, i * 100);
+            }
+        }
+
+        // Configurações
+        updateTheme(theme) {
+            this.appContainer.setAttribute('data-theme', theme);
+            
+            this.themeOptions.forEach(option => {
+                if (option.getAttribute('data-theme') === theme) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+
+        updateHighContrast(enabled) {
+            this.highContrastToggle.checked = enabled;
+            
+            if (enabled) {
+                this.appContainer.setAttribute('data-highcontrast', 'true');
+            } else {
+                this.appContainer.removeAttribute('data-highcontrast');
+            }
+        }
+
+        updateSoundToggle(enabled) {
+            this.soundToggle.checked = enabled;
+            this.soundManager.toggle(enabled);
+        }
+
+        updateMusicToggle(enabled) {
+            this.musicToggle.checked = enabled;
+            this.soundManager.toggleMusic(enabled);
+        }
+
+        updateParticlesToggle(enabled) {
+            this.particlesToggle.checked = enabled;
+        }
+    }
+
+    // =============================================================================
+    // Controlador Principal
+    // =============================================================================
+    class SlotMachineController {
+        constructor(model, view, particleSystem, achievementSystem) {
+            this.model = model;
+            this.view = view;
+            this.particleSystem = particleSystem;
+            this.achievementSystem = achievementSystem;
+            
+            this.autoSpinTimer = null;
+            this.remainingAutoSpins = 0;
+            
+            this.initView();
+            this.setupEventListeners();
+            this.setupModelListeners();
+        }
+
+        initView() {
+            // Estado inicial
+            this.view.updateBalance(this.model.balance);
+            this.view.updateBet(this.model.bet);
+            this.view.updateLevel({
+                level: this.model.level,
+                experience: this.model.experience,
+                experienceToNext: this.model.experienceToNext
+            });
+            this.view.updateAutoSpinCount(this.model.autoSpinCount);
+            this.view.updateAutoSpinButton(this.model.isAutoSpinActive);
+            this.view.updateStatistics(this.model.statistics);
+            this.view.updateHistory(this.model.history);
+            
+            // Configurações
+            this.view.updateSoundToggle(this.model.soundEnabled);
+            this.view.updateMusicToggle(this.model.musicEnabled);
+            this.view.updateParticlesToggle(this.model.particlesEnabled);
+            this.view.updateTheme(this.model.currentTheme);
+            this.view.updateHighContrast(this.model.highContrast);
+            
+            // Conquistas
+            this.view.updateAchievements(this.achievementSystem.getAll());
+            
+            // Partículas
+            this.particleSystem.toggle(this.model.particlesEnabled);
+            
+            this.updateButtonStates();
+        }
+
+        setupEventListeners() {
+            // Botões principais
+            this.view.spinButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.spin();
+            });
+
+            // Controles de aposta
+            this.view.decreaseBetButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.decreaseBet();
+            });
+
+            this.view.increaseBetButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.increaseBet();
+            });
+
+            // Auto-spin
+            this.view.autoSpinButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.toggleAutoSpin();
+            });
+
+            this.view.decreaseAutoSpinsButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.decreaseAutoSpins();
+            });
+
+            this.view.increaseAutoSpinsButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.increaseAutoSpins();
+            });
+
+            // Configurações
+            this.view.soundToggle.addEventListener('change', () => {
+                this.model.toggleSound();
+            });
+
+            this.view.musicToggle.addEventListener('change', () => {
+                this.model.toggleMusic();
+            });
+
+            this.view.particlesToggle.addEventListener('change', () => {
+                this.model.toggleParticles();
+            });
+
+            this.view.highContrastToggle.addEventListener('change', () => {
+                this.model.toggleHighContrast();
+            });
+
+            this.view.themeOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    this.view.soundManager.playSound('click');
+                    const theme = option.getAttribute('data-theme');
+                    this.model.setTheme(theme);
+                });
+            });
+
+            this.view.resetButton.addEventListener('click', () => {
+                this.view.soundManager.playSound('click');
+                this.model.resetGame();
+            });
+
+            // Teclas
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space' && !this.view.spinButton.disabled) {
+                    e.preventDefault();
+                    this.view.spinButton.click();
+                }
+            });
+        }
+
+        setupModelListeners() {
+            // Estado do jogo
+            this.model.on('spin', async (data) => {
+                this.view.updateBalance(data.balance);
+                this.updateButtonStates();
+            });
+
+            this.model.on('betChanged', (bet) => {
+                this.view.updateBet(bet);
+                this.updateButtonStates();
+            });
+
+            this.model.on('autoSpinCountChanged', (count) => {
+                this.view.updateAutoSpinCount(count);
+            });
+
+            this.model.on('autoSpinToggled', (active) => {
+                this.view.updateAutoSpinButton(active);
+                if (active) {
+                    this.startAutoSpin();
+                } else {
+                    this.stopAutoSpin();
+                }
+            });
+
+            // Nível e experiência
+            this.model.on('levelUp', (data) => {
+                this.view.soundManager.playSound('levelUp');
+                this.view.displayMessage(`🎉 Nível ${data.level}! +${data.bonus} bônus!`, 'win');
+                this.view.createCoinRain();
+                
+                // Verificar conquista
+                const achievements = this.achievementSystem.check('level', data.level, this.model.statistics);
+                achievements.forEach(a => this.view.showAchievement(a));
+            });
+
+            this.model.on('experienceChanged', (data) => {
+                this.view.updateLevel(data);
+            });
+
+            this.model.on('multiplierActive', (multiplier) => {
+                this.view.showMultiplier(multiplier);
+            });
+
+            // Estatísticas
+            this.model.on('statisticsUpdated', (stats) => {
+                this.view.updateStatistics(stats);
+                
+                // Verificar conquistas
+                const achievements = this.achievementSystem.check('totalBet', stats.totalBet, stats);
+                achievements.forEach(a => this.view.showAchievement(a));
+            });
+
+            this.model.on('historyUpdated', (history) => {
+                this.view.updateHistory(history);
+            });
+
+            // Conquistas
+            this.model.on('achievementCheck', (data) => {
+                const achievements = this.achievementSystem.check(data.type, data.value, this.model.statistics);
+                achievements.forEach(a => this.view.showAchievement(a));
+            });
+
+            // Configurações
+            this.model.on('soundToggled', (enabled) => {
+                this.view.updateSoundToggle(enabled);
+            });
+
+            this.model.on('musicToggled', (enabled) => {
+                this.view.updateMusicToggle(enabled);
+            });
+
+            this.model.on('particlesToggled', (enabled) => {
+                this.view.updateParticlesToggle(enabled);
+                this.particleSystem.toggle(enabled);
+            });
+
+            this.model.on('themeChanged', (theme) => {
+                this.view.updateTheme(theme);
+            });
+
+            this.model.on('highContrastToggled', (enabled) => {
+                this.view.updateHighContrast(enabled);
+            });
+
+            // Reset
+            this.model.on('gameReset', () => {
+                this.initView();
+                this.view.displayMessage('Jogo resetado!', 'win');
+            });
+
+            // Erros
+            this.model.on('error', (message) => {
+                this.view.displayMessage(message, 'lose');
+            });
+        }
+
+        async spin() {
+            if (this.view.isSpinning || this.model.balance < this.model.bet) return;
+
+            const result = this.model.spin();
+            if (!result) return;
+
+            this.updateButtonStates(true);
+            
+            // Animação das roletas
+            await this.view.spinReels(result.results);
+
+            // Destacar vitórias
+            if (result.winResult
