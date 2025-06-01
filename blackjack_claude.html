@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jogue Blackjack 21 online grátis! Um jogo de cartas clássico de casino com interface moderna e animações incríveis.">
+    <meta name="keywords" content="blackjack, 21, jogo de cartas, casino, online, grátis">
+    <meta name="author" content="Seu Nome">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seu-usuario.github.io/blackjack-21/">
+    <meta property="og:title" content="Blackjack 21 - Casino Virtual">
+    <meta property="og:description" content="Jogue Blackjack 21 online grátis! Um jogo de cartas clássico de casino.">
+    <meta property="og:image" content="https://seu-usuario.github.io/blackjack-21/preview.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://seu-usuario.github.io/blackjack-21/">
+    <meta property="twitter:title" content="Blackjack 21 - Casino Virtual">
+    <meta property="twitter:description" content="Jogue Blackjack 21 online grátis!">
+    
+    <!-- PWA -->
+    <meta name="theme-color" content="#302b63">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <title>Blackjack 21 - Casino Virtual</title>
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --card-gradient: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+            --btn-hit: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --btn-stand: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --btn-new: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+            color: var(--text-primary);
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(120,119,198,0.1) 1%, transparent 1%);
+            background-size: 50px 50px;
+            animation: bgMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes bgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+            letter-spacing: 3px;
+            animation: glow 2s ease-in-out infinite alternate;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 30px rgba(255,255,255,0.5); }
+            to { text-shadow: 0 0 40px rgba(255,255,255,0.8), 0 0 50px rgba(120,119,198,0.8); }
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .game-board {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            animation: boardEntrance 0.5s ease-out;
+        }
+
+        @keyframes boardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dealer-section, .player-section {
+            min-height: 180px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .score {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            min-width: 50px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .score.danger {
+            background: rgba(255, 0, 0, 0.3);
+            animation: pulse 0.5s ease;
+        }
+
+        .score.success {
+            background: rgba(0, 255, 0, 0.3);
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 15px;
+            min-height: 120px;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .card {
+            width: 80px;
+            height: 120px;
+            background: var(--card-gradient);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+            animation: cardDeal 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #000000, #ff0000, #000000);
+            border-radius: 10px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) rotateZ(-2deg);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes cardDeal {
+            from {
+                transform: translateY(-100px) rotateX(180deg);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) rotateX(0);
+                opacity: 1;
+            }
+        }
+
+        .card.red {
+            color: #e74c3c;
+        }
+
+        .card.black {
+            color: #2c3e50;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: transparent;
+        }
+
+        .card-back::after {
+            content: '♠';
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.2);
+            animation: cardPulse 2s infinite;
+        }
+
+        @keyframes cardPulse {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            min-width: 150px;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-hit {
+            background: var(--btn-hit);
+            color: white;
+        }
+
+        .btn-stand {
+            background: var(--btn-stand);
+            color: white;
+        }
+
+        .btn-new {
+            background: var(--btn-new);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .game-info {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4facfe;
+            transition: all 0.3s ease;
+        }
+
+        .info-value.animated {
+            animation: valueChange 0.5s ease;
+        }
+
+        @keyframes valueChange {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 30px 60px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 1000;
+            display: none;
+            animation: messageSlide 0.5s ease-out;
+            text-align: center;
+        }
+
+        @keyframes messageSlide {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message.win {
+            background: var(--btn-hit);
+        }
+
+        .message.lose {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .message.draw {
+            background: var(--btn-new);
+        }
+
+        .bet-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .bet-input {
+            width: 120px;
+            padding: 10px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .bet-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .chip {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chip::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 80%;
+            border: 3px dashed rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .chip-10 { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .chip-25 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .chip-50 { background: linear-gradient(135deg, #f39c12, #d68910); }
+        .chip-100 { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+
+        .chip:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .chip.selected {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        /* Keyboard shortcuts hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .keyboard-hint:hover {
+            opacity: 1;
+        }
+
+        .keyboard-hint h4 {
+            margin-bottom: 10px;
+            color: #4facfe;
+        }
+
+        .keyboard-hint p {
+            margin: 5px 0;
+        }
+
+        .keyboard-hint kbd {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-family: monospace;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .game-board {
+                padding: 20px;
+            }
+            
+            .card {
+                width: 60px;
+                height: 90px;
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+                min-width: 120px;
+            }
+            
+            .message {
+                padding: 20px 40px;
+                font-size: 1.5rem;
+            }
+            
+            .keyboard-hint {
+                display: none;
+            }
+            
+            .bet-controls {
+                flex-direction: column;
+            }
+            
+            .chip {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 50px;
+                height: 75px;
+                font-size: 1.2rem;
+            }
+            
+            .cards-container {
+                gap: 10px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Focus styles */
+        *:focus {
+            outline: 2px solid #4facfe;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .game-board {
+                border: 1px solid black;
+            }
+            
+            .keyboard-hint, .loading-screen {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <h1 class="game-title">BLACKJACK 21</h1>
+            <div class="header-controls">
+                <button class="icon-btn" id="sound-toggle" title="Alternar som" aria-label="Alternar som">
+                    🔊
+                </button>
+                <button class="icon-btn" id="fullscreen-toggle" title="Tela cheia" aria-label="Tela cheia">
+                    ⛶
+                </button>
+                <button class="icon-btn" id="help-toggle" title="Ajuda" aria-label="Ajuda">
+                    ?
+                </button>
+            </div>
+        </header>
+        
+        <main class="game-board" role="main">
+            <section class="dealer-section" aria-label="Área do Dealer">
+                <div class="section-title">
+                    <span>Dealer</span>
+                    <span class="score" id="dealer-score" aria-live="polite">0</span>
+                </div>
+                <div class="cards-container" id="dealer-cards" role="group" aria-label="Cartas do Dealer"></div>
+            </section>
+            
+            <section class="player-section" aria-label="Área do Jogador">
+                <div class="section-title">
+                    <span>Jogador</span>
+                    <span class="score" id="player-score" aria-live="polite">0</span>
+                </div>
+                <div class="cards-container" id="player-cards" role="group" aria-label="Suas cartas"></div>
+            </section>
+            
+            <section class="bet-controls" aria-label="Controles de aposta">
+                <span style="margin-right: 10px;">Aposta:</span>
+                <button class="chip chip-10" onclick="changeBet(10)" aria-label="Apostar $10">$10</button>
+                <button class="chip chip-25" onclick="changeBet(25)" aria-label="Apostar $25">$25</button>
+                <button class="chip chip-50" onclick="changeBet(50)" aria-label="Apostar $50">$50</button>
+                <button class="chip chip-100" onclick="changeBet(100)" aria-label="Apostar $100">$100</button>
+                <input type="number" class="bet-input" id="bet-amount" value="50" min="10" max="1000" aria-label="Valor da aposta">
+            </section>
+            
+            <section class="controls" aria-label="Controles do jogo">
+                <button class="btn btn-hit" id="hit-btn" onclick="hit()" aria-label="Pedir mais uma carta">
+                    Pedir Carta
+                </button>
+                <button class="btn btn-stand" id="stand-btn" onclick="stand()" aria-label="Parar de pedir cartas">
+                    Parar
+                </button>
+                <button class="btn btn-new" id="new-btn" onclick="newGame()" aria-label="Começar novo jogo">
+                    Novo Jogo
+                </button>
+            </section>
+            
+            <section class="game-info" aria-label="Informações do jogo">
+                <div class="info-item">
+                    <div class="info-label">Saldo</div>
+                    <div class="info-value" id="balance" aria-live="polite">$1000</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Vitórias</div>
+                    <div class="info-value" id="wins" aria-live="polite">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Derrotas</div>
+                    <div class="info-value" id="losses" aria-live="polite">0</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Empates</div>
+                    <div class="info-value" id="draws" aria-live="polite">0</div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <div class="message" id="message" role="alert" aria-live="assertive"></div>
+    
+    <aside class="keyboard-hint" aria-label="Atalhos de teclado">
+        <h4>Atalhos de Teclado</h4>
+        <p><kbd>H</kbd> - Pedir Carta</p>
+        <p><kbd>S</kbd> - Parar</p>
+        <p><kbd>N</kbd> - Novo Jogo</p>
+        <p><kbd>ESC</kbd> - Sair da tela cheia</p>
+    </aside>
+    
+    <script>
+        // Game configuration
+        const CONFIG = {
+            INITIAL_BALANCE: 1000,
+            MIN_BET: 10,
+            MAX_BET: 1000,
+            DECK_COUNT: 6,
+            DEALER_STAND: 17,
+            BLACKJACK_PAYOUT: 1.5,
+            ANIMATION_SPEED: 1000,
+            MESSAGE_DURATION: 2500,
+            SAVE_KEY: 'blackjack-game-state'
+        };
+
+        // Game state
+        let gameState = {
+            deck: [],
+            dealerCards: [],
+            playerCards: [],
+            dealerScore: 0,
+            playerScore: 0,
+            gameActive: false,
+            dealerHidden: true,
+            balance: CONFIG.INITIAL_BALANCE,
+            wins: 0,
+            losses: 0,
+            draws: 0,
+            currentBet: 50,
+            soundEnabled: true,
+            totalGames: 0,
+            winStreak: 0,
+            bestWinStreak: 0
+        };
+
+        // Sound effects (using Web Audio API)
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        const sounds = {
+            cardDeal: () => playSound(440, 0.1, 0.1),
+            win: () => playSound(523.25, 0.2, 0.3),
+            lose: () => playSound(261.63, 0.2, 0.3),
+            chip: () => playSound(880, 0.05, 0.1),
+            button: () => playSound(660, 0.05, 0.1)
+        };
+
+        function playSound(frequency, duration, volume) {
+            if (!gameState.soundEnabled) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            gainNode.gain.value = volume;
+            
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Card suits and values
+        const suits = ['♠', '♥', '♦', '♣'];
+        const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+        // Initialize deck
+        function createDeck() {
+            gameState.deck = [];
+            for (let i = 0; i < CONFIG.DECK_COUNT; i++) {
+                for (let suit of suits) {
+                    for (let value of values) {
+                        gameState.deck.push({ suit, value });
+                    }
+                }
+            }
+            shuffleDeck();
+        }
+
+        // Shuffle deck (Fisher-Yates algorithm)
+        function shuffleDeck() {
+            for (let i = gameState.deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [gameState.deck[i], gameState.deck[j]] = [gameState.deck[j], gameState.deck[i]];
+            }
+        }
+
+        // Get card value
+        function getCardValue(card) {
+            if (['J', 'Q', 'K'].includes(card.value)) return 10;
+            if (card.value === 'A') return 11;
+            return parseInt(card.value);
+        }
+
+        // Calculate score
+        function calculateScore(cards) {
+            let score = 0;
+            let aces = 0;
+            
+            for (let card of cards) {
+                score += getCardValue(card);
+                if (card.value === 'A') aces++;
+            }
+            
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces--;
+            }
+            
+            return score;
+        }
+
+        // Check for blackjack
+        function isBlackjack(cards) {
+            return cards.length === 2 && calculateScore(cards) === 21;
+        }
+
+        // Create card element
+        function createCardElement(card, hidden = false) {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.setAttribute('role', 'img');
+            
+            if (hidden) {
+                cardDiv.classList.add('card-back');
+                cardDiv.setAttribute('aria-label', 'Carta virada para baixo');
+            } else {
+                const isRed = card.suit === '♥' || card.suit === '♦';
+                cardDiv.classList.add(isRed ? 'red' : 'black');
+                cardDiv.innerHTML = `
+                    <div>${card.value}</div>
+                    <div style="font-size: 1.5rem;">${card.suit}</div>
+                `;
+                cardDiv.setAttribute('aria-label', `${card.value} de ${getSuitName(card.suit)}`);
+            }
+            
+            return cardDiv;
+        }
+
+        // Get suit name for accessibility
+        function getSuitName(suit) {
+            const suitNames = {
+                '♠': 'Espadas',
+                '♥': 'Copas',
+                '♦': 'Ouros',
+                '♣': 'Paus'
+            };
+            return suitNames[suit] || suit;
+        }
+
+        // Update display
+        function updateDisplay() {
+            // Update dealer cards
+            const dealerContainer = document.getElementById('dealer-cards');
+            dealerContainer.innerHTML = '';
+            gameState.dealerCards.forEach((card, index) => {
+                const hidden = index === 0 && gameState.dealerHidden;
+                dealerContainer.appendChild(createCardElement(card, hidden));
+            });
+            
+            // Update player cards
+            const playerContainer = document.getElementById('player-cards');
+            playerContainer.innerHTML = '';
+            gameState.playerCards.forEach(card => {
+                playerContainer.appendChild(createCardElement(card));
+            });
+            
+            // Update scores
+            gameState.dealerScore = calculateScore(gameState.dealerHidden ? gameState.dealerCards.slice(1) : gameState.dealerCards);
+            gameState.playerScore = calculateScore(gameState.playerCards);
+            
+            const dealerScoreEl = document.getElementById('dealer-score');
+            const playerScoreEl = document.getElementById('player-score');
+            
+            dealerScoreEl.textContent = gameState.dealerHidden && gameState.dealerCards.length > 0 ? '?' : gameState.dealerScore;
+            playerScoreEl.textContent = gameState.playerScore;
+            
+            // Add visual feedback for scores
+            playerScoreEl.classList.remove('danger', 'success');
+            if (gameState.playerScore > 21) {
+                playerScoreEl.classList.add('danger');
+            } else if (gameState.playerScore === 21) {
+                playerScoreEl.classList.add('success');
+            }
+            
+            // Update statistics with animation
+            updateStatistic('balance', `$${gameState.balance}`);
+            updateStatistic('wins', gameState.wins);
+            updateStatistic('losses', gameState.losses);
+            updateStatistic('draws', gameState.draws);
+        }
+
+        // Update statistic with animation
+        function updateStatistic(id, value) {
+            const element = document.getElementById(id);
+            const currentValue = element.textContent;
+            if (currentValue !== value.toString()) {
+                element.textContent = value;
+                element.classList.add('animated');
+                setTimeout(() => element.classList.remove('animated'), 500);
+            }
+        }
+
+        // Deal card
+        function dealCard(toDealer = false) {
+            if (gameState.deck.length === 0) {
+                createDeck();
+            }
+            
+            const card = gameState.deck.pop();
+            if (toDealer) {
+                gameState.dealerCards.push(card);
+            } else {
+                gameState.playerCards.push(card);
+            }
+            
+            sounds.cardDeal();
+            return card;
+        }
+
+        // Start new game
+        function newGame() {
+            gameState.currentBet = parseInt(document.getElementById('bet-amount').value);
+            
+            if (gameState.currentBet > gameState.balance) {
+                showMessage('Saldo insuficiente!', 'lose');
+                return;
+            }
+            
+            if (gameState.currentBet < CONFIG.MIN_BET) {
+                showMessage(`Aposta mínima: $${CONFIG.MIN_BET}`, 'lose');
+                return;
+            }
+            
+            if (gameState.currentBet > CONFIG.MAX_BET) {
+                showMessage(`Aposta máxima: $${CONFIG.MAX_BET}`, 'lose');
+                return;
+            }
+            
+            sounds.button();
+            
+            // Reset game state
+            gameState.dealerCards = [];
+            gameState.playerCards = [];
+            gameState.dealerHidden = true;
+            gameState.gameActive = true;
+            gameState.totalGames++;
+            
+            // Create new deck if needed
+            if (gameState.deck.length < 20) {
+                createDeck();
+            }
+            
+            // Initial deal with delay for animation
+            setTimeout(() => dealCard(false), 100);
+            setTimeout(() => dealCard(true), 300);
+            setTimeout(() => dealCard(false), 500);
+            setTimeout(() => dealCard(true), 700);
+            
+            setTimeout(() => {
+                updateDisplay();
+                
+                // Enable/disable buttons
+                document.getElementById('hit-btn').disabled = false;
+                document.getElementById('stand-btn').disabled = false;
+                document.getElementById('new-btn').disabled = true;
+                document.getElementById('bet-amount').disabled = true;
+                document.querySelectorAll('.chip').forEach(chip => chip.disabled = true);
+                
+                // Check for blackjack
+                if (gameState.playerScore === 21) {
+                    if (isBlackjack(gameState.playerCards)) {
+                        showMessage('BLACKJACK!', 'win');
+                    }
+                    setTimeout(() => stand(), 1500);
+                }
+            }, 900);
+        }
+
+        // Hit (draw card)
+        function hit() {
+            if (!gameState.gameActive) return;
+            
+            sounds.button();
+            dealCard(false);
+            updateDisplay();
+            
+            if (gameState.playerScore > 21) {
+                endGame();
+            } else if (gameState.playerScore === 21) {
+                stand();
+            }
+        }
+
+        // Stand
+        function stand() {
+            if (!gameState.gameActive) return;
+            
+            sounds.button();
+            gameState.dealerHidden = false;
+            updateDisplay();
+            
+            // Dealer draws cards
+            const dealerDraw = setInterval(() => {
+                if (calculateScore(gameState.dealerCards) < CONFIG.DEALER_STAND) {
+                    dealCard(true);
+                    updateDisplay();
+                } else {
+                    clearInterval(dealerDraw);
+                    endGame();
+                }
+            }, CONFIG.ANIMATION_SPEED);
+        }
+
+        // End game
+        function endGame() {
+            gameState.gameActive = false;
+            gameState.dealerScore = calculateScore(gameState.dealerCards);
+            
+            let message = '';
+            let result = '';
+            let payout = 0;
+            
+            const playerBlackjack = isBlackjack(gameState.playerCards);
+            const dealerBlackjack = isBlackjack(gameState.dealerCards);
+            
+            if (gameState.playerScore > 21) {
+                message = 'Você estourou! Dealer vence.';
+                result = 'lose';
+                gameState.losses++;
+                gameState.winStreak = 0;
+                payout = -gameState.currentBet;
+            } else if (gameState.dealerScore > 21) {
+                message = 'Dealer estourou! Você venceu!';
+                result = 'win';
+                gameState.wins++;
+                gameState.winStreak++;
+                payout = gameState.currentBet;
+            } else if (playerBlackjack && !dealerBlackjack) {
+                message = 'BLACKJACK! Você venceu!';
+                result = 'win';
+                gameState.wins++;
+                gameState.winStreak++;
+                payout = Math.floor(gameState.currentBet * CONFIG.BLACKJACK_PAYOUT);
+            } else if (!playerBlackjack && dealerBlackjack) {
+                message = 'Dealer fez Blackjack!';
+                result = 'lose';
+                gameState.losses++;
+                gameState.winStreak = 0;
+                payout = -gameState.currentBet;
+            } else if (gameState.playerScore > gameState.dealerScore) {
+                message = 'Você venceu!';
+                result = 'win';
+                gameState.wins++;
+                gameState.winStreak++;
+                payout = gameState.currentBet;
+            } else if (gameState.dealerScore > gameState.playerScore) {
+                message = 'Dealer vence!';
+                result = 'lose';
+                gameState.losses++;
+                gameState.winStreak = 0;
+                payout = -gameState.currentBet;
+            } else {
+                message = 'Empate!';
+                result = 'draw';
+                gameState.draws++;
+                payout = 0;
+            }
+            
+            // Update balance
+            gameState.balance += payout;
+            
+            // Update best win streak
+            if (gameState.winStreak > gameState.bestWinStreak) {
+                gameState.bestWinStreak = gameState.winStreak;
+            }
+            
+            // Play sound
+            if (result === 'win') {
+                sounds.win();
+            } else if (result === 'lose') {
+                sounds.lose();
+            }
+            
+            updateDisplay();
+            showMessage(message, result);
+            
+            // Save game state
+            saveGameState();
+            
+            // Enable/disable buttons
+            document.getElementById('hit-btn').disabled = true;
+            document.getElementById('stand-btn').disabled = true;
+            document.getElementById('new-btn').disabled = false;
+            document.getElementById('bet-amount').disabled = false;
+            document.querySelectorAll('.chip').forEach(chip => chip.disabled = false);
+            
+            // Check if game over
+            if (gameState.balance < CONFIG.MIN_BET) {
+                setTimeout(() => {
+                    showMessage('Game Over! Sem saldo.', 'lose');
+                    setTimeout(() => {
+                        if (confirm('Deseja reiniciar o jogo?')) {
+                            resetGame();
+                        }
+                    }, CONFIG.MESSAGE_DURATION);
+                }, CONFIG.MESSAGE_DURATION);
+            }
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type}`;
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, CONFIG.MESSAGE_DURATION);
+        }
+
+        // Change bet
+        function changeBet(amount) {
+            sounds.chip();
+            document.getElementById('bet-amount').value = amount;
+            
+            // Update chip selection
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+        }
+
+        // Reset game
+        function resetGame() {
+            gameState = {
+                ...gameState,
+                balance: CONFIG.INITIAL_BALANCE,
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                totalGames: 0,
+                winStreak: 0,
+                bestWinStreak: 0
+            };
+            createDeck();
+            updateDisplay();
+            saveGameState();
+        }
+
+        // Save game state
+        function saveGameState() {
+            const stateToSave = {
+                balance: gameState.balance,
+                wins: gameState.wins,
+                losses: gameState.losses,
+                draws: gameState.draws,
+                totalGames: gameState.totalGames,
+                bestWinStreak: gameState.bestWinStreak,
+                soundEnabled: gameState.soundEnabled
+            };
+            localStorage.setItem(CONFIG.SAVE_KEY, JSON.stringify(stateToSave));
+        }
+
+        // Load game state
+        function loadGameState() {
+            const savedState = localStorage.getItem(CONFIG.SAVE_KEY);
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                Object.assign(gameState, state);
+                updateDisplay();
+            }
+        }
+
+        // Toggle sound
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const soundBtn = document.getElementById('sound-toggle');
+            soundBtn.textContent = gameState.soundEnabled ? '🔊' : '🔇';
+            sounds.button();
+            saveGameState();
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error('Erro ao entrar em tela cheia:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Show help
+        function showHelp() {
+            const helpText = `
+                COMO JOGAR BLACKJACK 21:
+                
+                Objetivo: Chegar o mais próximo possível de 21 sem ultrapassar.
+                
+                Valores das cartas:
+                • Números: valor nominal (2-10)
+                • J, Q, K: valem 10
+                • Ás: vale 11 ou 1
+                
+                Regras:
+                • Você recebe 2 cartas iniciais
+                • Pode pedir mais cartas (Hit) ou parar (Stand)
+                • O dealer deve pedir cartas até ter 17 ou mais
+                • Blackjack (21 com 2 cartas) paga 3:2
+                
+                Dicas:
+                • Pare com 17 ou mais
+                • Peça carta com 11 ou menos
+                • Com 12-16, considere a carta visível do dealer
+            `;
+            alert(helpText);
+        }
+
+        // Initialize game
+        function init() {
+            // Hide loading screen
+            setTimeout(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+            }, 1000);
+            
+            // Load saved game state
+            loadGameState();
+            
+            // Create initial deck
+            createDeck();
+            
+            // Set up event listeners
+            document.getElementById('sound-toggle').addEventListener('click', toggleSound);
+            document.getElementById('fullscreen-toggle').addEventListener('click', toggleFullscreen);
+            document.getElementById('help-toggle').addEventListener('click', showHelp);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'h' || e.key === 'H') hit();
+                if (e.key === 's' || e.key === 'S') stand();
+                if (e.key === 'n' || e.key === 'N') newGame();
+                if (e.key === 'Escape' && document.fullscreenElement) {
+                    document.exitFullscreen();
+                }
+            });
+            
+            // Bet input validation
+            document.getElementById('bet-amount').addEventListener('input', (e) => {
+                const value = parseInt(e.target.value);
+                if (value < CONFIG.MIN_BET) e.target.value = CONFIG.MIN_BET;
+                if (value > CONFIG.MAX_BET) e.target.value = CONFIG.MAX_BET;
+                if (value > gameState.balance) e.target.value = gameState.balance;
+            });
+            
+            // Prevent context menu on cards
+            document.addEventListener('contextmenu', (e) => {
+                if (e.target.classList.contains('card')) {
+                    e.preventDefault();
+                }
+            });
+            
+            // Service Worker for offline play
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('Service Worker registration failed:', err);
+                });
+            }
+            
+            // Update initial display
+            updateDisplay();
+            
+            // Enable initial controls
+            document.getElementById('hit-btn').disabled = true;
+            document.getElementById('stand-btn').disabled = true;
+            document.getElementById('new-btn').disabled = false;
+        }
+
+        // Start the game when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
