@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blackjack Premium - 21</title>
+    <meta name="description" content="Blackjack Premium - O melhor jogo de 21 online">
+    <meta name="keywords" content="blackjack, 21, jogo, cartas, casino">
+    <meta name="author" content="Blackjack Premium">
+    <title>Blackjack Premium - 21 | Jogue Agora</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>♠️</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 
@@ -799,9 +803,122 @@
             color: rgba(255, 255, 255, 0.7);
             margin-top: 5px;
         }
+
+        /* Welcome screen */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark-green), var(--light-green));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .welcome-screen.hidden {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        .welcome-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+
+        .welcome-content h1 {
+            font-size: clamp(2.5em, 6vw, 4.5em);
+            margin-bottom: 20px;
+        }
+
+        .welcome-content p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        .start-btn {
+            font-size: 1.3em;
+            padding: 20px 40px;
+            background: linear-gradient(45deg, var(--primary-gold), var(--secondary-gold));
+            color: var(--dark-green);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+        }
+
+        .start-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Error notification */
+        .error-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.3);
+            z-index: 2000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            max-width: 300px;
+            font-size: 0.9em;
+        }
+
+        .error-notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .error-notification .close-error {
+            float: right;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-content">
+            <h1>♠️ BLACKJACK PREMIUM ♥️</h1>
+            <p>Bem-vindo ao melhor jogo de Blackjack online! Desafie o dealer, faça suas apostas e tente chegar aos 21 pontos sem estourar.</p>
+            <button class="start-btn" onclick="startApp()">🎮 Começar a Jogar</button>
+        </div>
+    </div>
+
+    <!-- Error Notification -->
+    <div class="error-notification" id="error-notification">
+        <span class="close-error" onclick="hideErrorNotification()">&times;</span>
+        <div id="error-message"></div>
+    </div>
+
     <div class="loading">
         <div class="spinner"></div>
     </div>
@@ -931,15 +1048,128 @@
     </div>
 
     <script>
-        // Game Class - Melhor organização do código
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.warn('JavaScript Error:', e.error);
+            showErrorNotification('Erro detectado. O jogo continuará funcionando.');
+        });
+
+        // Error notification functions
+        function showErrorNotification(message) {
+            const notification = document.getElementById('error-notification');
+            const messageEl = document.getElementById('error-message');
+            
+            if (notification && messageEl) {
+                messageEl.textContent = message;
+                notification.classList.add('show');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    hideErrorNotification();
+                }, 5000);
+            }
+        }
+
+        function hideErrorNotification() {
+            const notification = document.getElementById('error-notification');
+            if (notification) {
+                notification.classList.remove('show');
+            }
+        }
+
+        // Safe localStorage functions
+        function safeLocalStorageSet(key, value) {
+            try {
+                if (typeof Storage !== 'undefined') {
+                    localStorage.setItem(key, value);
+                    return true;
+                }
+            } catch (e) {
+                console.warn('LocalStorage not available:', e.message);
+            }
+            return false;
+        }
+
+        function safeLocalStorageGet(key) {
+            try {
+                if (typeof Storage !== 'undefined') {
+                    return localStorage.getItem(key);
+                }
+            } catch (e) {
+                console.warn('LocalStorage not available:', e.message);
+            }
+            return null;
+        }
+
+        function safeLocalStorageRemove(key) {
+            try {
+                if (typeof Storage !== 'undefined') {
+                    localStorage.removeItem(key);
+                    return true;
+                }
+            } catch (e) {
+                console.warn('LocalStorage not available:', e.message);
+            }
+            return false;
+        }
+
+        // Safe DOM element getter
+        function safeGetElement(id) {
+            try {
+                const element = document.getElementById(id);
+                if (!element) {
+                    console.warn(`Element with id '${id}' not found`);
+                }
+                return element;
+            } catch (e) {
+                console.warn(`Error getting element '${id}':`, e.message);
+                return null;
+            }
+        }
+
+        // Welcome screen functionality
+        function startApp() {
+            const welcomeScreen = document.getElementById('welcome-screen');
+            if (welcomeScreen) {
+                welcomeScreen.classList.add('hidden');
+                
+                setTimeout(() => {
+                    welcomeScreen.style.display = 'none';
+                    
+                    // Show loading
+                    const loading = document.querySelector('.loading');
+                    if (loading) loading.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        try {
+                            // Initialize game
+                            window.game = new BlackjackGame();
+                            
+                            // Hide loading
+                            if (loading) loading.style.display = 'none';
+                        } catch (e) {
+                            console.error('Error initializing game:', e);
+                            showErrorNotification('Erro ao inicializar o jogo. Recarregue a página.');
+                        }
+                    }, 800);
+                }, 500);
+            }
+        }
+
+        // Enhanced Game Class with better error handling
         class BlackjackGame {
             constructor() {
-                this.initializeGameState();
-                this.initializeSettings();
-                this.initializeDOM();
-                this.bindEvents();
-                this.loadGame();
-                this.updateDisplay();
+                try {
+                    this.initializeGameState();
+                    this.initializeSettings();
+                    this.initializeDOM();
+                    this.bindEvents();
+                    this.loadGame();
+                    this.updateDisplay();
+                } catch (e) {
+                    console.error('Error in BlackjackGame constructor:', e);
+                    showErrorNotification('Erro na inicialização do jogo');
+                }
             }
 
             initializeGameState() {
@@ -967,98 +1197,134 @@
             }
 
             initializeDOM() {
-                // Cache DOM elements para melhor performance
+                // Cache DOM elements with safe getter
                 this.elements = {
-                    balance: document.getElementById('balance'),
-                    currentBet: document.getElementById('current-bet'),
-                    wins: document.getElementById('wins'),
-                    losses: document.getElementById('losses'),
-                    dealerCards: document.getElementById('dealer-cards'),
-                    playerCards: document.getElementById('player-cards'),
-                    dealerScore: document.getElementById('dealer-score'),
-                    playerScore: document.getElementById('player-score'),
-                    message: document.getElementById('message'),
-                    betControls: document.getElementById('bet-controls'),
-                    gameControls: document.getElementById('game-controls'),
-                    betInput: document.getElementById('bet-input'),
-                    betBtn: document.getElementById('bet-btn'),
-                    hitBtn: document.getElementById('hit-btn'),
-                    standBtn: document.getElementById('stand-btn'),
-                    doubleBtn: document.getElementById('double-btn'),
-                    newGameBtn: document.getElementById('new-game-btn'),
-                    betDecrease: document.getElementById('bet-decrease'),
-                    betIncrease: document.getElementById('bet-increase'),
-                    settingsBtn: document.getElementById('settings-btn'),
-                    settingsModal: document.getElementById('settings-modal'),
-                    statsContainer: document.getElementById('stats-container'),
+                    balance: safeGetElement('balance'),
+                    currentBet: safeGetElement('current-bet'),
+                    wins: safeGetElement('wins'),
+                    losses: safeGetElement('losses'),
+                    dealerCards: safeGetElement('dealer-cards'),
+                    playerCards: safeGetElement('player-cards'),
+                    dealerScore: safeGetElement('dealer-score'),
+                    playerScore: safeGetElement('player-score'),
+                    message: safeGetElement('message'),
+                    betControls: safeGetElement('bet-controls'),
+                    gameControls: safeGetElement('game-controls'),
+                    betInput: safeGetElement('bet-input'),
+                    betBtn: safeGetElement('bet-btn'),
+                    hitBtn: safeGetElement('hit-btn'),
+                    standBtn: safeGetElement('stand-btn'),
+                    doubleBtn: safeGetElement('double-btn'),
+                    newGameBtn: safeGetElement('new-game-btn'),
+                    betDecrease: safeGetElement('bet-decrease'),
+                    betIncrease: safeGetElement('bet-increase'),
+                    settingsBtn: safeGetElement('settings-btn'),
+                    settingsModal: safeGetElement('settings-modal'),
+                    statsContainer: safeGetElement('stats-container'),
                     loading: document.querySelector('.loading')
                 };
 
                 // Statistics elements
                 this.statsElements = {
-                    totalGames: document.getElementById('total-games'),
-                    winRate: document.getElementById('win-rate'),
-                    totalWinnings: document.getElementById('total-winnings'),
-                    blackjacks: document.getElementById('blackjacks')
+                    totalGames: safeGetElement('total-games'),
+                    winRate: safeGetElement('win-rate'),
+                    totalWinnings: safeGetElement('total-winnings'),
+                    blackjacks: safeGetElement('blackjacks')
                 };
+
+                // Check for missing critical elements
+                const criticalElements = ['betInput', 'betBtn', 'hitBtn', 'standBtn'];
+                for (let key of criticalElements) {
+                    if (!this.elements[key]) {
+                        throw new Error(`Critical element '${key}' not found`);
+                    }
+                }
             }
 
             bindEvents() {
-                // Game controls
-                this.elements.betBtn.addEventListener('click', () => this.startGame());
-                this.elements.hitBtn.addEventListener('click', () => this.hit());
-                this.elements.standBtn.addEventListener('click', () => this.stand());
-                this.elements.doubleBtn.addEventListener('click', () => this.double());
-                this.elements.newGameBtn.addEventListener('click', () => this.newGame());
+                try {
+                    // Game controls - with null checks
+                    if (this.elements.betBtn) {
+                        this.elements.betBtn.addEventListener('click', () => this.startGame());
+                    }
+                    if (this.elements.hitBtn) {
+                        this.elements.hitBtn.addEventListener('click', () => this.hit());
+                    }
+                    if (this.elements.standBtn) {
+                        this.elements.standBtn.addEventListener('click', () => this.stand());
+                    }
+                    if (this.elements.doubleBtn) {
+                        this.elements.doubleBtn.addEventListener('click', () => this.double());
+                    }
+                    if (this.elements.newGameBtn) {
+                        this.elements.newGameBtn.addEventListener('click', () => this.newGame());
+                    }
 
-                // Betting controls
-                this.elements.betDecrease.addEventListener('click', () => this.adjustBet(-10));
-                this.elements.betIncrease.addEventListener('click', () => this.adjustBet(10));
-                this.elements.betInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.startGame();
-                });
+                    // Betting controls
+                    if (this.elements.betDecrease) {
+                        this.elements.betDecrease.addEventListener('click', () => this.adjustBet(-10));
+                    }
+                    if (this.elements.betIncrease) {
+                        this.elements.betIncrease.addEventListener('click', () => this.adjustBet(10));
+                    }
+                    if (this.elements.betInput) {
+                        this.elements.betInput.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') this.startGame();
+                        });
+                    }
 
-                // Chips
-                document.querySelectorAll('.chip').forEach(chip => {
-                    chip.addEventListener('click', (e) => this.selectChip(e));
-                });
+                    // Chips
+                    const chips = document.querySelectorAll('.chip');
+                    chips.forEach(chip => {
+                        chip.addEventListener('click', (e) => this.selectChip(e));
+                    });
 
-                // Settings
-                this.elements.settingsBtn.addEventListener('click', () => this.openSettings());
-                document.querySelector('.close').addEventListener('click', () => this.closeSettings());
-                window.addEventListener('click', (e) => {
-                    if (e.target === this.elements.settingsModal) this.closeSettings();
-                });
+                    // Settings
+                    if (this.elements.settingsBtn) {
+                        this.elements.settingsBtn.addEventListener('click', () => this.openSettings());
+                    }
+                    
+                    const closeBtn = document.querySelector('.close');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => this.closeSettings());
+                    }
 
-                // Settings checkboxes
-                document.getElementById('sound-enabled').addEventListener('change', (e) => {
-                    this.settings.soundEnabled = e.target.checked;
-                    this.saveSettings();
-                });
+                    window.addEventListener('click', (e) => {
+                        if (e.target === this.elements.settingsModal) this.closeSettings();
+                    });
 
-                document.getElementById('animations-enabled').addEventListener('change', (e) => {
-                    this.settings.animationsEnabled = e.target.checked;
-                    this.saveSettings();
-                });
+                    // Settings checkboxes
+                    const settingsInputs = [
+                        'sound-enabled', 'animations-enabled', 'auto-save', 'show-stats'
+                    ];
+                    
+                    settingsInputs.forEach(id => {
+                        const element = safeGetElement(id);
+                        if (element) {
+                            element.addEventListener('change', (e) => {
+                                const setting = id.replace('-', '').replace('-', '');
+                                const camelCase = setting.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                                this.settings[camelCase] = e.target.checked;
+                                
+                                if (id === 'show-stats' && this.elements.statsContainer) {
+                                    this.elements.statsContainer.style.display = e.target.checked ? 'block' : 'none';
+                                }
+                                
+                                this.saveSettings();
+                            });
+                        }
+                    });
 
-                document.getElementById('auto-save').addEventListener('change', (e) => {
-                    this.settings.autoSave = e.target.checked;
-                    this.saveSettings();
-                });
+                    // Keyboard shortcuts
+                    document.addEventListener('keydown', (e) => this.handleKeyboard(e));
 
-                document.getElementById('show-stats').addEventListener('change', (e) => {
-                    this.settings.showStats = e.target.checked;
-                    this.elements.statsContainer.style.display = e.target.checked ? 'block' : 'none';
-                    this.saveSettings();
-                });
-
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
-
-                // Auto-save on page unload
-                window.addEventListener('beforeunload', () => {
-                    if (this.settings.autoSave) this.saveGame();
-                });
+                    // Auto-save on page unload
+                    window.addEventListener('beforeunload', () => {
+                        if (this.settings.autoSave) this.saveGame();
+                    });
+                } catch (e) {
+                    console.error('Error binding events:', e);
+                }
             }
 
             createDeck() {
@@ -1124,382 +1390,504 @@
             playSound(type) {
                 if (!this.settings.soundEnabled) return;
 
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
+                try {
+                    // Check if AudioContext is supported
+                    if (typeof AudioContext === 'undefined' && typeof webkitAudioContext === 'undefined') {
+                        return;
+                    }
 
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
 
-                const sounds = {
-                    card: { frequency: 800, duration: 0.1 },
-                    win: { frequency: 523.25, duration: 0.3 },
-                    lose: { frequency: 220, duration: 0.5 },
-                    chip: { frequency: 1000, duration: 0.05 },
-                    button: { frequency: 600, duration: 0.08 }
-                };
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
 
-                const sound = sounds[type] || sounds.button;
-                oscillator.frequency.value = sound.frequency;
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + sound.duration);
+                    const sounds = {
+                        card: { frequency: 800, duration: 0.1 },
+                        win: { frequency: 523.25, duration: 0.3 },
+                        lose: { frequency: 220, duration: 0.5 },
+                        chip: { frequency: 1000, duration: 0.05 },
+                        button: { frequency: 600, duration: 0.08 }
+                    };
 
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + sound.duration);
+                    const sound = sounds[type] || sounds.button;
+                    oscillator.frequency.value = sound.frequency;
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + sound.duration);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + sound.duration);
+                } catch (error) {
+                    // Sound not supported, continue silently
+                }
             }
 
             createParticles(x, y, count = 10) {
                 if (!this.settings.animationsEnabled) return;
 
-                for (let i = 0; i < count; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle star';
-                    particle.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
-                    particle.style.top = y + 'px';
-                    document.body.appendChild(particle);
-                    
-                    setTimeout(() => particle.remove(), 3000);
+                try {
+                    for (let i = 0; i < count; i++) {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle star';
+                        particle.style.left = (x + (Math.random() - 0.5) * 100) + 'px';
+                        particle.style.top = y + 'px';
+                        document.body.appendChild(particle);
+                        
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.remove();
+                            }
+                        }, 3000);
+                    }
+                } catch (e) {
+                    // Particles not supported, continue
                 }
             }
 
             showWinAnimation() {
                 if (!this.settings.animationsEnabled) return;
 
-                const winText = document.createElement('div');
-                winText.className = 'win-animation';
-                winText.textContent = 'VITÓRIA!';
-                document.body.appendChild(winText);
-                
-                setTimeout(() => winText.remove(), 2000);
-                
-                // Create particles at random positions
-                for (let i = 0; i < 5; i++) {
+                try {
+                    const winText = document.createElement('div');
+                    winText.className = 'win-animation';
+                    winText.textContent = 'VITÓRIA!';
+                    document.body.appendChild(winText);
+                    
                     setTimeout(() => {
-                        this.createParticles(
-                            Math.random() * window.innerWidth,
-                            Math.random() * window.innerHeight,
-                            15
-                        );
-                    }, i * 200);
+                        if (winText.parentNode) {
+                            winText.remove();
+                        }
+                    }, 2000);
+                    
+                    // Create particles at random positions
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            this.createParticles(
+                                Math.random() * window.innerWidth,
+                                Math.random() * window.innerHeight,
+                                15
+                            );
+                        }, i * 200);
+                    }
+                } catch (e) {
+                    // Animation not supported, continue
                 }
             }
 
             updateDisplay() {
-                // Update info with smooth animations
-                this.animateValue(this.elements.balance, this.balance, true);
-                this.animateValue(this.elements.currentBet, this.currentBet, true);
-                this.animateValue(this.elements.wins, this.wins);
-                this.animateValue(this.elements.losses, this.losses);
+                try {
+                    // Update info with smooth animations
+                    this.animateValue(this.elements.balance, this.balance, true);
+                    this.animateValue(this.elements.currentBet, this.currentBet, true);
+                    this.animateValue(this.elements.wins, this.wins);
+                    this.animateValue(this.elements.losses, this.losses);
 
-                // Clear cards
-                this.elements.dealerCards.innerHTML = '';
-                this.elements.playerCards.innerHTML = '';
+                    // Clear cards
+                    if (this.elements.dealerCards) this.elements.dealerCards.innerHTML = '';
+                    if (this.elements.playerCards) this.elements.playerCards.innerHTML = '';
 
-                // Show dealer cards
-                this.dealerHand.forEach((card, index) => {
-                    const isHidden = index === 1 && !this.dealerRevealed;
-                    const cardEl = this.createCardElement(card, isHidden);
-                    if (this.settings.animationsEnabled) {
-                        cardEl.style.animationDelay = `${index * 0.1}s`;
+                    // Show dealer cards
+                    this.dealerHand.forEach((card, index) => {
+                        const isHidden = index === 1 && !this.dealerRevealed;
+                        const cardEl = this.createCardElement(card, isHidden);
+                        if (this.settings.animationsEnabled) {
+                            cardEl.style.animationDelay = `${index * 0.1}s`;
+                        }
+                        if (this.elements.dealerCards) {
+                            this.elements.dealerCards.appendChild(cardEl);
+                        }
+                    });
+
+                    // Show player cards
+                    this.playerHand.forEach((card, index) => {
+                        const cardEl = this.createCardElement(card);
+                        if (this.settings.animationsEnabled) {
+                            cardEl.style.animationDelay = `${index * 0.1}s`;
+                        }
+                        if (this.elements.playerCards) {
+                            this.elements.playerCards.appendChild(cardEl);
+                        }
+                    });
+
+                    // Update scores
+                    const dealerValue = this.calculateHandValue(this.dealerRevealed ? this.dealerHand : [this.dealerHand[0]]);
+                    const playerValue = this.calculateHandValue(this.playerHand);
+
+                    this.animateScore(this.elements.dealerScore, this.dealerRevealed ? dealerValue : '?');
+                    this.animateScore(this.elements.playerScore, playerValue);
+
+                    // Update statistics
+                    this.updateStatistics();
+
+                    // Auto-save if enabled
+                    if (this.settings.autoSave && this.gameStarted) {
+                        this.saveGame();
                     }
-                    this.elements.dealerCards.appendChild(cardEl);
-                });
-
-                // Show player cards
-                this.playerHand.forEach((card, index) => {
-                    const cardEl = this.createCardElement(card);
-                    if (this.settings.animationsEnabled) {
-                        cardEl.style.animationDelay = `${index * 0.1}s`;
-                    }
-                    this.elements.playerCards.appendChild(cardEl);
-                });
-
-                // Update scores
-                const dealerValue = this.calculateHandValue(this.dealerRevealed ? this.dealerHand : [this.dealerHand[0]]);
-                const playerValue = this.calculateHandValue(this.playerHand);
-
-                this.animateScore(this.elements.dealerScore, this.dealerRevealed ? dealerValue : '?');
-                this.animateScore(this.elements.playerScore, playerValue);
-
-                // Update statistics
-                this.updateStatistics();
-
-                // Auto-save if enabled
-                if (this.settings.autoSave && this.gameStarted) {
-                    this.saveGame();
+                } catch (e) {
+                    console.error('Error updating display:', e);
                 }
             }
 
             animateValue(element, value, isCurrency = false) {
-                const current = parseInt(element.textContent.replace(/\D/g, '')) || 0;
-                const steps = 20;
-                const increment = (value - current) / steps;
-                let step = 0;
+                if (!element) return;
 
-                const interval = setInterval(() => {
-                    step++;
-                    const newValue = Math.round(current + increment * step);
-                    element.textContent = isCurrency ? `$${newValue}` : newValue;
-                    
-                    if (step >= steps) {
-                        clearInterval(interval);
-                        element.textContent = isCurrency ? `$${value}` : value;
-                    }
-                }, 30);
+                try {
+                    const current = parseInt(element.textContent.replace(/\D/g, '')) || 0;
+                    const steps = 20;
+                    const increment = (value - current) / steps;
+                    let step = 0;
+
+                    const interval = setInterval(() => {
+                        step++;
+                        const newValue = Math.round(current + increment * step);
+                        element.textContent = isCurrency ? `$${newValue}` : newValue;
+                        
+                        if (step >= steps) {
+                            clearInterval(interval);
+                            element.textContent = isCurrency ? `$${value}` : value;
+                        }
+                    }, 30);
+                } catch (e) {
+                    // Fallback to direct value assignment
+                    element.textContent = isCurrency ? `$${value}` : value;
+                }
             }
 
             animateScore(element, value) {
-                if (this.settings.animationsEnabled) {
-                    element.style.transform = 'scale(1.2)';
-                    setTimeout(() => {
-                        element.style.transform = 'scale(1)';
-                    }, 300);
+                if (!element) return;
+
+                try {
+                    if (this.settings.animationsEnabled) {
+                        element.style.transform = 'scale(1.2)';
+                        setTimeout(() => {
+                            element.style.transform = 'scale(1)';
+                        }, 300);
+                    }
+                    element.textContent = value;
+                } catch (e) {
+                    element.textContent = value;
                 }
-                element.textContent = value;
             }
 
             startGame() {
-                const bet = parseInt(this.elements.betInput.value);
+                try {
+                    if (!this.elements.betInput) {
+                        throw new Error('Bet input element not found');
+                    }
 
-                if (bet < 10 || bet > this.balance) {
-                    this.showMessage('Aposta inválida!', 'lose');
-                    this.playSound('lose');
-                    return;
+                    const bet = parseInt(this.elements.betInput.value);
+
+                    if (bet < 10 || bet > this.balance) {
+                        this.showMessage('Aposta inválida!', 'lose');
+                        this.playSound('lose');
+                        return;
+                    }
+
+                    this.currentBet = bet;
+                    this.balance -= bet;
+                    this.gameOver = false;
+                    this.dealerRevealed = false;
+                    this.gameStarted = true;
+
+                    this.createDeck();
+                    this.playerHand = [this.deck.pop(), this.deck.pop()];
+                    this.dealerHand = [this.deck.pop(), this.deck.pop()];
+
+                    if (this.elements.betControls) this.elements.betControls.style.display = 'none';
+                    if (this.elements.gameControls) this.elements.gameControls.style.display = 'flex';
+                    if (this.elements.newGameBtn) this.elements.newGameBtn.style.display = 'none';
+
+                    this.showMessage('Boa sorte!');
+                    this.playSound('card');
+
+                    this.updateDisplay();
+
+                    // Check for blackjack
+                    if (this.calculateHandValue(this.playerHand) === 21) {
+                        setTimeout(() => this.endGame(), 1000);
+                    }
+
+                    // Enable/disable double button
+                    if (this.elements.doubleBtn) {
+                        this.elements.doubleBtn.disabled = this.balance < this.currentBet;
+                    }
+                } catch (e) {
+                    console.error('Error starting game:', e);
+                    showErrorNotification('Erro ao iniciar o jogo');
                 }
-
-                this.currentBet = bet;
-                this.balance -= bet;
-                this.gameOver = false;
-                this.dealerRevealed = false;
-                this.gameStarted = true;
-
-                this.createDeck();
-                this.playerHand = [this.deck.pop(), this.deck.pop()];
-                this.dealerHand = [this.deck.pop(), this.deck.pop()];
-
-                this.elements.betControls.style.display = 'none';
-                this.elements.gameControls.style.display = 'flex';
-                this.elements.newGameBtn.style.display = 'none';
-
-                this.showMessage('Boa sorte!');
-                this.playSound('card');
-
-                this.updateDisplay();
-
-                // Check for blackjack
-                if (this.calculateHandValue(this.playerHand) === 21) {
-                    setTimeout(() => this.endGame(), 1000);
-                }
-
-                // Enable/disable double button
-                this.elements.doubleBtn.disabled = this.balance < this.currentBet;
             }
 
             hit() {
                 if (this.gameOver) return;
 
-                this.playerHand.push(this.deck.pop());
-                this.playSound('card');
-                this.updateDisplay();
+                try {
+                    this.playerHand.push(this.deck.pop());
+                    this.playSound('card');
+                    this.updateDisplay();
 
-                if (this.calculateHandValue(this.playerHand) > 21) {
-                    setTimeout(() => this.endGame(), 500);
+                    if (this.calculateHandValue(this.playerHand) > 21) {
+                        setTimeout(() => this.endGame(), 500);
+                    }
+
+                    // Disable double after hitting
+                    if (this.elements.doubleBtn) {
+                        this.elements.doubleBtn.disabled = true;
+                    }
+                } catch (e) {
+                    console.error('Error in hit:', e);
                 }
-
-                // Disable double after hitting
-                this.elements.doubleBtn.disabled = true;
             }
 
             stand() {
                 if (this.gameOver) return;
 
-                this.dealerRevealed = true;
-                this.playSound('card');
-                
-                // Dealer draws cards until 17 or higher
-                const dealerDraw = setInterval(() => {
-                    if (this.calculateHandValue(this.dealerHand) < 17) {
-                        this.dealerHand.push(this.deck.pop());
-                        this.playSound('card');
-                        this.updateDisplay();
-                    } else {
-                        clearInterval(dealerDraw);
-                        setTimeout(() => this.endGame(), 500);
-                    }
-                }, 600);
+                try {
+                    this.dealerRevealed = true;
+                    this.playSound('card');
+                    
+                    // Dealer draws cards until 17 or higher
+                    const dealerDraw = setInterval(() => {
+                        if (this.calculateHandValue(this.dealerHand) < 17) {
+                            this.dealerHand.push(this.deck.pop());
+                            this.playSound('card');
+                            this.updateDisplay();
+                        } else {
+                            clearInterval(dealerDraw);
+                            setTimeout(() => this.endGame(), 500);
+                        }
+                    }, 600);
+                } catch (e) {
+                    console.error('Error in stand:', e);
+                }
             }
 
             double() {
                 if (this.gameOver || this.balance < this.currentBet) return;
 
-                this.balance -= this.currentBet;
-                this.currentBet *= 2;
-                this.hit();
-                
-                if (!this.gameOver) {
-                    setTimeout(() => this.stand(), 500);
+                try {
+                    this.balance -= this.currentBet;
+                    this.currentBet *= 2;
+                    this.hit();
+                    
+                    if (!this.gameOver) {
+                        setTimeout(() => this.stand(), 500);
+                    }
+                } catch (e) {
+                    console.error('Error in double:', e);
                 }
             }
 
             endGame() {
-                this.gameOver = true;
-                this.dealerRevealed = true;
-                
-                const playerValue = this.calculateHandValue(this.playerHand);
-                const dealerValue = this.calculateHandValue(this.dealerHand);
+                try {
+                    this.gameOver = true;
+                    this.dealerRevealed = true;
+                    
+                    const playerValue = this.calculateHandValue(this.playerHand);
+                    const dealerValue = this.calculateHandValue(this.dealerHand);
 
-                let message = '';
-                let messageClass = '';
-                let winAmount = 0;
-                let isBlackjack = false;
+                    let message = '';
+                    let messageClass = '';
+                    let winAmount = 0;
+                    let isBlackjack = false;
 
-                if (playerValue > 21) {
-                    message = 'Você estourou! Dealer vence!';
-                    messageClass = 'lose';
-                    this.losses++;
-                    this.playSound('lose');
-                } else if (dealerValue > 21) {
-                    message = 'Dealer estourou! Você venceu!';
-                    messageClass = 'win';
-                    winAmount = this.currentBet * 2;
-                    this.wins++;
-                    this.playSound('win');
-                    this.showWinAnimation();
-                } else if (playerValue > dealerValue) {
-                    message = 'Você venceu!';
-                    messageClass = 'win';
-                    winAmount = this.currentBet * 2;
-                    this.wins++;
-                    this.playSound('win');
-                    this.showWinAnimation();
-                } else if (dealerValue > playerValue) {
-                    message = 'Dealer vence!';
-                    messageClass = 'lose';
-                    this.losses++;
-                    this.playSound('lose');
-                } else {
-                    message = 'Empate!';
-                    messageClass = 'tie';
-                    winAmount = this.currentBet;
-                }
+                    if (playerValue > 21) {
+                        message = 'Você estourou! Dealer vence!';
+                        messageClass = 'lose';
+                        this.losses++;
+                        this.playSound('lose');
+                    } else if (dealerValue > 21) {
+                        message = 'Dealer estourou! Você venceu!';
+                        messageClass = 'win';
+                        winAmount = this.currentBet * 2;
+                        this.wins++;
+                        this.playSound('win');
+                        this.showWinAnimation();
+                    } else if (playerValue > dealerValue) {
+                        message = 'Você venceu!';
+                        messageClass = 'win';
+                        winAmount = this.currentBet * 2;
+                        this.wins++;
+                        this.playSound('win');
+                        this.showWinAnimation();
+                    } else if (dealerValue > playerValue) {
+                        message = 'Dealer vence!';
+                        messageClass = 'lose';
+                        this.losses++;
+                        this.playSound('lose');
+                    } else {
+                        message = 'Empate!';
+                        messageClass = 'tie';
+                        winAmount = this.currentBet;
+                    }
 
-                // Check for blackjack
-                if (playerValue === 21 && this.playerHand.length === 2 && messageClass === 'win') {
-                    message = 'BLACKJACK! Você venceu!';
-                    winAmount = Math.floor(this.currentBet * 2.5);
-                    isBlackjack = true;
-                    this.blackjacks++;
-                }
+                    // Check for blackjack
+                    if (playerValue === 21 && this.playerHand.length === 2 && messageClass === 'win') {
+                        message = 'BLACKJACK! Você venceu!';
+                        winAmount = Math.floor(this.currentBet * 2.5);
+                        isBlackjack = true;
+                        this.blackjacks++;
+                    }
 
-                this.balance += winAmount;
-                this.totalWinnings += (winAmount - this.currentBet);
+                    this.balance += winAmount;
+                    this.totalWinnings += (winAmount - this.currentBet);
 
-                this.showMessage(message, messageClass);
-                this.updateDisplay();
+                    this.showMessage(message, messageClass);
+                    this.updateDisplay();
 
-                this.elements.hitBtn.disabled = true;
-                this.elements.standBtn.disabled = true;
-                this.elements.doubleBtn.disabled = true;
-                this.elements.newGameBtn.style.display = 'inline-block';
+                    if (this.elements.hitBtn) this.elements.hitBtn.disabled = true;
+                    if (this.elements.standBtn) this.elements.standBtn.disabled = true;
+                    if (this.elements.doubleBtn) this.elements.doubleBtn.disabled = true;
+                    if (this.elements.newGameBtn) this.elements.newGameBtn.style.display = 'inline-block';
 
-                // Check if out of money
-                if (this.balance < 10) {
-                    setTimeout(() => {
-                        this.showMessage('Você ficou sem dinheiro! Reiniciando...', 'lose');
+                    // Check if out of money
+                    if (this.balance < 10) {
                         setTimeout(() => {
-                            this.resetGame();
+                            this.showMessage('Você ficou sem dinheiro! Reiniciando...', 'lose');
+                            setTimeout(() => {
+                                this.resetGame();
+                            }, 2000);
                         }, 2000);
-                    }, 2000);
+                    }
+                } catch (e) {
+                    console.error('Error ending game:', e);
                 }
             }
 
             newGame() {
-                this.playerHand = [];
-                this.dealerHand = [];
-                this.currentBet = 0;
-                this.gameOver = false;
-                this.dealerRevealed = false;
+                try {
+                    this.playerHand = [];
+                    this.dealerHand = [];
+                    this.currentBet = 0;
+                    this.gameOver = false;
+                    this.dealerRevealed = false;
 
-                this.elements.betControls.style.display = 'flex';
-                this.elements.gameControls.style.display = 'none';
-                
-                this.elements.hitBtn.disabled = false;
-                this.elements.standBtn.disabled = false;
-                this.elements.doubleBtn.disabled = false;
+                    if (this.elements.betControls) this.elements.betControls.style.display = 'flex';
+                    if (this.elements.gameControls) this.elements.gameControls.style.display = 'none';
+                    
+                    if (this.elements.hitBtn) this.elements.hitBtn.disabled = false;
+                    if (this.elements.standBtn) this.elements.standBtn.disabled = false;
+                    if (this.elements.doubleBtn) this.elements.doubleBtn.disabled = false;
 
-                this.showMessage('Escolha sua aposta!');
-                this.updateDisplay();
+                    this.showMessage('Escolha sua aposta!');
+                    this.updateDisplay();
+                } catch (e) {
+                    console.error('Error in new game:', e);
+                }
             }
 
             adjustBet(amount) {
-                const currentBet = parseInt(this.elements.betInput.value);
-                const newBet = Math.max(10, Math.min(this.balance, currentBet + amount));
-                this.elements.betInput.value = newBet;
-                this.playSound('chip');
+                try {
+                    if (!this.elements.betInput) return;
+
+                    const currentBet = parseInt(this.elements.betInput.value) || 50;
+                    const newBet = Math.max(10, Math.min(this.balance, currentBet + amount));
+                    this.elements.betInput.value = newBet;
+                    this.playSound('chip');
+                } catch (e) {
+                    console.error('Error adjusting bet:', e);
+                }
             }
 
             selectChip(e) {
-                const value = parseInt(e.target.dataset.value);
-                if (value <= this.balance) {
-                    this.elements.betInput.value = value;
-                    this.playSound('chip');
-                    
-                    // Visual feedback
-                    e.target.style.transform = 'scale(1.3)';
-                    setTimeout(() => {
-                        e.target.style.transform = '';
-                    }, 200);
+                try {
+                    const value = parseInt(e.target.dataset.value);
+                    if (value <= this.balance && this.elements.betInput) {
+                        this.elements.betInput.value = value;
+                        this.playSound('chip');
+                        
+                        // Visual feedback
+                        e.target.style.transform = 'scale(1.3)';
+                        setTimeout(() => {
+                            e.target.style.transform = '';
+                        }, 200);
+                    }
+                } catch (e) {
+                    console.error('Error selecting chip:', e);
                 }
             }
 
             showMessage(text, type = '') {
-                this.elements.message.textContent = text;
-                this.elements.message.className = `message ${type}`;
+                try {
+                    if (this.elements.message) {
+                        this.elements.message.textContent = text;
+                        this.elements.message.className = `message ${type}`;
+                    }
+                } catch (e) {
+                    console.error('Error showing message:', e);
+                }
             }
 
             handleKeyboard(e) {
-                if (this.gameOver || !this.gameStarted || this.elements.gameControls.style.display === 'none') return;
+                try {
+                    if (this.gameOver || !this.gameStarted || 
+                        !this.elements.gameControls || 
+                        this.elements.gameControls.style.display === 'none') return;
 
-                switch(e.key.toLowerCase()) {
-                    case 'h':
-                        if (!this.elements.hitBtn.disabled) this.hit();
-                        break;
-                    case 's':
-                        if (!this.elements.standBtn.disabled) this.stand();
-                        break;
-                    case 'd':
-                        if (!this.elements.doubleBtn.disabled) this.double();
-                        break;
-                    case 'escape':
-                        this.closeSettings();
-                        break;
+                    switch(e.key.toLowerCase()) {
+                        case 'h':
+                            if (this.elements.hitBtn && !this.elements.hitBtn.disabled) this.hit();
+                            break;
+                        case 's':
+                            if (this.elements.standBtn && !this.elements.standBtn.disabled) this.stand();
+                            break;
+                        case 'd':
+                            if (this.elements.doubleBtn && !this.elements.doubleBtn.disabled) this.double();
+                            break;
+                        case 'escape':
+                            this.closeSettings();
+                            break;
+                    }
+                } catch (e) {
+                    console.error('Error handling keyboard:', e);
                 }
             }
 
             updateStatistics() {
-                if (!this.settings.showStats) return;
+                try {
+                    if (!this.settings.showStats) return;
 
-                const totalGames = this.wins + this.losses;
-                const winRate = totalGames > 0 ? Math.round((this.wins / totalGames) * 100) : 0;
+                    const totalGames = this.wins + this.losses;
+                    const winRate = totalGames > 0 ? Math.round((this.wins / totalGames) * 100) : 0;
 
-                this.statsElements.totalGames.textContent = totalGames;
-                this.statsElements.winRate.textContent = `${winRate}%`;
-                this.statsElements.totalWinnings.textContent = `$${this.totalWinnings}`;
-                this.statsElements.blackjacks.textContent = this.blackjacks;
+                    if (this.statsElements.totalGames) this.statsElements.totalGames.textContent = totalGames;
+                    if (this.statsElements.winRate) this.statsElements.winRate.textContent = `${winRate}%`;
+                    if (this.statsElements.totalWinnings) this.statsElements.totalWinnings.textContent = `$${this.totalWinnings}`;
+                    if (this.statsElements.blackjacks) this.statsElements.blackjacks.textContent = this.blackjacks;
+                } catch (e) {
+                    console.error('Error updating statistics:', e);
+                }
             }
 
             openSettings() {
-                this.elements.settingsModal.style.display = 'block';
-                
-                // Load current settings
-                document.getElementById('sound-enabled').checked = this.settings.soundEnabled;
-                document.getElementById('animations-enabled').checked = this.settings.animationsEnabled;
-                document.getElementById('auto-save').checked = this.settings.autoSave;
-                document.getElementById('show-stats').checked = this.settings.showStats;
+                try {
+                    if (this.elements.settingsModal) {
+                        this.elements.settingsModal.style.display = 'block';
+                        
+                        // Load current settings
+                        const soundEnabled = safeGetElement('sound-enabled');
+                        const animationsEnabled = safeGetElement('animations-enabled');
+                        const autoSave = safeGetElement('auto-save');
+                        const showStats = safeGetElement('show-stats');
+
+                        if (soundEnabled) soundEnabled.checked = this.settings.soundEnabled;
+                        if (animationsEnabled) animationsEnabled.checked = this.settings.animationsEnabled;
+                        if (autoSave) autoSave.checked = this.settings.autoSave;
+                        if (showStats) showStats.checked = this.settings.showStats;
+                    }
+                } catch (e) {
+                    console.error('Error opening settings:', e);
+                }
             }
 
             closeSettings() {
-                this.elements.settingsModal.style.display = 'none';
+                try {
+                    if (this.elements.settingsModal) {
+                        this.elements.settingsModal.style.display = 'none';
+                    }
+                } catch (e) {
+                    console.error('Error closing settings:', e);
+                }
             }
 
             saveGame() {
@@ -1512,16 +1900,12 @@
                     gameStarted: this.gameStarted
                 };
 
-                try {
-                    localStorage.setItem('blackjack-premium-save', JSON.stringify(gameState));
-                } catch (e) {
-                    console.warn('Could not save game state:', e);
-                }
+                safeLocalStorageSet('blackjack-premium-save', JSON.stringify(gameState));
             }
 
             loadGame() {
                 try {
-                    const savedGame = localStorage.getItem('blackjack-premium-save');
+                    const savedGame = safeLocalStorageGet('blackjack-premium-save');
                     if (savedGame) {
                         const gameState = JSON.parse(savedGame);
                         this.balance = gameState.balance || 1000;
@@ -1532,46 +1916,44 @@
                         this.gameStarted = gameState.gameStarted || false;
                     }
                 } catch (e) {
-                    console.warn('Could not load game state:', e);
+                    console.warn('Could not load game state:', e.message);
                 }
 
                 this.loadSettings();
             }
 
             saveSettings() {
-                try {
-                    localStorage.setItem('blackjack-premium-settings', JSON.stringify(this.settings));
-                } catch (e) {
-                    console.warn('Could not save settings:', e);
-                }
+                safeLocalStorageSet('blackjack-premium-settings', JSON.stringify(this.settings));
             }
 
             loadSettings() {
                 try {
-                    const savedSettings = localStorage.getItem('blackjack-premium-settings');
+                    const savedSettings = safeLocalStorageGet('blackjack-premium-settings');
                     if (savedSettings) {
                         this.settings = { ...this.settings, ...JSON.parse(savedSettings) };
-                        this.elements.statsContainer.style.display = this.settings.showStats ? 'block' : 'none';
+                        if (this.elements.statsContainer) {
+                            this.elements.statsContainer.style.display = this.settings.showStats ? 'block' : 'none';
+                        }
                     }
                 } catch (e) {
-                    console.warn('Could not load settings:', e);
+                    console.warn('Could not load settings:', e.message);
                 }
             }
 
             resetGame() {
-                if (confirm('Tem certeza que deseja resetar o jogo? Todos os dados serão perdidos.')) {
-                    this.initializeGameState();
-                    this.newGame();
-                    this.updateDisplay();
-                    
-                    try {
-                        localStorage.removeItem('blackjack-premium-save');
-                    } catch (e) {
-                        console.warn('Could not clear save data:', e);
+                try {
+                    if (confirm('Tem certeza que deseja resetar o jogo? Todos os dados serão perdidos.')) {
+                        this.initializeGameState();
+                        this.newGame();
+                        this.updateDisplay();
+                        
+                        safeLocalStorageRemove('blackjack-premium-save');
+                        
+                        this.showMessage('Jogo resetado!');
+                        this.closeSettings();
                     }
-                    
-                    this.showMessage('Jogo resetado!');
-                    this.closeSettings();
+                } catch (e) {
+                    console.error('Error resetting game:', e);
                 }
             }
         }
@@ -1583,26 +1965,19 @@
             }
         }
 
-        // Initialize game when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            // Show loading
-            document.querySelector('.loading').style.display = 'block';
-            
-            setTimeout(() => {
-                // Initialize game
-                window.game = new BlackjackGame();
-                
-                // Hide loading
-                document.querySelector('.loading').style.display = 'none';
-            }, 500);
-        });
-
         // Performance optimizations
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && window.game && window.game.settings.autoSave) {
                 window.game.saveGame();
             }
         });
+
+        // Initialize on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('Blackjack Premium loaded successfully!');
+            });
+        }
     </script>
 </body>
 </html>
