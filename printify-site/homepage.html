@@ -1,0 +1,486 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Plus+Jakarta+Sans%3Awght%40400%3B500%3B600%3B700%3B800"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <title>Printify - 3D Printed Products</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .gradient-hero {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%),
+          url("https://lh3.googleusercontent.com/aida-public/AB6AXuC9VfdfSzYhJ1VDCk5tGGte0c4xvON1aG6f4GUucQAUfbtyMeg5BquXrFdKZNOZd92AyqAM2QJmysGsPddiKBjUb_W76aaH31E5YjS-Tudh6ieFQ2H-eql5XHly85ZnLMAhF_hQacEytza8dUqVX8thhbi0jnO9Xg-owRIkGzTFDTl48WMsmlB6u6qf9IF3rBnsJd3e4aiByq3GlMDpUg1mQSsvUMxXoA4t8tvsH-WvDBm4RuHbFsfIXafmuEERp8mfGcRacUgL-koZ");
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 text-gray-900"
+    style="
+      font-family:
+        &quot;Plus Jakarta Sans&quot;, &quot;Noto Sans&quot;, sans-serif;
+    "
+  >
+    <div
+      class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden"
+    >
+      <div class="layout-container flex h-full grow flex-col">
+        <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md">
+          <div
+            class="mx-auto flex max-w-7xl items-center justify-between whitespace-nowrap border-b border-solid border-gray-200 px-4 sm:px-6 lg:px-8 py-4"
+          >
+            <div class="flex items-center gap-3">
+              <div class="size-8 text-[#e92933]">
+                <svg
+                  fill="none"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M24 18.4228L42 11.475V34.3663C42 34.7796 41.7457 35.1504 41.3601 35.2992L24 42V18.4228Z"
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                  ></path>
+                  <path
+                    clip-rule="evenodd"
+                    d="M24 8.18819L33.4123 11.574L24 15.2071L14.5877 11.574L24 8.18819ZM9 15.8487L21 20.4805V37.6263L9 32.9945V15.8487ZM27 37.6263V20.4805L39 15.8487V32.9945L27 37.6263ZM25.354 2.29885C24.4788 1.98402 23.5212 1.98402 22.646 2.29885L4.98454 8.65208C3.7939 9.08038 3 10.2097 3 11.475V34.3663C3 36.0196 4.01719 37.5026 5.55962 38.098L22.9197 44.7987C23.6149 45.0671 24.3851 45.0671 25.0803 44.7987L42.4404 38.098C43.9828 37.5026 45 36.0196 45 34.3663V11.475C45 10.2097 44.2061 9.08038 43.0155 8.65208L25.354 2.29885Z"
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <h2
+                class="text-xl font-bold leading-tight tracking-tight text-gray-900"
+              >
+                Printify
+              </h2>
+            </div>
+            <nav class="hidden lg:flex flex-1 justify-center">
+              <ul class="flex items-center gap-8">
+                <li>
+                  <a
+                    class="text-sm font-medium text-gray-700 hover:text-[#e92933] transition-colors"
+                    href="#"
+                    >New</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-sm font-medium text-gray-700 hover:text-[#e92933] transition-colors"
+                    href="#"
+                    >Featured</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-sm font-medium text-gray-700 hover:text-[#e92933] transition-colors"
+                    href="#"
+                    >Best Sellers</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="text-sm font-medium text-gray-700 hover:text-[#e92933] transition-colors"
+                    href="#"
+                    >Gifts</a
+                  >
+                </li>
+              </ul>
+            </nav>
+            <div class="flex items-center gap-3">
+              <button
+                class="hidden sm:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold leading-normal tracking-[0.015em] transition-colors"
+              >
+                <span class="truncate">Sign in</span>
+              </button>
+              <button
+                aria-label="Search"
+                class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-gray-100 hover:bg-gray-200 text-gray-800 gap-2 text-sm font-semibold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-colors"
+              >
+                <div
+                  class="text-gray-700"
+                  data-icon="MagnifyingGlass"
+                  data-size="20px"
+                  data-weight="regular"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="20px"
+                    viewBox="0 0 256 256"
+                    width="20px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+              <button
+                aria-label="Shopping Cart"
+                class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-gray-100 hover:bg-gray-200 text-gray-800 gap-2 text-sm font-semibold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-colors"
+              >
+                <div
+                  class="text-gray-700"
+                  data-icon="ShoppingBag"
+                  data-size="20px"
+                  data-weight="regular"
+                >
+                  <svg
+                    fill="currentColor"
+                    height="20px"
+                    viewBox="0 0 256 256"
+                    width="20px"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,160H40V56H216V200ZM176,88a48,48,0,0,1-96,0,8,8,0,0,1,16,0,32,32,0,0,0,64,0,8,8,0,0,1,16,0Z"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+              <button
+                aria-label="Menu"
+                class="lg:hidden flex items-center justify-center rounded-lg h-10 w-10 bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors"
+              >
+                <svg
+                  fill="currentColor"
+                  height="24px"
+                  viewBox="0 0 256 256"
+                  width="24px"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,88H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,168H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </header>
+        <main class="flex-1">
+          <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div class="relative @container">
+              <div
+                class="gradient-hero flex min-h-[400px] md:min-h-[520px] flex-col gap-6 bg-cover bg-center bg-no-repeat items-center justify-center p-6 md:p-10 rounded-xl shadow-lg"
+              >
+                <div class="flex flex-col gap-4 text-center max-w-2xl">
+                  <h1
+                    class="text-white text-4xl font-extrabold leading-tight tracking-tighter sm:text-5xl md:text-6xl"
+                  >
+                    Innovative 3D Printed Products
+                  </h1>
+                  <p
+                    class="text-gray-200 text-base font-normal leading-relaxed sm:text-lg"
+                  >
+                    Explore our curated collection of 3D printed products, from
+                    intricate models to functional designs. Discover unique
+                    items crafted with precision and care.
+                  </p>
+                </div>
+                <button
+                  class="flex min-w-[120px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-[#e92933] hover:bg-red-700 text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors shadow-md hover:shadow-lg"
+                >
+                  <span class="truncate">Shop Now</span>
+                </button>
+              </div>
+            </div>
+          </section>
+          <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <h2
+              class="text-gray-900 text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6 md:mb-8"
+            >
+              Featured Products
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div
+                class="flex flex-col gap-3 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
+              >
+                <a class="block" href="#">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDJifGozFwzb7kVKh8SxrSrmEjcj92UrSEH8wgW6C5sU56xZFYJcBj1JNkdcWrkbnn7SLs-VuWUbFTv7dVjdesLVu3cS21Gd3xqkt-AGV6V7eYy4app2ad9thOPg_YEnPyeNDiCTeYfUZi4sVNT9SQRqdAc3K95ZbbsL419O4FYWUvBp6XHSir82zyE_yMMU3dKAw6GAqt5d7V8C6-_pfiPO2lWi5UcdRzV6g4SINo5MabmTfrqzYDPBY8_F6MaBEqweb5urt4d3zWW&quot;);
+                    "
+                  ></div>
+                  <div class="p-4">
+                    <p
+                      class="text-gray-900 text-lg font-semibold leading-normal"
+                    >
+                      Modern Vase
+                    </p>
+                    <p
+                      class="text-gray-600 text-sm font-normal leading-normal mt-1"
+                    >
+                      Elegant design for any space
+                    </p>
+                    <p class="text-[#e92933] text-lg font-bold mt-2">$49.99</p>
+                  </div>
+                </a>
+              </div>
+              <div
+                class="flex flex-col gap-3 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
+              >
+                <a class="block" href="#">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuD3cpKYUx-6Dcl0O08oZM7u9exr2TWMf8-8O1QEvXssN1GcmIMhFqDPLaT3SAA6m9EZXa_sUIc8yngU6O5cULcZYMHdzq8kHdIYfau0uvae4-oT1PyK89e4tdWXK8VWS_RqAlx0QQGUI4WXW0f2FUlBStTRfi0mmwdWd4kzWzMqLPoAHdDmd19tsjgWMGUTKFbE0J_8NKVlrwwrnrSkwXI7zEjNMGmn7PdggZVV5DFsCsVreCKmy9XEF2LHgzuWNr1Q2H2u9YlD7DT_&quot;);
+                    "
+                  ></div>
+                  <div class="p-4">
+                    <p
+                      class="text-gray-900 text-lg font-semibold leading-normal"
+                    >
+                      Abstract Sculpture
+                    </p>
+                    <p
+                      class="text-gray-600 text-sm font-normal leading-normal mt-1"
+                    >
+                      Unique art piece for your home
+                    </p>
+                    <p class="text-[#e92933] text-lg font-bold mt-2">$89.99</p>
+                  </div>
+                </a>
+              </div>
+              <div
+                class="flex flex-col gap-3 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
+              >
+                <a class="block" href="#">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuASz3NjXKjfOR0UiDjUk9fI7NzduaYtHynoasrFocZPbhoNz4bad84My8jn0SFk_2sLjKRUN3h02U0WYerffyCK4nyUIlLr4vl6IFyyKWm7LP8-UUDgYigkSHSRAEVHfTYIsZoVHY9MA-p7V_-vu-2bXL4eb7lde-1ULAV0oiF6ZdPY8Vtt-XjmZsBsqPzubeS8RJIv9uRLb9PUg1-uRxAs3TN2AWjE3o0MdcsAbFd01nrjiax9yKXjGW25M48vjuWhSJvYPXCIlDc7&quot;);
+                    "
+                  ></div>
+                  <div class="p-4">
+                    <p
+                      class="text-gray-900 text-lg font-semibold leading-normal"
+                    >
+                      Geometric Lamp
+                    </p>
+                    <p
+                      class="text-gray-600 text-sm font-normal leading-normal mt-1"
+                    >
+                      Ambient lighting with a modern touch
+                    </p>
+                    <p class="text-[#e92933] text-lg font-bold mt-2">$65.00</p>
+                  </div>
+                </a>
+              </div>
+              <div
+                class="flex flex-col gap-3 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden group"
+              >
+                <a class="block" href="#">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-square bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCy4E6YqWA-6K01WEo8UGX5AO_BDVc90eIcl2K4upXllcX3pEu7LC7Dw781LGuzQUwHCmsxRUMeqoLf1rC0wPWc2pyJKICARhCEWsxDmJZ7eSegeTZ5EKqtIW2mcztg0TO3lLUGoI6FVfHafaoD2XQjPv4FgRKTi47aGH-fFQU719hLYC0ZecxsG6PALgK9vd8nY7_9jdpuIJEY1yPT1iI7BBOayRg9xoCFZFZpoCgTsVDqf_ctTKK_icX-2hhyFcUuKxtfJUcemUg1&quot;);
+                    "
+                  ></div>
+                  <div class="p-4">
+                    <p
+                      class="text-gray-900 text-lg font-semibold leading-normal"
+                    >
+                      Custom Phone Case
+                    </p>
+                    <p
+                      class="text-gray-600 text-sm font-normal leading-normal mt-1"
+                    >
+                      Personalized protection for your device
+                    </p>
+                    <p class="text-[#e92933] text-lg font-bold mt-2">$29.50</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </section>
+          <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <h2
+              class="text-gray-900 text-2xl sm:text-3xl font-bold leading-tight tracking-tight mb-6 md:mb-8"
+            >
+              Collections
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <a
+                class="block rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group"
+                href="#"
+              >
+                <div class="relative">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBboI_2mFbPQuVkQqTkj0_hDtpebyK5qc6auzNu7exWY_QRS1TOJfSiP1OU1GWG33CFwelTmR-xQk2TW9LJo1bYIjBq3HfdHszhA6oZGpl3RazUa5Z0V0TlzkBjvhFrBrYk88EQOazjIsqHDUdqtyTCRiLxkDYhDtBsSwC7fNaHEtHkemsubQlNqw1B4ZAZ9t6r48cRvzK-oN_XoHk3FZG0m_6jCJMleRmvwewQz2j9bo21__9-8IhnoQpJLHkTpvOgg4nzpp1IhjxR&quot;);
+                    "
+                  ></div>
+                  <div
+                    class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300"
+                  ></div>
+                  <div class="absolute bottom-0 left-0 p-4 md:p-6">
+                    <p class="text-white text-xl font-semibold leading-normal">
+                      Home Decor
+                    </p>
+                  </div>
+                </div>
+              </a>
+              <a
+                class="block rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group"
+                href="#"
+              >
+                <div class="relative">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCt_BOW-yfsti9GPqfR3ng1APr8hXh7BOe2hxpd89KpDfHl6aL2kuB_3Dz_vHB22SE98hzzNW2fO2i-afQisSsVbE6JwOCjttXJMUfrovqsdmZ3rmnJbA71ZgtPCU8Krz8lNBc4PeWb6UFpeeeH6Gj1Yq8omFbFQVnsAWHNore7bzKGvArj5C6ZQnP03FTCaTj1_sqT4LtUHMYN_DDb3JQrjZ33YFAXzTx89_2P5_0E1xWQDGTt2gzLUY9FkfCQvJvWlw53laK2MuxI&quot;);
+                    "
+                  ></div>
+                  <div
+                    class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300"
+                  ></div>
+                  <div class="absolute bottom-0 left-0 p-4 md:p-6">
+                    <p class="text-white text-xl font-semibold leading-normal">
+                      Tech Accessories
+                    </p>
+                  </div>
+                </div>
+              </a>
+              <a
+                class="block rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 group"
+                href="#"
+              >
+                <div class="relative">
+                  <div
+                    class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover transition-transform duration-300 group-hover:scale-105"
+                    style="
+                      background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuCSmyvQJnF9Mju1kcmlFennjuAxK1eAT9kqQsBfq7STONTIM8sH3XMBo0eVcyqIWz8-4rzDrkvutyMt4BG1zbAmes4KdXBzO8gWaJ31Gu-XjcXjimynyWTfgqKj1f_WH2z1hoYmnOsVZ2V7RFam30kb2AVnllU2F_ag_AT9FkwC0JVscZt42a7ZV0GmszvpeOyKzwiu_jHPGnXWo1NNTWJSYc2h0jjWTMtgstUzZJ0yJENMVyfv5nhQW1jYW2QYmzg0pWMu82jmqTfb&quot;);
+                    "
+                  ></div>
+                  <div
+                    class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-300"
+                  ></div>
+                  <div class="absolute bottom-0 left-0 p-4 md:p-6">
+                    <p class="text-white text-xl font-semibold leading-normal">
+                      Art &amp; Collectibles
+                    </p>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </section>
+        </main>
+        <footer class="bg-gray-800 text-gray-300 py-12">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div>
+                <h3 class="text-lg font-semibold text-white mb-4">Shop</h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >New Arrivals</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Featured</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Best Sellers</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Collections</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-white mb-4">About Us</h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Our Story</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Careers</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Press</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-white mb-4">
+                  Customer Service
+                </h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Contact Us</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >FAQ</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Shipping &amp; Returns</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-white mb-4">Connect</h3>
+                <ul class="space-y-2">
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Instagram</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Facebook</a
+                    >
+                  </li>
+                  <li>
+                    <a class="hover:text-white transition-colors" href="#"
+                      >Twitter</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="mt-8 border-t border-gray-700 pt-8 flex flex-col sm:flex-row justify-between items-center"
+            >
+              <p class="text-sm">© 2024 Printify. All rights reserved.</p>
+              <div class="flex space-x-4 mt-4 sm:mt-0">
+                <a class="hover:text-white transition-colors" href="#"
+                  >Privacy Policy</a
+                >
+                <a class="hover:text-white transition-colors" href="#"
+                  >Terms of Service</a
+                >
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
+</html>
