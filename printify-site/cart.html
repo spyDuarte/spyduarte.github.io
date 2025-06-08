@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -8,7 +9,7 @@
       onload="this.rel='stylesheet'"
       rel="stylesheet"
     />
-    <title>Stitch Design</title>
+    <title>Printify - Shopping Cart</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style>
@@ -66,28 +67,28 @@
               <h2
                 class="text-gray-900 text-2xl font-bold leading-tight tracking-[-0.015em]"
               >
-                Printify
+                <a href="index.html">Printify</a>
               </h2>
             </div>
             <nav class="flex items-center gap-8">
               <a
                 class="text-gray-700 hover-primary-color text-base font-medium leading-normal transition-colors"
-                href="#"
+                href="index.html"
                 >Home</a
               >
               <a
                 class="text-gray-700 hover-primary-color text-base font-medium leading-normal transition-colors"
-                href="#"
+                href="products.html"
                 >Shop</a
               >
               <a
                 class="text-gray-700 hover-primary-color text-base font-medium leading-normal transition-colors"
-                href="#"
+                href="product.html"
                 >Create</a
               >
               <a
                 class="text-gray-700 hover-primary-color text-base font-medium leading-normal transition-colors"
-                href="#"
+                href="index.html"
                 >Learn</a
               >
             </nav>
@@ -120,6 +121,7 @@
             <div class="flex gap-3">
               <button
                 class="flex items-center justify-center rounded-xl h-11 w-11 bg-gray-100 hover:bg-gray-200 text-gray-700 hover-primary-color transition-colors"
+                onclick="window.location.href='products.html'"
               >
                 <svg
                   fill="currentColor"
@@ -148,7 +150,7 @@
                   ></path>
                 </svg>
                 <span
-                  class="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-color text-xs font-bold text-white"
+                  class="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary-color text-xs font-bold text-white cart-count"
                   >3</span
                 >
               </button>
@@ -158,6 +160,7 @@
               style="
                 background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDHq7qSV5yc4qSOsEvlQf0a4ne8C3yTGErRwxp3EbOj8d-vauzR7Hz149gcD5p569STpZPuXiz5edFU8GF6DrS9W8Yb7JtmRMLvy3E0W-IbdEGajkRN7ESzhnBWd81WlWGci8xcHFZwxx6cg-Nf_kLVQrfC9KXBAWKqSSqFYVAUjdbMqQBm9lBDcyGu14IJhh3fe0KNQOLY2EWFPLhMSofeCTPtyyWOK5KXSeF1XRN9q7wrC-ANyWgVeNu51eqB9vXLKTOkrnkk_3uy&quot;);
               "
+              onclick="window.location.href='profile.html'"
             ></div>
           </div>
         </header>
@@ -168,7 +171,7 @@
             <div class="flex items-center gap-2 p-4 mb-6">
               <a
                 class="text-gray-500 hover-primary-color text-sm font-medium leading-normal transition-colors"
-                href="#"
+                href="products.html"
                 >Shop</a
               >
               <span class="text-gray-400 text-sm font-medium leading-normal"
@@ -313,6 +316,7 @@
                     </p>
                     <p
                       class="text-gray-800 text-base font-medium leading-normal text-right"
+                      data-subtotal
                     >
                       $60.00
                     </p>
@@ -325,6 +329,7 @@
                     </p>
                     <p
                       class="text-gray-800 text-base font-medium leading-normal text-right"
+                      data-shipping
                     >
                       $5.00
                     </p>
@@ -337,6 +342,7 @@
                     </p>
                     <p
                       class="text-gray-800 text-base font-medium leading-normal text-right"
+                      data-tax
                     >
                       $3.00
                     </p>
@@ -348,6 +354,7 @@
                     </p>
                     <p
                       class="text-gray-800 text-lg font-bold leading-normal text-right"
+                      data-total
                     >
                       $68.00
                     </p>
@@ -356,6 +363,7 @@
                 <div class="flex justify-end mt-8">
                   <button
                     class="flex min-w-[120px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-8 bg-primary-color text-white text-lg font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
+                    onclick="window.location.href='checkout.html'"
                   >
                     <span class="truncate">Proceed to Checkout</span>
                   </button>
@@ -377,22 +385,22 @@
               <h3 class="text-lg font-semibold text-white mb-4">Quick Links</h3>
               <ul class="space-y-2 text-sm">
                 <li>
-                  <a class="hover:text-white transition-colors" href="#"
+                  <a class="hover:text-white transition-colors" href="products.html"
                     >Shop</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-white transition-colors" href="#"
+                  <a class="hover:text-white transition-colors" href="index.html"
                     >About Us</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-white transition-colors" href="#"
+                  <a class="hover:text-white transition-colors" href="profile.html"
                     >Contact</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-white transition-colors" href="#"
+                  <a class="hover:text-white transition-colors" href="profile.html"
                     >FAQs</a
                   >
                 </li>
@@ -438,7 +446,7 @@
                   >
                     <path
                       clip-rule="evenodd"
-                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.013-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.023.047 1.351.058 3.807.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504-.207 1.857-.344.467-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.047-1.023.058-1.351.058-3.807v-.468c0-2.456-.011-2.784-.058-3.807-.045-.975-.207-1.504-.344-1.857a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.023.047 1.351.058 3.807.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504-.207 1.857-.344.467-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.047-1.023.058-1.351.058-3.807v-.468c0-2.456-.011-2.784-.058-3.807-.045-.975-.207-1.504-.344-1.857a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
                       fill-rule="evenodd"
                     ></path>
                   </svg>
@@ -455,5 +463,6 @@
         </footer>
       </div>
     </div>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
