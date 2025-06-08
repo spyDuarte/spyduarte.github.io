@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -8,7 +9,7 @@
       onload="this.rel='stylesheet'"
       rel="stylesheet"
     />
-    <title>Stitch Design</title>
+    <title>3D Printed Vase - Printify</title>
     <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <style>
@@ -62,34 +63,35 @@
             <h2
               class="text-gray-900 text-xl font-bold leading-tight tracking-tight"
             >
-              Printify
+              <a href="index.html">Printify</a>
             </h2>
           </div>
           <nav class="hidden md:flex items-center gap-8">
             <a
               class="text-gray-700 hover:text-primary text-sm font-medium leading-normal transition-colors"
-              href="#"
+              href="products.html"
               >New Arrivals</a
             >
             <a
               class="text-gray-700 hover:text-primary text-sm font-medium leading-normal transition-colors"
-              href="#"
+              href="products.html"
               >Featured</a
             >
             <a
               class="text-gray-700 hover:text-primary text-sm font-medium leading-normal transition-colors"
-              href="#"
+              href="products.html"
               >Shop</a
             >
             <a
               class="text-gray-700 hover:text-primary text-sm font-medium leading-normal transition-colors"
-              href="#"
+              href="index.html"
               >About Us</a
             >
           </nav>
           <div class="flex items-center gap-3">
             <button
               class="flex items-center justify-center rounded-full p-2 text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+              onclick="window.location.href='products.html'"
             >
               <div
                 class="text-inherit"
@@ -112,6 +114,7 @@
             </button>
             <button
               class="flex items-center justify-center rounded-full p-2 text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors"
+              onclick="window.location.href='profile.html'"
             >
               <div
                 class="text-inherit"
@@ -133,10 +136,11 @@
               </div>
             </button>
             <div
-              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-300 shadow-sm"
+              class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-gray-300 shadow-sm cursor-pointer"
               style="
                 background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuD2mF4OXibmVPpqQL99GnDQFyCZK1COaV6JX7rwC8zUH4PNFXjuXCOF_uhBU0kEhoBgi5Ynrf-55ouT1h4OSN2iSHWIqiKUUJ7-EqHo4lPpi2WJalma0TVP4_JDqhneeq8KygDpMMoKxvVuMqjK5cq6FfKlR4EeG9rZeTVhpxyUznEFGsiM8mCneIexQRNC2_ExA-bBWnh6Iu-cWksrmdbZXqI3NDvTrTsGp8964HCpN7d_fPvr8XxXHxsr87oA_xFjAflnIHYCnL12&quot;);
               "
+              onclick="window.location.href='profile.html'"
             ></div>
           </div>
         </header>
@@ -147,7 +151,7 @@
             >
               <a
                 class="text-gray-600 hover:text-primary text-sm font-medium leading-normal"
-                href="#"
+                href="index.html"
                 >Home</a
               >
               <span class="text-gray-400 text-sm font-medium leading-normal"
@@ -155,7 +159,7 @@
               >
               <a
                 class="text-gray-600 hover:text-primary text-sm font-medium leading-normal"
-                href="#"
+                href="products.html"
                 >Shop</a
               >
               <span class="text-gray-400 text-sm font-medium leading-normal"
@@ -221,6 +225,7 @@
                   <p class="text-primary text-3xl font-bold mb-4">$29.99</p>
                   <button
                     class="flex w-full items-center justify-center rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-wide hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ring-primary"
+                    onclick="addToCart({id: 'vase-001', name: '3D Printed Vase', price: 29.99, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCcL61OwaazqR4m0vkbKMZawCda_NYKRyw1o1IiSK8vYtEjv1csTF93MOq6AzTWiuT7f061PVpdjpRLqUAXxUhrXxgR7Z10CHK0J3GgNYVAICTVA7s1rvq4cChUUj9pa2Ki6XaKt5QsCltoMyuISharnkTYWPYIjqw-tMpWGht1MxDqJmeexDafjbEoX_SIeJijSiVJ7RZAfW9Tnlxj3CgQHR2w0Um5DmCGK_ugLOu49oSfCTC4rN9oHoML5XN0kbGW9mutgkE4bi5i'})"
                   >
                     <span class="truncate">Add to Cart</span>
                   </button>
@@ -295,7 +300,7 @@
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M128,179.36l34.23,20.76a8,8,0,0,0,11.93-8.67l-8.89-38.64,29.59-25.26a8,8,0,0,0-4.56-14.12l-39.49-3.42-15.31-36.19a8,8,0,0,0-14.94,0L105.23,110L65.74,113.4A8,8,0,0,0,61.18,127.52L90.77,152.78l-8.89,38.64a8,8,0,0,0,11.93,8.67ZM239.2,97.29a16,16,0,0,0-13.81-11L166,81.17,142.72,25.81h0a15.95,15.95,0,0,0-29.44,0L90.07,81.17,30.61,86.32a16,16,0,0,0-9.11,28.06L66.61,153.8,53.09,212.34a16,16,0,0,0,23.84,17.34l51-31,51.11,31a16,16,0,0,0,23.84-17.34l-13.51-58.6,45.1-39.36A16,16,0,0,0,239.2,97.29Zm-15.22,5-45.1,39.36a16,16,0,0,0-5.08,15.71L187.35,216v0l-51.07-31a15.9,15.9,0,0,0-16.54,0l-51,31h0L82.2,157.4a16,16,0,0,0-5.08-15.71L32,102.35a.37.37,0,0,1,0-.09l59.44-5.14a16,16,0,0,0,13.35-9.75L128,32.08l23.2,55.29a16,16,0,0,0,13.35,9.75L224,102.26S224,102.32,224,102.33Z"
+                        d="M128,179.36l34.23,20.76a8,8,0,0,0,11.93-8.67l-8.89-38.64,29.59-25.26a8,8,0,0,0-4.56-14.12l-39.49-3.42-15.31-36.19a8,8,0,0,0-14.94,0L105.23,110,65.74,113.4A8,8,0,0,0,61.18,127.52L90.77,152.78l-8.89,38.64a8,8,0,0,0,11.93,8.67ZM239.2,97.29a16,16,0,0,0-13.81-11L166,81.17,142.72,25.81h0a15.95,15.95,0,0,0-29.44,0L90.07,81.17,30.61,86.32a16,16,0,0,0-9.11,28.06L66.61,153.8,53.09,212.34a16,16,0,0,0,23.84,17.34l51-31,51.11,31a16,16,0,0,0,23.84-17.34l-13.51-58.6,45.1-39.36A16,16,0,0,0,239.2,97.29Zm-15.22,5-45.1,39.36a16,16,0,0,0-5.08,15.71L187.35,216v0l-51.07-31a15.9,15.9,0,0,0-16.54,0l-51,31h0L82.2,157.4a16,16,0,0,0-5.08-15.71L32,102.35a.37.37,0,0,1,0-.09l59.44-5.14a16,16,0,0,0,13.35-9.75L128,32.08l23.2,55.29a16,16,0,0,0,13.35,9.75L224,102.26S224,102.32,224,102.33Z"
                         opacity="0.4"
                       ></path>
                     </svg>
@@ -620,22 +625,22 @@
               <h3 class="text-lg font-semibold text-white mb-3">Quick Links</h3>
               <ul class="space-y-2 text-sm">
                 <li>
-                  <a class="hover:text-primary transition-colors" href="#"
+                  <a class="hover:text-primary transition-colors" href="products.html"
                     >Shop</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-primary transition-colors" href="#"
+                  <a class="hover:text-primary transition-colors" href="index.html"
                     >About Us</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-primary transition-colors" href="#"
+                  <a class="hover:text-primary transition-colors" href="profile.html"
                     >Contact</a
                   >
                 </li>
                 <li>
-                  <a class="hover:text-primary transition-colors" href="#"
+                  <a class="hover:text-primary transition-colors" href="profile.html"
                     >FAQ</a
                   >
                 </li>
@@ -704,5 +709,6 @@
         </footer>
       </div>
     </div>
+    <script src="assets/js/main.js"></script>
   </body>
 </html>
