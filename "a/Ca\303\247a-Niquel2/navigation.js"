@@ -1,0 +1,24 @@
+const toggleMobileMenu = () => {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
+};
+
+const showSection = (id) => {
+  document.querySelectorAll('.section').forEach((sec) => {
+    if (sec.id === id) {
+      sec.classList.add('active');
+    } else {
+      sec.classList.remove('active');
+    }
+  });
+  const menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.add('hidden');
+  }
+};
+
+if (typeof module !== 'undefined') {
+  module.exports = { toggleMobileMenu, showSection };
+}
