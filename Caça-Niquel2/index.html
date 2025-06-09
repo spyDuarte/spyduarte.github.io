@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Caça-níquel da Fortuna - O melhor jogo de slots online">
+    <meta name="keywords" content="caça-níquel, slot machine, jogo, casino, diversão">
+    <meta name="author" content="Caça-níquel da Fortuna">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="🎰 Caça-níquel da Fortuna">
+    <meta property="og:description" content="Experimente a emoção do cassino com o melhor jogo de caça-níquel online!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://seuusuario.github.io/caca-niquel-fortuna">
+    <meta property="og:image" content="https://seuusuario.github.io/caca-niquel-fortuna/og-image.png">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🎰 Caça-níquel da Fortuna">
+    <meta name="twitter:description" content="Experimente a emoção do cassino com o melhor jogo de caça-níquel online!">
+    <meta name="twitter:image" content="https://seuusuario.github.io/caca-niquel-fortuna/og-image.png">
+    
+    <title>🎰 Caça-níquel da Fortuna</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Orbitron:wght@400;700;900">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Critical CSS inline para otimização */
+        :root {
+          --primary-gold: #fcd34d;
+          --primary-red: #ef4444;
+          --primary-blue: #3b82f6;
+          --background-dark: rgba(0, 0, 0, 0.8);
+          --background-light: rgba(255, 255, 255, 0.1);
+          --border-glow: rgba(252, 211, 77, 0.3);
+          --text-primary: #ffffff;
+          --text-secondary: rgba(255, 255, 255, 0.8);
+        }
+
+        .font-orbitron { font-family: 'Orbitron', monospace; }
+        .font-jakarta { font-family: 'Plus Jakarta Sans', 'Noto Sans', sans-serif; }
+
+        .section {
+          display: none;
+          animation: slideIn 0.5s ease-out;
+        }
+
+        .section.active {
+          display: block;
+        }
+
+        @keyframes slideIn {
+          from { transform: translateY(20px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
+        .loading {
+          pointer-events: none;
+        }
+
+        .loading::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 20px;
+          height: 20px;
+          margin: -10px 0 0 -10px;
+          border: 2px solid var(--primary-gold);
+          border-top: 2px solid transparent;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e1b4b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Caça-níquel da Fortuna">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="game.js" as="script">
+    <link rel="preload" href="navigation.js" as="script">
+    <link rel="preload" href="settings.js" as="script">
+</head>
+<body class="font-jakarta bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen overflow-x-hidden">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="text-6xl mb-4 animate-pulse">🎰</div>
+            <div class="text-2xl text-yellow-400 font-orbitron font-bold mb-2">Carregando...</div>
+            <div class="w-48 h-2 bg-gray-700 rounded-full overflow-hidden">
+                <div id="loadingProgress" class="h-full bg-gradient-to-r from-yellow-400 to-red-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skip to content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-yellow-400 text-black p-2 z-50">
+        Pular para o conteúdo principal
+    </a>
+
+    <!-- Navigation -->
+    <nav class="bg-black/20 backdrop-blur-lg border-b border-yellow-400/30 sticky top-0 z-40" role="navigation" aria-label="Navegação principal">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3">
+                    <span class="text-3xl" role="img" aria-label="slot machine">🎰</span>
+                    <span class="text-xl font-bold text-yellow-400 font-orbitron">Caça-níquel da Fortuna</span>
+                </div>
+                
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link text-white hover:text-yellow-400 transition-colors duration-300 font-medium" aria-label="Ir para início">Início</a>
+                    <a href="#game" class="nav-link text-white hover:text-yellow-400 transition-colors duration-300 font-medium" aria-label="Ir para jogo">Jogar</a>
+                    <a href="#historic" class="nav-link text-white hover:text-yellow-400 transition-colors duration-300 font-medium" aria-label="Ir para histórico">Histórico</a>
+                    <a href="#config" class="nav-link text-white hover:text-yellow-400 transition-colors duration-300 font-medium" aria-label="Ir para configurações">Configurações</a>
+                    <a href="#faq" class="nav-link text-white hover:text-yellow-400 transition-colors duration-300 font-medium" aria-label="Ir para FAQ">FAQ</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()" aria-label="Abrir menu mobile" aria-expanded="false" id="mobileMenuBtn">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-black/30 backdrop-blur-lg border-t border-yellow-400/20" role="menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#home" class="block px-3 py-2 text-white hover:text-yellow-400 transition-colors duration-300" role="menuitem">Início</a>
+                <a href="#game" class="block px-3 py-2 text-white hover:text-yellow-400 transition-colors duration-300" role="menuitem">Jogar</a>
+                <a href="#historic" class="block px-3 py-2 text-white hover:text-yellow-400 transition-colors duration-300" role="menuitem">Histórico</a>
+                <a href="#config" class="block px-3 py-2 text-white hover:text-yellow-400 transition-colors duration-300" role="menuitem">Configurações</a>
+                <a href="#faq" class="block px-3 py-2 text-white hover:text-yellow-400 transition-colors duration-300" role="menuitem">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active min-h-screen flex items-center justify-center px-4" role="main" aria-labelledby="home-title">
+            <div class="max-w-6xl mx-auto text-center">
+                <!-- Hero Header -->
+                <div class="mb-12">
+                    <h1 id="home-title" class="text-4xl md:text-6xl lg:text-7xl font-bold text-yellow-400 font-orbitron title-glow mb-6">
+                        🎰 Caça-níquel da Fortuna ✨
+                    </h1>
+                    <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
+                        Experimente a emoção do cassino com o melhor jogo de caça-níquel online!
+                        Gráficos incríveis, efeitos sonoros envolventes e grandes prêmios te aguardam.
+                    </p>
+                    <button onclick="showSection('game')" class="btn-primary text-white font-bold py-4 px-8 rounded-full text-xl transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl" aria-label="Começar a jogar">
+                        🎲 JOGAR AGORA
+                    </button>
+                </div>
+
+                <!-- Features Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <div class="feature-card bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-yellow-400/30 hover:transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="text-4xl mb-4" role="img" aria-label="diamond">💎</div>
+                        <h3 class="text-xl font-bold text-yellow-400 mb-2 font-orbitron">Jackpots Incríveis</h3>
+                        <p class="text-white/80">Ganhe até 1000x sua aposta com nossos jackpots progressivos!</p>
+                    </div>
+                    <div class="feature-card bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-yellow-400/30 hover:transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="text-4xl mb-4" role="img" aria-label="gamepad">🎮</div>
+                        <h3 class="text-xl font-bold text-yellow-400 mb-2 font-orbitron">Jogabilidade Fluida</h3>
+                        <p class="text-white/80">Interface intuitiva e responsiva para a melhor experiência de jogo.</p>
+                    </div>
+                    <div class="feature-card bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-yellow-400/30 hover:transform hover:-translate-y-2 transition-all duration-300">
+                        <div class="text-4xl mb-4" role="img" aria-label="trophy">🏆</div>
+                        <h3 class="text-xl font-bold text-yellow-400 mb-2 font-orbitron">Conquistas</h3>
+                        <p class="text-white/80">Desbloqueie conquistas e acompanhe seu progresso no jogo.</p>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="bg-black/30 backdrop-blur-lg rounded-2xl p-8 border border-yellow-400/30">
+                    <h3 class="text-2xl font-bold text-yellow-400 mb-6 font-orbitron">Estatísticas do Jogo</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-400 font-orbitron" id="totalSpins" aria-label="Total de giros">0</div>
+                            <div class="text-white/80">Giros Totais</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-400 font-orbitron" id="totalWins" aria-label="Total de vitórias">0</div>
+                            <div class="text-white/80">Vitórias</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-400 font-orbitron" id="biggestWin" aria-label="Maior vitória">0</div>
+                            <div class="text-white/80">Maior Vitória</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-yellow-400 font-orbitron" id="winRate" aria-label="Taxa de vitória">0%</div>
+                            <div class="text-white/80">Taxa de Vitória</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Section -->
+        <section id="game" class="section min-h-screen flex items-center justify-center px-4 py-20" role="main" aria-labelledby="game-title">
+            <div class="max-w-4xl mx-auto w-full">
+                <h2 id="game-title" class="sr-only">Jogo do Caça-níquel</h2>
+                
+                <!-- Game Container -->
+                <div class="game-container relative rounded-3xl p-4 md:p-8 overflow-hidden">
+                    <!-- Particles Container -->
+                    <div class="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-50" id="particles" aria-hidden="true"></div>
+                    
+                    <!-- Info Panel -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="info-item relative rounded-xl p-4 text-center text-white overflow-hidden group hover:transform hover:-translate-y-1 transition-all duration-300">
+                            <div class="text-sm opacity-80 mb-2">💰 Créditos</div>
+                            <div class="text-xl md:text-2xl font-bold text-yellow-400 coin-target font-orbitron" id="credits" aria-label="Créditos atuais">1000</div>
+                        </div>
+                        <div class="info-item relative rounded-xl p-4 text-center text-white overflow-hidden group hover:transform hover:-translate-y-1 transition-all duration-300">
+                            <div class="text-sm opacity-80 mb-2">🎯 Aposta</div>
+                            <div class="text-xl md:text-2xl font-bold text-yellow-400 font-orbitron" id="bet" aria-label="Valor da aposta">50</div>
+                        </div>
+                        <div class="info-item relative rounded-xl p-4 text-center text-white overflow-hidden group hover:transform hover:-translate-y-1 transition-all duration-300">
+                            <div class="text-sm opacity-80 mb-2">🏆 Última Vitória</div>
+                            <div class="text-xl md:text-2xl font-bold text-yellow-400 font-orbitron" id="lastWin" aria-label="Última vitória">0</div>
+                        </div>
+                    </div>
+
+                    <!-- Reels Container -->
+                    <div class="reels-container flex justify-center gap-4 md:gap-6 mb-8 p-6 rounded-2xl" role="img" aria-label="Rolos do caça-níquel">
+                        <div class="reel relative w-20 h-28 md:w-32 md:h-40 border-4 border-gray-700 rounded-2xl flex items-center justify-center text-3xl md:text-5xl overflow-hidden" id="reel1" aria-label="Primeiro rolo">
+                            <div class="reel-symbols">
+                                <div class="reel-symbol" aria-label="cherry">🍒</div>
+                            </div>
+                        </div>
+                        <div class="reel relative w-20 h-28 md:w-32 md:h-40 border-4 border-gray-700 rounded-2xl flex items-center justify-center text-3xl md:text-5xl overflow-hidden" id="reel2" aria-label="Segundo rolo">
+                            <div class="reel-symbols">
+                                <div class="reel-symbol" aria-label="orange">🍊</div>
+                            </div>
+                        </div>
+                        <div class="reel relative w-20 h-28 md:w-32 md:h-40 border-4 border-gray-700 rounded-2xl flex items-center justify-center text-3xl md:text-5xl overflow-hidden" id="reel3" aria-label="Terceiro rolo">
+                            <div class="reel-symbols">
+                                <div class="reel-symbol" aria-label="lemon">🍋</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="text-center mb-6">
+                        <button
+                            class="btn-primary text-white font-bold py-3 px-6 md:py-4 md:px-12 rounded-full text-lg md:text-xl transform hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none mb-4 relative overflow-hidden font-orbitron"
+                            id="spinBtn"
+                            onclick="spin()"
+                            aria-label="Girar os rolos"
+                        >
+                            🎲 JOGAR AGORA
+                        </button>
+                        
+                        <!-- Bet Controls -->
+                        <div class="flex justify-center items-center gap-4 mt-4 flex-wrap" role="group" aria-label="Controles de aposta">
+                            <button 
+                                class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 neon-glow font-orbitron" 
+                                onclick="changeBet(-25)"
+                                aria-label="Diminuir aposta em 25"
+                            >
+                                -25
+                            </button>
+                            <span class="text-yellow-400 font-semibold mx-4 font-orbitron">Aposta</span>
+                            <button 
+                                class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 neon-glow font-orbitron" 
+                                onclick="changeBet(25)"
+                                aria-label="Aumentar aposta em 25"
+                            >
+                                +25
+                            </button>
+                        </div>
+                        
+                        <!-- Auto-spin Controls -->
+                        <div class="flex justify-center items-center gap-4 mt-4 flex-wrap" role="group" aria-label="Controles avançados">
+                            <button 
+                                class="bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 font-orbitron" 
+                                onclick="toggleAutoSpin()"
+                                id="autoSpinBtn"
+                                aria-label="Ativar ou desativar giros automáticos"
+                            >
+                                🤖 Auto Spin
+                            </button>
+                            <button 
+                                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105 font-orbitron" 
+                                onclick="maxBet()"
+                                aria-label="Apostar valor máximo"
+                            >
+                                💰 Aposta Máx
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Message Area -->
+                    <div class="text-center min-h-[40px] flex items-center justify-center mb-6" role="status" aria-live="polite">
+                        <div class="text-lg md:text-xl font-bold font-orbitron" id="message" aria-label="Mensagens do jogo"></div>
+                    </div>
+                </div>
+
+                <!-- Paylines Table -->
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-yellow-400/30 mt-8">
+                    <h3 class="text-center text-xl md:text-2xl font-bold text-yellow-400 mb-6 font-orbitron">💎 TABELA DE PAGAMENTOS</h3>
+                    <div class="space-y-3" role="table" aria-label="Tabela de pagamentos do jogo">
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">🍒🍒🍒</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">100x</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">🍊🍊🍊</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">150x</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">🍋🍋🍋</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">200x</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">🍇🍇🍇</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">300x</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">🔔🔔🔔</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">500x</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">💎💎💎</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">🎊 1000x JACKPOT! 🎊</span>
+                        </div>
+                        <div class="payline flex justify-between items-center p-3 rounded-lg text-white font-semibold" role="row">
+                            <span class="text-lg md:text-xl" role="cell">Dois iguais</span>
+                            <span class="text-yellow-400 text-lg md:text-xl" role="cell">2x</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="text-center mt-6 text-gray-300">
+                    <p class="text-sm">🎮 Use ESPAÇO para girar • ↑↓ para mudar aposta • A para auto-spin</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Historic Section -->
+        <section id="historic" class="section min-h-screen flex items-center justify-center px-4 py-20" role="main" aria-labelledby="historic-title">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-yellow-400/30">
+                    <h2 id="historic-title" class="text-3xl font-bold text-yellow-400 text-center mb-8 font-orbitron">📊 Histórico de Jogadas</h2>
+                    
+                    <!-- Statistics Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-black/30 rounded-xl p-4 text-center border border-yellow-400/20">
+                            <div class="text-2xl font-bold text-yellow-400 font-orbitron" id="histTotalSpins" aria-label="Total de jogadas">0</div>
+                            <div class="text-white/80 text-sm">Jogadas Totais</div>
+                        </div>
+                        <div class="bg-black/30 rounded-xl p-4 text-center border border-yellow-400/20">
+                            <div class="text-2xl font-bold text-green-400 font-orbitron" id="histTotalWins" aria-label="Total de vitórias">0</div>
+                            <div class="text-white/80 text-sm">Vitórias</div>
+                        </div>
+                        <div class="bg-black/30 rounded-xl p-4 text-center border border-yellow-400/20">
+                            <div class="text-2xl font-bold text-red-400 font-orbitron" id="histTotalLosses" aria-label="Total de derrotas">0</div>
+                            <div class="text-white/80 text-sm">Derrotas</div>
+                        </div>
+                        <div class="bg-black/30 rounded-xl p-4 text-center border border-yellow-400/20">
+                            <div class="text-2xl font-bold text-blue-400 font-orbitron" id="histWinPercentage" aria-label="Porcentagem de vitórias">0%</div>
+                            <div class="text-white/80 text-sm">Taxa de Vitória</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Games Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-white" role="table" aria-label="Histórico de jogadas recentes">
+                            <thead>
+                                <tr class="bg-black/50 border-b border-yellow-400/30">
+                                    <th class="text-left p-4 font-orbitron" scope="col">Data/Hora</th>
+                                    <th class="text-left p-4 font-orbitron" scope="col">Resultado</th>
+                                    <th class="text-left p-4 font-orbitron" scope="col">Aposta</th>
+                                    <th class="text-left p-4 font-orbitron" scope="col">Ganho</th>
+                                    <th class="text-left p-4 font-orbitron" scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gameHistory">
+                                <!-- Game history will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Clear History Button -->
+                    <div class="text-center mt-6">
+                        <button onclick="clearHistory()" class="bg-red-600 hover:bg-red-500 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105" aria-label="Limpar todo o histórico">
+                            🗑️ Limpar Histórico
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Config Section -->
+        <section id="config" class="section min-h-screen flex items-center justify-center px-4 py-20" role="main" aria-labelledby="config-title">
+            <div class="max-w-4xl mx-auto w-full">
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-yellow-400/30">
+                    <h2 id="config-title" class="text-3xl font-bold text-yellow-400 text-center mb-8 font-orbitron">⚙️ Configurações</h2>
+                    
+                    <!-- Sound Settings -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-white mb-4 font-orbitron">🔊 Som</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Volume dos Efeitos</div>
+                                    <div class="text-gray-400 text-sm">Ajustar volume dos efeitos sonoros</div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="range" id="soundVolume" min="0" max="100" value="50" class="slider" aria-label="Volume dos efeitos sonoros">
+                                    <span class="text-yellow-400 font-orbitron w-12 text-right" id="soundVolumeValue" aria-live="polite">50%</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Volume da Música</div>
+                                    <div class="text-gray-400 text-sm">Ajustar volume da música de fundo</div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="range" id="musicVolume" min="0" max="100" value="75" class="slider" aria-label="Volume da música de fundo">
+                                    <span class="text-yellow-400 font-orbitron w-12 text-right" id="musicVolumeValue" aria-live="polite">75%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Settings -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-white mb-4 font-orbitron">👁️ Visual</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Efeitos Visuais</div>
+                                    <div class="text-gray-400 text-sm">Ativar/desativar partículas e animações</div>
+                                </div>
+                                <label class="toggle-switch" aria-label="Ativar ou desativar efeitos visuais">
+                                    <input type="checkbox" id="visualEffects" checked aria-describedby="visualEffectsDesc">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div id="visualEffectsDesc" class="sr-only">Controla se partículas e animações são exibidas</div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Animações Reduzidas</div>
+                                    <div class="text-gray-400 text-sm">Reduzir animações para melhor performance</div>
+                                </div>
+                                <label class="toggle-switch" aria-label="Ativar ou desativar animações reduzidas">
+                                    <input type="checkbox" id="reducedAnimations" aria-describedby="reducedAnimationsDesc">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div id="reducedAnimationsDesc" class="sr-only">Reduz animações para melhor acessibilidade e performance</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Game Settings -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold text-white mb-4 font-orbitron">🎮 Jogo</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Auto-Spin Rápido</div>
+                                    <div class="text-gray-400 text-sm">Velocidade do auto-spin (1-5 segundos)</div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <input type="range" id="autoSpinSpeed" min="1" max="5" value="3" class="slider" aria-label="Velocidade do auto-spin em segundos">
+                                    <span class="text-yellow-400 font-orbitron w-8 text-right" id="autoSpinSpeedValue" aria-live="polite">3s</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center justify-between p-4 bg-black/30 rounded-lg border border-yellow-400/20">
+                                <div>
+                                    <div class="text-white font-medium">Confirmação de Reset</div>
+                                    <div class="text-gray-400 text-sm">Pedir confirmação antes de resetar dados</div>
+                                </div>
+                                <label class="toggle-switch" aria-label="Ativar ou desativar confirmação de reset">
+                                    <input type="checkbox" id="confirmReset" checked aria-describedby="confirmResetDesc">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <div id="confirmResetDesc" class="sr-only">Controla se é necessário confirmar antes de resetar dados</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save/Reset Buttons -->
+                    <div class="flex justify-center space-x-4 flex-wrap gap-2">
+                        <button onclick="saveSettings()" class="bg-green-600 hover:bg-green-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105" aria-label="Salvar todas as configurações">
+                            💾 Salvar Configurações
+                        </button>
+                        <button onclick="resetSettings()" class="bg-red-600 hover:bg-red-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105" aria-label="Restaurar configurações padrão">
+                            🔄 Restaurar Padrão
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="section min-h-screen flex items-center justify-center px-4 py-20" role="main" aria-labelledby="faq-title">
+            <div class="max-w-4xl mx-auto w-full">
+                <div class="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-yellow-400/30">
+                    <h2 id="faq-title" class="text-3xl font-bold text-yellow-400 text-center mb-8 font-orbitron">❓ Perguntas Frequentes</h2>
+                    
+                    <div class="space-y-6">
+                        <!-- FAQ Item 1 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(1)" aria-expanded="false" aria-controls="faq-answer-1">
+                                <span>🎰 Como funciona o jogo?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-1" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-1">
+                                <p>O Caça-níquel da Fortuna é um jogo de slots onde você aposta créditos e tenta formar combinações vencedoras nos três rolos. Cada combinação tem um pagamento diferente, sendo o jackpot de 💎💎💎 o maior prêmio com 1000x sua aposta!</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 2 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(2)" aria-expanded="false" aria-controls="faq-answer-2">
+                                <span>💰 Como funcionam os pagamentos?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-2" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-2">
+                                <p>Os pagamentos são baseados na sua aposta multiplicada pelo valor da combinação:<br>
+                                • 🍒🍒🍒 = 100x sua aposta<br>
+                                • 🍊🍊🍊 = 150x sua aposta<br>
+                                • 🍋🍋🍋 = 200x sua aposta<br>
+                                • 🍇🍇🍇 = 300x sua aposta<br>
+                                • 🔔🔔🔔 = 500x sua aposta<br>
+                                • 💎💎💎 = 1000x sua aposta (JACKPOT!)<br>
+                                • Dois símbolos iguais = 2x sua aposta</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 3 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(3)" aria-expanded="false" aria-controls="faq-answer-3">
+                                <span>🎮 Quais são os controles do jogo?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-3" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-3">
+                                <p>Você pode controlar o jogo usando:<br>
+                                • <strong>ESPAÇO</strong>: Girar os rolos<br>
+                                • <strong>↑/↓</strong>: Aumentar/diminuir aposta<br>
+                                • <strong>A</strong>: Ativar/desativar auto-spin<br>
+                                • <strong>M</strong>: Aposta máxima<br>
+                                • <strong>Mouse/Touch</strong>: Clique nos botões na tela</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 4 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(4)" aria-expanded="false" aria-controls="faq-answer-4">
+                                <span>⚙️ Como salvar meu progresso?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-4" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-4">
+                                <p>Seu progresso é salvo automaticamente no navegador usando localStorage. Isso inclui seus créditos, histórico de jogadas, configurações e estatísticas. Para não perder seus dados, evite limpar os dados do navegador.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 5 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(5)" aria-expanded="false" aria-controls="faq-answer-5">
+                                <span>🎲 O jogo é justo?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-5" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-5">
+                                <p>Sim! O jogo usa o gerador de números aleatórios do JavaScript (Math.random()) para determinar os resultados. Cada giro é completamente independente e aleatório. A taxa de vitória é balanceada para proporcionar uma experiência divertida e justa.</p>
+                            </div>
+                        </div>
+
+                        <!-- FAQ Item 6 -->
+                        <div class="faq-item bg-black/30 rounded-lg border border-yellow-400/20 overflow-hidden">
+                            <button class="faq-question w-full text-left p-6 text-white font-semibold hover:bg-yellow-400/10 transition-colors duration-300 flex justify-between items-center" onclick="toggleFAQ(6)" aria-expanded="false" aria-controls="faq-answer-6">
+                                <span>📱 O jogo funciona em dispositivos móveis?</span>
+                                <span class="faq-icon transform transition-transform duration-300" aria-hidden="true">▼</span>
+                            </button>
+                            <div id="faq-answer-6" class="faq-answer hidden p-6 pt-0 text-gray-300" role="region" aria-labelledby="faq-question-6">
+                                <p>Absolutamente! O jogo foi desenvolvido com design responsivo e funciona perfeitamente em smartphones, tablets e desktops. Em dispositivos móveis, você pode deslizar para cima/baixo para alterar a aposta e usar todos os controles touch na tela.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Background Animation -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0" id="bgAnimation" aria-hidden="true"></div>
+
+    <!-- Footer -->
+    <footer class="bg-black/20 backdrop-blur-lg border-t border-yellow-400/30 py-6 relative z-10" role="contentinfo">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-white/80">
+                © 2025 Caça-níquel da Fortuna. Desenvolvido com ❤️ para sua diversão!
+            </p>
+            <p class="text-white/60 text-sm mt-2">
+                Jogue com responsabilidade. Este é um jogo de entretenimento.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Error Boundary -->
+    <div id="errorBoundary" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <div class="bg-red-900 border border-red-600 rounded-lg p-6 max-w-md mx-4">
+            <h3 class="text-white font-bold mb-2">⚠️ Erro Detectado</h3>
+            <p class="text-red-200 mb-4">Ocorreu um erro inesperado. Recarregue a página para continuar jogando.</p>
+            <button onclick="location.reload()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">
+                🔄 Recarregar
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts - Load in order -->
+    <script>
+        // Loading screen and error handling
+        let loadingProgress = 0;
+        const progressBar = document.getElementById('loadingProgress');
+        
+        function updateProgress(percent) {
+            loadingProgress = Math.min(percent, 100);
+            if (progressBar) {
+                progressBar.style.width = loadingProgress + '%';
+            }
+        }
+        
+        // Global error handler
+        window.addEventListener('error', (e) => {
+            console.error('Global error:', e);
+            document.getElementById('errorBoundary')?.classList.remove('hidden');
+        });
+        
+        window.addEventListener('unhandledrejection', (e) => {
+            console.error('Unhandled promise rejection:', e);
+        });
+        
+        updateProgress(20);
+    </script>
+    
+    <script src="game.js" onload="updateProgress(50)" onerror="console.error('Failed to load game.js')"></script>
+    <script src="navigation.js" onload="updateProgress(70)" onerror="console.error('Failed to load navigation.js')"></script>
+    <script src="settings.js" onload="updateProgress(90)" onerror="console.error('Failed to load settings.js')"></script>
+    
+    <!-- External CSS loaded after critical content -->
+    <link rel="stylesheet" href="styles.css" onload="updateProgress(100)">
+    
+    <script>
+        // Initialize app after all scripts loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('loadingScreen');
+                if (loadingScreen) {
+                    loadingScreen.style.opacity = '0';
+                    loadingScreen.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        loadingScreen.remove();
+                    }, 500);
+                }
+            }, 1000);
+        });
+        
+        // Service Worker registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
