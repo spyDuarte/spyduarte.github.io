@@ -1,0 +1,73 @@
+const GAME_STATE = {
+  credits: 1000,
+  bet: 50,
+  totalSpins: 0,
+  totalWins: 0,
+};
+
+const SYMBOLS = ['🍒', '🍊', '🍋', '🍇', '🔔', '💎'];
+const PAYOUTS = {
+  '🍒🍒🍒': 100,
+  '🍊🍊🍊': 150,
+  '🍋🍋🍋': 200,
+  '🍇🍇🍇': 300,
+  '🔔🔔🔔': 500,
+  '💎💎💎': 1000,
+};
+
+const updateDisplay = () => {
+  const creditsEl = document.getElementById('credits');
+  const betEl = document.getElementById('bet');
+  if (creditsEl) creditsEl.textContent = GAME_STATE.credits;
+  if (betEl) betEl.textContent = GAME_STATE.bet;
+};
+
+const changeBet = (delta) => {
+  const newBet = GAME_STATE.bet + delta;
+  GAME_STATE.bet = Math.max(25, Math.min(newBet, GAME_STATE.credits));
+  updateDisplay();
+};
+
+const getRandomSymbol = () =>
+  SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+
+const checkWin = (r1, r2, r3) => {
+  const combo = r1 + r2 + r3;
+  if (PAYOUTS[combo]) return PAYOUTS[combo] * GAME_STATE.bet;
+  if (r1 === r2 || r1 === r3 || r2 === r3) return GAME_STATE.bet * 2;
+  return 0;
+};
+
+const spin = () => {
+  if (GAME_STATE.credits < GAME_STATE.bet) return null;
+  GAME_STATE.credits -= GAME_STATE.bet;
+
+  const reel1 = getRandomSymbol();
+  const reel2 = getRandomSymbol();
+  const reel3 = getRandomSymbol();
+
+  const win = checkWin(reel1, reel2, reel3);
+  if (win > 0) {
+    GAME_STATE.credits += win;
+    GAME_STATE.totalWins += 1;
+  }
+  GAME_STATE.totalSpins += 1;
+
+  updateDisplay();
+  return { reels: [reel1, reel2, reel3], win };
+};
+
+const clearHistory = () => {
+  const historyEl = document.getElementById('gameHistory');
+  if (historyEl) historyEl.innerHTML = '';
+};
+
+if (typeof module !== 'undefined') {
+  module.exports = {
+    GAME_STATE,
+    changeBet,
+    spin,
+    clearHistory,
+    updateDisplay,
+  };
+}

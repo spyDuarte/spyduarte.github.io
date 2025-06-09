@@ -1,0 +1,22 @@
+const SETTINGS = {
+  soundVolume: 50,
+  musicVolume: 75,
+  visualEffects: true,
+  reducedAnimations: false,
+};
+
+document.getElementById('soundVolume')?.addEventListener('input', (e) => {
+  SETTINGS.soundVolume = parseInt(e.target.value, 10);
+  const span = document.getElementById('soundVolumeValue');
+  if (span) span.textContent = `${SETTINGS.soundVolume}%`;
+});
+
+document.getElementById('musicVolume')?.addEventListener('input', (e) => {
+  SETTINGS.musicVolume = parseInt(e.target.value, 10);
+  const span = document.getElementById('musicVolumeValue');
+  if (span) span.textContent = `${SETTINGS.musicVolume}%`;
+});
+
+if (typeof module !== 'undefined') {
+  module.exports = { SETTINGS };
+}
