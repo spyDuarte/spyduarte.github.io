@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=Poppins:wght@400;500;600;700;800"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <title>Finalizar Compra - Loja dos Universitários</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .text-primary { color: #4f46e5; }
+      .bg-primary { background-color: #4f46e5; }
+      .border-primary { border-color: #4f46e5; }
+      .hover-primary:hover { color: #4f46e5; }
+      .hover-bg-primary:hover { background-color: #4f46e5; }
+      .step-active { 
+        background-color: #4f46e5; 
+        color: white; 
+      }
+      .step-completed { 
+        background-color: #10b981; 
+        color: white; 
+      }
+      .step-inactive { 
+        background-color: #e5e7eb; 
+        color: #6b7280; 
+      }
+    </style>
+</head>
+<body class="bg-gray-50" style="font-family: 'Inter', 'Poppins', sans-serif;">
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <!-- Header -->
+            <header class="sticky top-0 z-50 bg-white shadow-sm">
+                <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
+                    <!-- Logo -->
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">
+                                <a href="index.html">Loja dos Universitários</a>
+                            </h2>
+                            <p class="text-xs text-gray-500">Finalizando sua compra</p>
+                        </div>
+                    </div>
+
+                    <!-- Security Badge -->
+                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Compra Segura</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Progress Steps -->
+            <div class="bg-white border-b border-gray-200 py-6">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="step-completed w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">
+                                ✓
+                            </div>
+                            <span class="ml-3 text-sm font-medium text-gray-900">Carrinho</span>
+                        </div>
+                        <div class="flex-1 mx-4 h-px bg-gray-300"></div>
+                        <div class="flex items-center">
+                            <div class="step-active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">
+                                2
+                            </div>
+                            <span class="ml-3 text-sm font-medium text-primary">Dados & Entrega</span>
+                        </div>
+                        <div class="flex-1 mx-4 h-px bg-gray-300"></div>
+                        <div class="flex items-center">
+                            <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">
+                                3
+                            </div>
+                            <span class="ml-3 text-sm font-medium text-gray-500">Pagamento</span>
+                        </div>
+                        <div class="flex-1 mx-4 h-px bg-gray-300"></div>
+                        <div class="flex items-center">
+                            <div class="step-inactive w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">
+                                4
+                            </div>
+                            <span class="ml-3 text-sm font-medium text-gray-500">Confirmação</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <main class="flex-1 py-8">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Checkout Form -->
+                        <div class="lg:col-span-2 space-y-8">
+                            
+                            <!-- Login/Register -->
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h2 class="text-xl font-semibold mb-4">1. Identificação</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <button class="p-4 border-2 border-primary bg-blue-50 text-primary rounded-lg font-medium hover:bg-blue-100 transition-colors">
+                                        ✓ Já tenho cadastro
+                                    </button>
+                                    <button class="p-4 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-gray-400 transition-colors">
+                                        Criar nova conta
+                                    </button>
+                                </div>
+                                <div class="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                                    <p class="text-green-800 text-sm">
+                                        🎓 <strong>Desconto Estudante Ativo!</strong> Você já possui 10% de desconto aplicado.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Personal Information -->
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h2 class="text-xl font-semibold mb-4">2. Dados Pessoais</h2>
+                                <form class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                                            <input type="text" value="Maria Silva Santos" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">CPF</label>
+                                            <input type="text" value="123.456.789-00" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
+                                            <input type="email" value="maria.silva@email.com" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Telefone</label>
+                                            <input type="tel" value="(11) 99999-9999" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Data de Nascimento</label>
+                                        <input type="date" value="1995-06-15" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 md:w-auto">
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Address Information -->
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h2 class="text-xl font-semibold mb-4">3. Endereço de Entrega</h2>
+                                <form class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">CEP</label>
+                                            <input type="text" placeholder="00000-000" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Endereço</label>
+                                            <input type="text" placeholder="Rua, Avenida, etc." 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Número</label>
+                                            <input type="text" placeholder="123" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Complemento</label>
+                                            <input type="text" placeholder="Apartamento, bloco, etc. (opcional)" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Bairro</label>
+                                            <input type="text" placeholder="Bairro" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Cidade</label>
+                                            <input type="text" placeholder="Cidade" 
+                                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
+                                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                                                <option>SP</option>
+                                                <option>RJ</option>
+                                                <option>MG</option>
+                                                <option>RS</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Shipping Options -->
+                            <div class="bg-white rounded-lg shadow-sm p-6">
+                                <h2 class="text-xl font-semibold mb-4">4. Forma de Entrega</h2>
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-4 border-2 border-green-500 bg-green-50 rounded-lg cursor-pointer">
+                                        <input type="radio" name="shipping" value="free" checked 
+                                               class="text-primary focus:ring-primary border-gray-300">
+                                        <div class="ml-4 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="font-semibold text-green-800">📦 Frete Grátis - Estudante</p>
+                                                <p class="font-bold text-green-800">GRÁTIS</p>
+                                            </div>
+                                            <p class="text-sm text-green-700">Entrega em 5-7 dias úteis • Benefício exclusivo para estudantes</p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-gray-400">
+                                        <input type="radio" name="shipping" value="express" 
+                                               class="text-primary focus:ring-primary border-gray-300">
+                                        <div class="ml-4 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="font-semibold">🚚 Entrega Expressa</p>
+                                                <p class="font-bold text-primary">R$ 15,90</p>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Entrega em 2-3 dias úteis</p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:border-gray-400">
+                                        <input type="radio" name="shipping" value="pickup" 
+                                               class="text-primary focus:ring-primary border-gray-300">
+                                        <div class="ml-4 flex-1">
+                                            <div class="flex items-center justify-between">
+                                                <p class="font-semibold">🏪 Retirar na Loja</p>
+                                                <p class="font-bold text-green-600">GRÁTIS</p>
+                                            </div>
+                                            <p class="text-sm text-gray-600">Disponível em 1 dia útil • Shopping Center Norte</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Continue Button -->
+                            <div class="flex justify-between">
+                                <button class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                                        onclick="window.location.href='cart.html'">
+                                    ← Voltar ao Carrinho
+                                </button>
+                                <button class="px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-indigo-600 transition-colors"
+                                        onclick="continueToPayment()">
+                                    Continuar para Pagamento →
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="lg:col-span-1">
+                            <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
+                                <h3 class="text-xl font-semibold mb-6">Resumo do Pedido</h3>
+                                
+                                <!-- Items -->
+                                <div class="space-y-4 mb-6">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center text-2xl">
+                                            📚
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-sm">Cálculo I - Stewart</h4>
+                                            <p class="text-xs text-gray-600">Qty: 1</p>
+                                            <p class="text-sm font-semibold text-primary">R$ 89,90</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-yellow-100 to-yellow-200 rounded-lg flex items-center justify-center text-2xl">
+                                            🎒
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-sm">Mochila Executiva</h4>
+                                            <p class="text-xs text-gray-600">Qty: 1</p>
+                                            <p class="text-sm font-semibold text-primary">R$ 149,90</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-16 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center text-2xl">
+                                            ☕
+                                        </div>
+                                        <div class="flex-1">
+                                            <h4 class="font-medium text-sm">Caneca Térmica</h4>
+                                            <p class="text-xs text-gray-600">Qty: 2</p>
+                                            <p class="text-sm font-semibold text-primary">R$ 79,80</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="border-gray-200 mb-4">
+
+                                <!-- Pricing -->
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Subtotal (4 itens)</span>
+                                        <span>R$ 319,60</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between text-green-600">
+                                        <span>Desconto Estudante (-10%)</span>
+                                        <span>-R$ 31,96</span>
+                                    </div>
+                                    
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Frete</span>
+                                        <span class="text-green-600 font-medium">Grátis</span>
+                                    </div>
+                                    
+                                    <hr class="border-gray-200">
+                                    
+                                    <div class="flex justify-between text-lg font-bold">
+                                        <span>Total</span>
+                                        <span class="text-primary">R$ 287,64</span>
+                                    </div>
+                                </div>
+
+                                <!-- Coupon -->
+                                <div class="mt-6 p-3 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center gap-2 text-sm text-gray-600">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.856.048L9.935 13.6 6.5 11.866a1 1 0 010-1.732L9.935 8.4l1.176-4.656A1 1 0 0112 2z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span>Cupom ESTUDANTE10 aplicado</span>
+                                    </div>
+                                </div>
+
+                                <!-- Benefits -->
+                                <div class="mt-6 p-4 bg-green-50 rounded-lg">
+                                    <div class="flex items-center gap-2 text-green-700 mb-2">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        <span class="text-sm font-medium">Você está economizando:</span>
+                                    </div>
+                                    <ul class="text-xs text-green-700 space-y-1">
+                                        <li>• R$ 31,96 (desconto estudante)</li>
+                                        <li>• R$ 15,90 (frete grátis)</li>
+                                        <li><strong>Total economizado: R$ 47,86</strong></li>
+                                    </ul>
+                                </div>
+
+                                <!-- Security -->
+                                <div class="mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                                    </svg>
+                                    <span>Seus dados estão protegidos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-gray-300 py-8">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <p class="text-sm">&copy; 2024 Loja dos Universitários. Todos os direitos reservados.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        function continueToPayment() {
+            // Validate required fields
+            const requiredFields = document.querySelectorAll('input[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            
+            if (isValid) {
+                // In a real implementation, this would process the form and redirect
+                alert('✅ Dados validados! Redirecionando para o pagamento...');
+                setTimeout(() => {
+                    window.location.href = 'profile.html'; // Simulating redirect to payment
+                }, 1000);
+            } else {
+                alert('⚠️ Por favor, preencha todos os campos obrigatórios.');
+            }
+        }
+
+        // Auto-fill address based on CEP (simulation)
+        document.addEventListener('DOMContentLoaded', function() {
+            const cepInput = document.querySelector('input[placeholder="00000-000"]');
+            if (cepInput) {
+                cepInput.addEventListener('blur', function() {
+                    if (this.value.length >= 8) {
+                        // Simulate API call to fill address
+                        setTimeout(() => {
+                            const enderecoInput = document.querySelector('input[placeholder="Rua, Avenida, etc."]');
+                            const bairroInput = document.querySelector('input[placeholder="Bairro"]');
+                            const cidadeInput = document.querySelector('input[placeholder="Cidade"]');
+                            
+                            if (enderecoInput && !enderecoInput.value) {
+                                enderecoInput.value = 'Rua das Flores';
+                                bairroInput.value = 'Centro';
+                                cidadeInput.value = 'São Paulo';
+                            }
+                        }, 500);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

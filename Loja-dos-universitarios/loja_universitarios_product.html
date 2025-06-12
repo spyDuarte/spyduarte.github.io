@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <link crossorigin="" href="https://fonts.gstatic.com/" rel="preconnect" />
+    <link
+      as="style"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Inter:wght@300;400;500;600;700;800&amp;family=Poppins:wght@400;500;600;700;800"
+      onload="this.rel='stylesheet'"
+      rel="stylesheet"
+    />
+    <title>Livro: Cálculo I - Loja dos Universitários</title>
+    <link href="data:image/x-icon;base64," rel="icon" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <style>
+      .text-primary { color: #4f46e5; }
+      .bg-primary { background-color: #4f46e5; }
+      .border-primary { border-color: #4f46e5; }
+      .hover-primary:hover { color: #4f46e5; }
+      .hover-bg-primary:hover { background-color: #4f46e5; }
+      .tab-active { 
+        border-bottom: 2px solid #4f46e5; 
+        color: #4f46e5; 
+        font-weight: 600;
+      }
+      .star-filled { color: #fbbf24; }
+      .star-empty { color: #d1d5db; }
+    </style>
+</head>
+<body class="bg-gray-50" style="font-family: 'Inter', 'Poppins', sans-serif;">
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <!-- Header -->
+            <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
+                <div class="mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
+                    <!-- Logo -->
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                            <svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">
+                                <a href="index.html">Loja dos Universitários</a>
+                            </h2>
+                            <p class="text-xs text-gray-500">Sua vida acadêmica completa</p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav class="hidden lg:flex items-center gap-8">
+                        <a class="text-sm font-medium text-gray-700 hover-primary transition-colors" href="index.html">Home</a>
+                        <a class="text-sm font-medium text-gray-700 hover-primary transition-colors" href="products.html">Produtos</a>
+                        <a class="text-sm font-medium text-gray-700 hover-primary transition-colors" href="profile.html">Ofertas</a>
+                        <a class="text-sm font-medium text-gray-700 hover-primary transition-colors" href="profile.html">Contato</a>
+                    </nav>
+
+                    <!-- Actions -->
+                    <div class="flex items-center gap-3">
+                        <button class="hidden sm:flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-medium rounded-lg transition-colors"
+                                onclick="window.location.href='profile.html'">
+                            <span>Entrar</span>
+                        </button>
+                        <button class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-indigo-600 text-white text-sm font-medium rounded-lg transition-colors"
+                                onclick="window.location.href='cart.html'">
+                            <svg fill="currentColor" height="20" viewBox="0 0 24 24" width="20">
+                                <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                            </svg>
+                            <span>Carrinho</span>
+                            <span class="bg-white text-indigo-600 px-2 py-1 rounded-full text-xs font-bold">3</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+                <div class="max-w-7xl mx-auto">
+                    
+                    <!-- Breadcrumb -->
+                    <nav class="mb-6">
+                        <ol class="flex items-center space-x-2 text-sm text-gray-500">
+                            <li><a href="index.html" class="hover-primary">Home</a></li>
+                            <li><span class="mx-2">/</span></li>
+                            <li><a href="products.html" class="hover-primary">Livros</a></li>
+                            <li><span class="mx-2">/</span></li>
+                            <li class="text-gray-900 font-medium">Cálculo I</li>
+                        </ol>
+                    </nav>
+
+                    <!-- Product Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
+                        
+                        <!-- Product Images -->
+                        <div class="space-y-4">
+                            <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-xl flex items-center justify-center text-9xl shadow-lg">
+                                📚
+                            </div>
+                            <div class="grid grid-cols-4 gap-4">
+                                <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center text-2xl cursor-pointer border-2 border-primary">
+                                    📚
+                                </div>
+                                <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center text-2xl cursor-pointer border-2 border-transparent hover:border-gray-300">
+                                    📖
+                                </div>
+                                <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center text-2xl cursor-pointer border-2 border-transparent hover:border-gray-300">
+                                    📋
+                                </div>
+                                <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 rounded-lg flex items-center justify-center text-2xl cursor-pointer border-2 border-transparent hover:border-gray-300">
+                                    📄
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product Info -->
+                        <div class="space-y-6">
+                            <div>
+                                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                                    Cálculo - Volume I
+                                </h1>
+                                <p class="text-xl text-gray-600 mb-4">James Stewart - 8ª Edição</p>
+                                
+                                <!-- Rating -->
+                                <div class="flex items-center gap-2 mb-4">
+                                    <div class="flex gap-1">
+                                        <span class="star-filled text-xl">★</span>
+                                        <span class="star-filled text-xl">★</span>
+                                        <span class="star-filled text-xl">★</span>
+                                        <span class="star-filled text-xl">★</span>
+                                        <span class="star-filled text-xl">★</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">(4.8) • 247 avaliações</span>
+                                </div>
+                            </div>
+
+                            <!-- Price -->
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <div class="flex items-baseline gap-4 mb-4">
+                                    <span class="text-4xl font-bold text-primary">R$ 89,90</span>
+                                    <span class="text-xl text-gray-500 line-through">R$ 120,00</span>
+                                    <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">25% OFF</span>
+                                </div>
+                                
+                                <!-- Payment Options -->
+                                <div class="space-y-2 text-sm text-gray-700">
+                                    <p>💳 <strong>R$ 89,90</strong> à vista no PIX (5% desconto adicional)</p>
+                                    <p>💳 <strong>3x de R$ 29,97</strong> sem juros no cartão</p>
+                                    <p>💳 <strong>6x de R$ 14,98</strong> sem juros no cartão</p>
+                                    <p>💳 <strong>12x de R$ 8,79</strong> com juros</p>
+                                </div>
+                            </div>
+
+                            <!-- Special Offers -->
+                            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                <h3 class="font-semibold text-blue-900 mb-2">🎓 Oferta Especial para Estudantes</h3>
+                                <ul class="text-sm text-blue-800 space-y-1">
+                                    <li>✓ Frete grátis para todo o Brasil</li>
+                                    <li>✓ Desconto adicional com comprovante de matrícula</li>
+                                    <li>✓ Material de apoio digital incluso</li>
+                                    <li>✓ Acesso a videoaulas complementares</li>
+                                </ul>
+                            </div>
+
+                            <!-- Product Options -->
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Formato:</label>
+                                    <div class="flex gap-3">
+                                        <button class="px-4 py-2 border-2 border-primary bg-primary text-white rounded-lg font-medium">
+                                            Físico
+                                        </button>
+                                        <button class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-primary hover:text-primary">
+                                            Digital (PDF)
+                                        </button>
+                                        <button class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-medium hover:border-primary hover:text-primary">
+                                            Combo (Físico + Digital)
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Quantidade:</label>
+                                    <div class="flex items-center gap-3">
+                                        <button class="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50" onclick="decreaseQty()">-</button>
+                                        <span class="w-16 text-center text-lg font-medium" id="quantity">1</span>
+                                        <button class="w-10 h-10 rounded-lg border border-gray-300 flex items-center justify-center hover:bg-gray-50" onclick="increaseQty()">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="space-y-4">
+                                <button class="w-full bg-primary text-white py-4 rounded-lg text-lg font-semibold hover:bg-indigo-600 transition-colors"
+                                        onclick="addToCart()">
+                                    🛒 Adicionar ao Carrinho
+                                </button>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <button class="flex items-center justify-center gap-2 border-2 border-primary text-primary py-3 rounded-lg font-semibold hover:bg-primary hover:text-white transition-colors">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                                        </svg>
+                                        Favoritar
+                                    </button>
+                                    <button class="flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:border-gray-400 transition-colors">
+                                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                                        </svg>
+                                        Compartilhar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Shipping Info -->
+                            <div class="border-t border-gray-200 pt-6">
+                                <h3 class="font-semibold mb-3">📦 Informações de Entrega</h3>
+                                <div class="flex gap-4">
+                                    <input type="text" placeholder="Digite seu CEP" 
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <button class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                                        Calcular
+                                    </button>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-2">📍 Entrega grátis para estudantes em todo o Brasil</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Details Tabs -->
+                    <div class="bg-white rounded-lg shadow-sm">
+                        <div class="border-b border-gray-200">
+                            <nav class="flex space-x-8 px-6">
+                                <button class="py-4 text-sm font-medium tab-active" onclick="showTab('description')">
+                                    Descrição
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700" onclick="showTab('specifications')">
+                                    Especificações
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700" onclick="showTab('reviews')">
+                                    Avaliações (247)
+                                </button>
+                                <button class="py-4 text-sm font-medium text-gray-500 hover:text-gray-700" onclick="showTab('questions')">
+                                    Perguntas
+                                </button>
+                            </nav>
+                        </div>
+
+                        <!-- Tab Contents -->
+                        <div class="p-6">
+                            <!-- Description Tab -->
+                            <div id="description-tab">
+                                <h3 class="text-xl font-semibold mb-4">Sobre o Livro</h3>
+                                <div class="prose max-w-none text-gray-700 space-y-4">
+                                    <p>
+                                        O livro "Cálculo - Volume I" de James Stewart é amplamente reconhecido como uma das melhores introduções ao cálculo diferencial e integral. Esta 8ª edição traz atualizações importantes e novos exercícios que ajudam estudantes a compreender os conceitos fundamentais do cálculo.
+                                    </p>
+                                    <p>
+                                        <strong>Ideal para:</strong> Estudantes de Engenharia, Matemática, Física, Economia e outras áreas que necessitam de uma base sólida em cálculo.
+                                    </p>
+                                    
+                                    <h4 class="text-lg font-semibold mt-6 mb-3">Principais características:</h4>
+                                    <ul class="list-disc list-inside space-y-2">
+                                        <li>Explicações claras e didáticas dos conceitos</li>
+                                        <li>Mais de 1.000 exercícios graduados por dificuldade</li>
+                                        <li>Exemplos práticos e aplicações reais</li>
+                                        <li>Gráficos e ilustrações que facilitam o entendimento</li>
+                                        <li>Seções especiais sobre resolução de problemas</li>
+                                        <li>Material complementar online</li>
+                                    </ul>
+
+                                    <h4 class="text-lg font-semibold mt-6 mb-3">Conteúdo programático:</h4>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>Funções e Modelos</li>
+                                        <li>Limites e Derivadas</li>
+                                        <li>Regras de Derivação</li>
+                                        <li>Aplicações da Derivação</li>
+                                        <li>Integrais</li>
+                                        <li>Aplicações da Integração</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Specifications Tab -->
+                            <div id="specifications-tab" class="hidden">
+                                <h3 class="text-xl font-semibold mb-4">Especificações Técnicas</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <h4 class="font-semibold mb-3">Informações do Livro</h4>
+                                        <dl class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Título:</dt>
+                                                <dd class="font-medium">Cálculo - Volume I</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Autor:</dt>
+                                                <dd class="font-medium">James Stewart</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Edição:</dt>
+                                                <dd class="font-medium">8ª Edição</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Editora:</dt>
+                                                <dd class="font-medium">Cengage Learning</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Ano:</dt>
+                                                <dd class="font-medium">2023</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Idioma:</dt>
+                                                <dd class="font-medium">Português</dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold mb-3">Características Físicas</h4>
+                                        <dl class="space-y-2 text-sm">
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Páginas:</dt>
+                                                <dd class="font-medium">896 páginas</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Dimensões:</dt>
+                                                <dd class="font-medium">21 x 28 cm</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Peso:</dt>
+                                                <dd class="font-medium">1.8 kg</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Capa:</dt>
+                                                <dd class="font-medium">Brochura</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">Papel:</dt>
+                                                <dd class="font-medium">Offset 75g</dd>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <dt class="text-gray-600">ISBN:</dt>
+                                                <dd class="font-medium">978-85-22-12345-6</dd>
+                                            </div>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Reviews Tab -->
+                            <div id="reviews-tab" class="hidden">
+                                <h3 class="text-xl font-semibold mb-6">Avaliações dos Estudantes</h3>
+                                
+                                <!-- Rating Summary -->
+                                <div class="bg-gray-50 p-6 rounded-lg mb-8">
+                                    <div class="flex items-center gap-8">
+                                        <div class="text-center">
+                                            <div class="text-5xl font-bold text-primary mb-2">4.8</div>
+                                            <div class="flex justify-center gap-1 mb-2">
+                                                <span class="star-filled text-xl">★</span>
+                                                <span class="star-filled text-xl">★</span>
+                                                <span class="star-filled text-xl">★</span>
+                                                <span class="star-filled text-xl">★</span>
+                                                <span class="star-filled text-xl">★</span>
+                                            </div>
+                                            <p class="text-sm text-gray-600">247 avaliações</p>
+                                        </div>
+                                        <div class="flex-1">
+                                            <div class="space-y-2">
+                                                <div class="flex items-center gap-3">
+                                                    <span class="text-sm w-8">5★</span>
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 75%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 w-12">185</span>
+                                                </div>
+                                                <div class="flex items-center gap-3">
+                                                    <span class="text-sm w-8">4★</span>
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 15%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 w-12">37</span>
+                                                </div>
+                                                <div class="flex items-center gap-3">
+                                                    <span class="text-sm w-8">3★</span>
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 6%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 w-12">15</span>
+                                                </div>
+                                                <div class="flex items-center gap-3">
+                                                    <span class="text-sm w-8">2★</span>
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 3%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 w-12">7</span>
+                                                </div>
+                                                <div class="flex items-center gap-3">
+                                                    <span class="text-sm w-8">1★</span>
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-yellow-400 h-2 rounded-full" style="width: 1%"></div>
+                                                    </div>
+                                                    <span class="text-sm text-gray-600 w-12">3</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Individual Reviews -->
+                                <div class="space-y-6">
+                                    <div class="border-b border-gray-200 pb-6">
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                                M
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <h4 class="font-semibold">Maria Silva</h4>
+                                                    <span class="text-sm text-gray-500">• Engenharia Civil</span>
+                                                    <div class="flex gap-1">
+                                                        <span class="star-filled text-sm">★★★★★</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-gray-700 mb-2">
+                                                    Excelente livro! As explicações são muito claras e os exercícios têm uma progressão bem pensada. Me ajudou muito na disciplina de Cálculo I. Recomendo para todos os estudantes de exatas.
+                                                </p>
+                                                <p class="text-sm text-gray-500">Há 2 semanas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="border-b border-gray-200 pb-6">
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                                J
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <h4 class="font-semibold">João Santos</h4>
+                                                    <span class="text-sm text-gray-500">• Matemática</span>
+                                                    <div class="flex gap-1">
+                                                        <span class="star-filled text-sm">★★★★★</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-gray-700 mb-2">
+                                                    Stewart é referência em cálculo! Este livro tem uma didática fantástica e exemplos muito bem escolhidos. O material complementar online é um diferencial.
+                                                </p>
+                                                <p class="text-sm text-gray-500">Há 1 mês</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex items-start gap-4">
+                                            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                                A
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="flex items-center gap-2 mb-2">
+                                                    <h4 class="font-semibold">Ana Costa</h4>
+                                                    <span class="text-sm text-gray-500">• Física</span>
+                                                    <div class="flex gap-1">
+                                                        <span class="star-filled text-sm">★★★★</span>
+                                                        <span class="star-empty text-sm">★</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-gray-700 mb-2">
+                                                    Livro muito bom, porém alguns exercícios são bem desafiadores. Seria ideal ter mais exemplos resolvidos em algumas seções.
+                                                </p>
+                                                <p class="text-sm text-gray-500">Há 2 meses</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Questions Tab -->
+                            <div id="questions-tab" class="hidden">
+                                <h3 class="text-xl font-semibold mb-6">Perguntas e Respostas</h3>
+                                
+                                <div class="mb-6">
+                                    <button class="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-600 transition-colors">
+                                        Fazer uma Pergunta
+                                    </button>
+                                </div>
+
+                                <div class="space-y-6">
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h4 class="font-semibold mb-2">P: Este livro inclui gabarito dos exercícios?</h4>
+                                        <p class="text-gray-700 mb-3">R: Sim! O livro inclui respostas dos exercícios ímpares no final do livro, e o material complementar online oferece soluções detalhadas.</p>
+                                        <p class="text-sm text-gray-500">Respondido pela Loja dos Universitários</p>
+                                    </div>
+
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h4 class="font-semibold mb-2">P: É a tradução ou versão original em inglês?</h4>
+                                        <p class="text-gray-700 mb-3">R: Esta é a versão traduzida para o português, mantendo toda a qualidade e didática do original.</p>
+                                        <p class="text-sm text-gray-500">Respondido pela Loja dos Universitários</p>
+                                    </div>
+
+                                    <div class="bg-gray-50 p-6 rounded-lg">
+                                        <h4 class="font-semibold mb-2">P: Qual a diferença entre esta edição e a anterior?</h4>
+                                        <p class="text-gray-700 mb-3">R: A 8ª edição traz novos exercícios, exemplos atualizados e melhorias no material digital complementar.</p>
+                                        <p class="text-sm text-gray-500">Respondido pela Loja dos Universitários</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Related Products -->
+                    <div class="mt-16">
+                        <h2 class="text-2xl font-bold mb-8">Produtos Relacionados</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            
+                            <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow group cursor-pointer"
+                                 onclick="window.location.href='product.html'">
+                                <div class="aspect-square bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-5xl rounded-t-lg">
+                                    📖
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Cálculo - Volume II</h3>
+                                    <p class="text-gray-600 text-sm mb-2">James Stewart</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-lg font-bold text-primary">R$ 95,90</span>
+                                        <button class="text-sm bg-primary text-white px-3 py-1 rounded hover:bg-indigo-600">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow group cursor-pointer"
+                                 onclick="window.location.href='product.html'">
+                                <div class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center text-5xl rounded-t-lg">
+                                    📚
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Física Universitária</h3>
+                                    <p class="text-gray-600 text-sm mb-2">Young & Freedman</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-lg font-bold text-primary">R$ 145,90</span>
+                                        <button class="text-sm bg-primary text-white px-3 py-1 rounded hover:bg-indigo-600">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow group cursor-pointer"
+                                 onclick="window.location.href='product.html'">
+                                <div class="aspect-square bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center text-5xl rounded-t-lg">
+                                    📝
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Álgebra Linear</h3>
+                                    <p class="text-gray-600 text-sm mb-2">Howard Anton</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-lg font-bold text-primary">R$ 125,90</span>
+                                        <button class="text-sm bg-primary text-white px-3 py-1 rounded hover:bg-indigo-600">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow group cursor-pointer"
+                                 onclick="window.location.href='product.html'">
+                                <div class="aspect-square bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center text-5xl rounded-t-lg">
+                                    🧮
+                                </div>
+                                <div class="p-4">
+                                    <h3 class="font-semibold text-lg mb-1">Calculadora Científica</h3>
+                                    <p class="text-gray-600 text-sm mb-2">Casio FX-82MS</p>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-lg font-bold text-primary">R$ 45,90</span>
+                                        <button class="text-sm bg-primary text-white px-3 py-1 rounded hover:bg-indigo-600">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-gray-900 text-gray-300 py-12 mt-16">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div class="text-center">
+                        <p class="text-sm">&copy; 2024 Loja dos Universitários. Todos os direitos reservados.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        let currentQuantity = 1;
+
+        function increaseQty() {
+            currentQuantity++;
+            document.getElementById('quantity').textContent = currentQuantity;
+        }
+
+        function decreaseQty() {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                document.getElementById('quantity').textContent = currentQuantity;
+            }
+        }
+
+        function addToCart() {
+            alert(`✅ ${currentQuantity} livro(s) adicionado(s) ao carrinho!`);
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = ['description', 'specifications', 'reviews', 'questions'];
+            tabs.forEach(tab => {
+                document.getElementById(`${tab}-tab`).classList.add('hidden');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('[onclick^="showTab"]');
+            buttons.forEach(button => {
+                button.classList.remove('tab-active');
+                button.classList.add('text-gray-500', 'hover:text-gray-700');
+            });
+
+            // Show selected tab
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+
+            // Add active class to clicked button
+            event.target.classList.add('tab-active');
+            event.target.classList.remove('text-gray-500', 'hover:text-gray-700');
+        }
+    </script>
+</body>
+</html>
