@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra os melhores aplicativos médicos para estudantes e profissionais. Anatomia 3D, calculadoras médicas, diagnóstico e muito mais.">
+    <meta name="keywords" content="apps medicina, aplicativos médicos, anatomia 3D, calculadoras médicas, diagnóstico">
+    
+    <title>Aplicativos Médicos - MedResources</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;700;800">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-[var(--background-light)]" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            
+            <!-- Header -->
+            <header class="sticky top-0 z-50 bg-white shadow-md">
+                <div class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 py-4">
+                    <div class="flex items-center gap-8">
+                        <a class="flex items-center gap-3 text-[var(--primary-color)]" href="../index.html">
+                            <div class="size-8">
+                                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl font-bold leading-tight tracking-[-0.015em]">MedResources</h1>
+                        </a>
+                        <nav class="hidden md:flex items-center gap-6">
+                            <a class="nav-link text-base font-medium" href="../index.html">Início</a>
+                            <a class="nav-link text-base font-medium" href="books.html">Livros</a>
+                            <a class="nav-link text-base font-medium active" href="apps.html">Aplicativos</a>
+                            <a class="nav-link text-base font-medium" href="study-tools.html">Ferramentas</a>
+                            <a class="nav-link text-base font-medium" href="exam-prep.html">Exames</a>
+                        </nav>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <label class="relative flex items-center min-w-40 max-w-xs">
+                            <div class="absolute left-3 text-gray-400">
+                                <svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+                                </svg>
+                            </div>
+                            <input class="form-input w-full rounded-full border-[var(--border-light)] bg-white py-2 pl-10 pr-4 text-sm text-[var(--text-primary)] focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] focus:ring-opacity-50" 
+                                   placeholder="Buscar aplicativos..." 
+                                   id="search-input"/>
+                        </label>
+                        <button class="md:hidden text-[var(--text-primary)]" id="mobile-menu-btn">
+                            <svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1" id="main-content">
+                <!-- Page Header -->
+                <section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
+                    <div class="container mx-auto px-6 text-center">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Aplicativos Médicos</h1>
+                        <p class="text-xl mb-8 max-w-2xl mx-auto">
+                            Explore uma seleção curada dos melhores aplicativos para estudantes e profissionais de medicina
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <button class="btn-secondary px-6 py-3 rounded-full font-medium" onclick="filterApps('all')">
+                                Todos
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterApps('anatomy')">
+                                Anatomia
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterApps('reference')">
+                                Referência
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterApps('calculator')">
+                                Calculadoras
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterApps('study')">
+                                Estudo
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Apps -->
+                <section class="py-16 px-6 container mx-auto">
+                    <h2 class="section-title">Aplicativos em Destaque</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                        
+                        <div class="card app-featured">
+                            <div class="relative">
+                                <img alt="Complete Anatomy 2024" class="card-image" src="../assets/images/apps/complete-anatomy.jpg">
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">🏆 Editor's Choice</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Complete Anatomy 2024</h3>
+                                <p class="card-description">O aplicativo de anatomia 3D mais avançado, com modelos detalhados e realidade aumentada.</p>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.9)</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-lg font-bold text-[var(--primary-color)]">R$ 89,90</span>
+                                    <div class="flex gap-2">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-6 h-6">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-6 h-6">
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://apps.apple.com/app/complete-anatomy-platform/id1054948424" target="_blank" 
+                                       class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Download
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="viewAppDetails('complete-anatomy')">
+                                        Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card app-featured">
+                            <div class="relative">
+                                <img alt="Medscape" class="card-image" src="../assets/images/apps/medscape.jpg">
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">📱 Mais Popular</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Medscape</h3>
+                                <p class="card-description">Referência médica completa com informações sobre medicamentos, diagnósticos e tratamentos.</p>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Referência</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.7)</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-lg font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-2">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-6 h-6">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-6 h-6">
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.medscape.com/public/medscapeapp" target="_blank" 
+                                       class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Download
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="viewAppDetails('medscape')">
+                                        Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card app-featured">
+                            <div class="relative">
+                                <img alt="MDCalc" class="card-image" src="../assets/images/apps/mdcalc.jpg">
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">🔢 Essencial</span>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">MDCalc</h3>
+                                <p class="card-description">Mais de 600 calculadoras médicas, escores clínicos e algoritmos de diagnóstico.</p>
+                                <div class="flex items-center gap-2 mb-4">
+                                    <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Calculadora</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="text-lg font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-2">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-6 h-6">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-6 h-6">
+                                        <img src="../assets/images/icons/web.png" alt="Web" class="w-6 h-6">
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.mdcalc.com/" target="_blank" 
+                                       class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Acessar
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="viewAppDetails('mdcalc')">
+                                        Detalhes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- All Apps Grid -->
+                <section class="py-16 px-6 container mx-auto bg-[var(--secondary-color)] rounded-xl">
+                    <h2 class="section-title">Todos os Aplicativos</h2>
+                    
+                    <!-- Filter and Sort Controls -->
+                    <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
+                        <div class="flex flex-wrap gap-2">
+                            <button class="filter-btn active" data-filter="all">Todos</button>
+                            <button class="filter-btn" data-filter="anatomy">Anatomia</button>
+                            <button class="filter-btn" data-filter="reference">Referência</button>
+                            <button class="filter-btn" data-filter="calculator">Calculadoras</button>
+                            <button class="filter-btn" data-filter="study">Estudo</button>
+                            <button class="filter-btn" data-filter="diagnostic">Diagnóstico</button>
+                        </div>
+                        <select class="form-input-custom max-w-xs" id="sort-apps">
+                            <option value="name">Nome A-Z</option>
+                            <option value="rating">Melhor Avaliação</option>
+                            <option value="price">Preço</option>
+                            <option value="category">Categoria</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="apps-grid">
+                        
+                        <!-- Anatomia Apps -->
+                        <div class="card app-item" data-category="anatomy">
+                            <img alt="Visible Body Anatomy Atlas" class="card-image" src="../assets/images/apps/visible-body.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Visible Body</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Atlas de anatomia com modelos 3D interativos e animações.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.6)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-[var(--primary-color)]">R$ 45,90</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://www.visiblebody.com/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card app-item" data-category="anatomy">
+                            <img alt="Essential Anatomy 5" class="card-image" src="../assets/images/apps/essential-anatomy.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Essential Anatomy 5</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Anatomia detalhada com mais de 8.000 estruturas anatômicas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.5)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-[var(--primary-color)]">R$ 29,90</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="#" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Reference Apps -->
+                        <div class="card app-item" data-category="reference">
+                            <img alt="Epocrates" class="card-image" src="../assets/images/apps/epocrates.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Epocrates</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Referência rápida para medicamentos e interações medicamentosas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Referência</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.9)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://www.epocrates.com/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card app-item" data-category="reference">
+                            <img alt="UpToDate" class="card-image" src="../assets/images/apps/uptodate.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">UpToDate</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Referência médica baseada em evidências para tomada de decisões clínicas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Referência</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-[var(--primary-color)]">Assinatura</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                        <img src="../assets/images/icons/web.png" alt="Web" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://www.uptodate.com/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Acessar
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Calculator Apps -->
+                        <div class="card app-item" data-category="calculator">
+                            <img alt="QxMD Calculate" class="card-image" src="../assets/images/apps/qxmd.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">QxMD Calculate</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Calculadoras médicas essenciais para prática clínica diária.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Calculadora</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.7)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://qxmd.com/calculate" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Study Apps -->
+                        <div class="card app-item" data-category="study">
+                            <img alt="Anki" class="card-image" src="../assets/images/apps/anki.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">AnkiDroid</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Sistema de repetição espaçada para memorização eficaz de conceitos médicos.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded">Estudo</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://ankiweb.net/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="card app-item" data-category="study">
+                            <img alt="Osmosis" class="card-image" src="../assets/images/apps/osmosis.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Osmosis</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Plataforma de estudo com vídeos, flashcards e questões práticas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded">Estudo</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.6)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-[var(--primary-color)]">Freemium</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                        <img src="../assets/images/icons/web.png" alt="Web" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://www.osmosis.org/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Acessar
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Diagnostic Apps -->
+                        <div class="card app-item" data-category="diagnostic">
+                            <img alt="Figure 1" class="card-image" src="../assets/images/apps/figure1.jpg">
+                            <div class="card-content">
+                                <h3 class="text-lg font-semibold text-[var(--text-primary)] mb-1">Figure 1</h3>
+                                <p class="text-sm text-[var(--text-secondary)] mb-3">Rede social médica para compartilhamento de casos clínicos.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">Diagnóstico</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.4)</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-3">
+                                    <span class="font-bold text-green-600">Gratuito</span>
+                                    <div class="flex gap-1">
+                                        <img src="../assets/images/icons/ios.png" alt="iOS" class="w-5 h-5">
+                                        <img src="../assets/images/icons/android.png" alt="Android" class="w-5 h-5">
+                                    </div>
+                                </div>
+                                <a href="https://figure1.com/" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm w-full text-center">
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Mais apps podem ser adicionados aqui -->
+                        
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="text-center mt-12">
+                        <button class="btn-outline px-8 py-3 rounded-full font-medium" onclick="loadMoreApps()">
+                            Carregar Mais Aplicativos
+                        </button>
+                    </div>
+                </section>
+
+                <!-- App Categories Guide -->
+                <section class="py-16 px-6 container mx-auto">
+                    <h2 class="section-title">Guia de Categorias</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                📱 Anatomia
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Aplicativos com modelos 3D interativos, atlas anatômicos e ferramentas de visualização para estudo da anatomia humana.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Modelos 3D interativos</li>
+                                <li>• Realidade aumentada</li>
+                                <li>• Sistemas corporais</li>
+                                <li>• Estruturas detalhadas</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-green-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                📚 Referência
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Bases de dados médicas, guias de tratamento e informações sobre medicamentos para consulta rápida.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Informações sobre medicamentos</li>
+                                <li>• Protocolos de tratamento</li>
+                                <li>• Interações medicamentosas</li>
+                                <li>• Guidelines atualizadas</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-purple-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                🔢 Calculadoras
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Ferramentas para cálculos médicos, escores clínicos e algoritmos de diagnóstico utilizados na prática.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Escores de risco</li>
+                                <li>• Cálculos de dosagem</li>
+                                <li>• Índices clínicos</li>
+                                <li>• Algoritmos diagnósticos</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-orange-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                📖 Estudo
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Aplicativos focados no aprendizado com flashcards, questões práticas e sistemas de repetição espaçada.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Flashcards personalizados</li>
+                                <li>• Repetição espaçada</li>
+                                <li>• Questões práticas</li>
+                                <li>• Acompanhamento de progresso</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-red-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                🩺 Diagnóstico
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Ferramentas de apoio ao diagnóstico, análise de imagens médicas e compartilhamento de casos clínicos.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Diagnóstico diferencial</li>
+                                <li>• Análise de imagens</li>
+                                <li>• Casos clínicos</li>
+                                <li>• Tomada de decisão</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-gray-500">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4 flex items-center gap-2">
+                                🛠️ Ferramentas
+                            </h3>
+                            <p class="text-[var(--text-secondary)] mb-4">
+                                Utilitários diversos para organização, produtividade e gestão da prática médica e estudos.
+                            </p>
+                            <ul class="text-sm text-[var(--text-secondary)] space-y-1">
+                                <li>• Gestão de tempo</li>
+                                <li>• Organização de notas</li>
+                                <li>• Agenda médica</li>
+                                <li>• Produtividade</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-gray-300 py-12">
+                <div class="container mx-auto px-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">MedResources</h4>
+                            <p class="text-sm mb-4">Seu portal de recursos essenciais para estudantes de medicina.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Categorias</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="books.html">Livros</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="apps.html">Aplicativos</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="study-tools.html">Ferramentas</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="exam-prep.html">Exames</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Suporte</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="contact.html">Contato</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="about.html">Sobre</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Legal</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="privacy.html">Privacidade</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="terms.html">Termos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 pt-8 text-center">
+                        <p class="text-sm">© 2024 MedResources. Todos os direitos reservados.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/apps.js"></script>
+    
+    <style>
+        .filter-btn {
+            @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-white border-opacity-30 text-white hover:bg-white hover:text-blue-600;
+        }
+        
+        .filter-btn.active {
+            @apply bg-white text-blue-600 border-white;
+        }
+        
+        .app-featured {
+            @apply transform hover:scale-105 transition-transform duration-300;
+        }
+    </style>
+</body>
+</html>

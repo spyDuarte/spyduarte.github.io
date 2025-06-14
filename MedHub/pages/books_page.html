@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubra os melhores livros de medicina para estudantes e profissionais. Anatomia, fisiologia, farmacologia e muito mais.">
+    <meta name="keywords" content="livros medicina, anatomia, fisiologia, farmacologia, patologia, livros médicos">
+    
+    <title>Livros de Medicina - MedResources</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Sans:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;700;800">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="bg-[var(--background-light)]" style='font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;'>
+    <div class="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            
+            <!-- Header -->
+            <header class="sticky top-0 z-50 bg-white shadow-md">
+                <div class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 py-4">
+                    <div class="flex items-center gap-8">
+                        <a class="flex items-center gap-3 text-[var(--primary-color)]" href="../index.html">
+                            <div class="size-8">
+                                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+                                </svg>
+                            </div>
+                            <h1 class="text-2xl font-bold leading-tight tracking-[-0.015em]">MedResources</h1>
+                        </a>
+                        <nav class="hidden md:flex items-center gap-6">
+                            <a class="nav-link text-base font-medium" href="../index.html">Início</a>
+                            <a class="nav-link text-base font-medium active" href="books.html">Livros</a>
+                            <a class="nav-link text-base font-medium" href="apps.html">Aplicativos</a>
+                            <a class="nav-link text-base font-medium" href="study-tools.html">Ferramentas</a>
+                            <a class="nav-link text-base font-medium" href="exam-prep.html">Exames</a>
+                        </nav>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <label class="relative flex items-center min-w-40 max-w-xs">
+                            <div class="absolute left-3 text-gray-400">
+                                <svg fill="currentColor" height="20px" viewBox="0 0 256 256" width="20px" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"></path>
+                                </svg>
+                            </div>
+                            <input class="form-input w-full rounded-full border-[var(--border-light)] bg-white py-2 pl-10 pr-4 text-sm text-[var(--text-primary)] focus:border-[var(--primary-color)] focus:ring-[var(--primary-color)] focus:ring-opacity-50" 
+                                   placeholder="Buscar livros..." 
+                                   id="search-input"/>
+                        </label>
+                        <button class="md:hidden text-[var(--text-primary)]" id="mobile-menu-btn">
+                            <svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="flex-1" id="main-content">
+                <!-- Page Header -->
+                <section class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--accent-color)] text-white py-16">
+                    <div class="container mx-auto px-6 text-center">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Livros de Medicina</h1>
+                        <p class="text-xl mb-8 max-w-2xl mx-auto">
+                            Descubra os textos fundamentais que irão guiar sua jornada acadêmica e profissional na medicina
+                        </p>
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <button class="btn-secondary px-6 py-3 rounded-full font-medium" onclick="filterBooks('all')">
+                                Todos
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterBooks('anatomy')">
+                                Anatomia
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterBooks('physiology')">
+                                Fisiologia
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterBooks('pharmacology')">
+                                Farmacologia
+                            </button>
+                            <button class="btn-outline px-6 py-3 rounded-full font-medium" onclick="filterBooks('pathology')">
+                                Patologia
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Books Grid -->
+                <section class="py-16 px-6 container mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" id="books-grid">
+                        
+                        <!-- Anatomia -->
+                        <div class="card book-item" data-category="anatomy">
+                            <img alt="Gray's Anatomy" class="card-image" src="../assets/images/books/grays-anatomy.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Gray's Anatomy</h3>
+                                <p class="card-description">O atlas de anatomia mais respeitado mundialmente, com ilustrações detalhadas e descrições precisas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/grays-anatomy/standring/978-0-7020-7707-4" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Gray\'s Anatomy')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card book-item" data-category="anatomy">
+                            <img alt="Netter Atlas of Human Anatomy" class="card-image" src="../assets/images/books/netter-anatomy.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Netter - Atlas de Anatomia Humana</h3>
+                                <p class="card-description">Ilustrações artísticas e didáticas que facilitam o aprendizado da anatomia humana.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.9)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/netter-atlas-of-human-anatomy/netter/978-0-323-39321-1" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Netter Atlas')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card book-item" data-category="anatomy">
+                            <img alt="Sobotta Atlas of Anatomy" class="card-image" src="../assets/images/books/sobotta-anatomy.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Sobotta - Atlas de Anatomia</h3>
+                                <p class="card-description">Atlas alemão com fotografias reais e ilustrações de alta qualidade para estudo detalhado.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Anatomia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.7)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/sobotta-atlas-of-anatomy/paulsen/978-0-7020-6760-0" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Sobotta Atlas')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fisiologia -->
+                        <div class="card book-item" data-category="physiology">
+                            <img alt="Guyton Fisiologia Médica" class="card-image" src="../assets/images/books/guyton-physiology.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Guyton - Tratado de Fisiologia Médica</h3>
+                                <p class="card-description">O livro-texto mais utilizado para ensino de fisiologia, com explicações claras e didáticas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Fisiologia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/guyton-and-hall-textbook-of-medical-physiology/hall/978-0-323-59712-8" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Guyton Fisiologia')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card book-item" data-category="physiology">
+                            <img alt="Berne & Levy Physiology" class="card-image" src="../assets/images/books/berne-levy.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Berne & Levy - Fisiologia</h3>
+                                <p class="card-description">Abordagem integrada da fisiologia com foco nos mecanismos moleculares e celulares.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Fisiologia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.6)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/berne-levy-physiology/koeppen/978-0-323-39394-5" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Berne & Levy')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Farmacologia -->
+                        <div class="card book-item" data-category="pharmacology">
+                            <img alt="Goodman & Gilman Pharmacology" class="card-image" src="../assets/images/books/goodman-gilman.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Goodman & Gilman - As Bases Farmacológicas da Terapêutica</h3>
+                                <p class="card-description">O texto de referência em farmacologia, cobrindo desde princípios básicos até aplicações clínicas.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Farmacologia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.9)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.mhprofessional.com/goodman-and-gilmans-the-pharmacological-basis-of-therapeutics-13th-edition-9781259584732-usa" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Goodman & Gilman')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card book-item" data-category="pharmacology">
+                            <img alt="Katzung Farmacologia" class="card-image" src="../assets/images/books/katzung.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Katzung - Farmacologia Básica e Clínica</h3>
+                                <p class="card-description">Abordagem integrada da farmacologia com ênfase na aplicação clínica dos conhecimentos.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Farmacologia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.5)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.mhprofessional.com/katzung-trevor-s-basic-clinical-pharmacology-15th-edition-9781260452310-usa" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Katzung')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Patologia -->
+                        <div class="card book-item" data-category="pathology">
+                            <img alt="Robbins Patologia" class="card-image" src="../assets/images/books/robbins.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Robbins - Patologia Básica</h3>
+                                <p class="card-description">O livro-texto essencial para compreender os mecanismos das doenças e suas manifestações.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">Patologia</span>
+                                    <span class="text-yellow-500">★★★★★</span>
+                                    <span class="text-sm text-gray-600">(4.8)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/robbins-basic-pathology/kumar/978-0-323-35317-5" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Robbins Patologia')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card book-item" data-category="pathology">
+                            <img alt="Kumar Patologia" class="card-image" src="../assets/images/books/kumar-pathology.jpg">
+                            <div class="card-content">
+                                <h3 class="card-title">Kumar - Robbins Patologia Estrutural e Funcional</h3>
+                                <p class="card-description">Versão mais completa do Robbins, com detalhamento aprofundado dos processos patológicos.</p>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">Patologia</span>
+                                    <span class="text-yellow-500">★★★★☆</span>
+                                    <span class="text-sm text-gray-600">(4.7)</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="https://www.elsevier.com/books/robbins-and-cotran-pathologic-basis-of-disease/kumar/978-0-323-35317-5" target="_blank" class="btn-primary font-medium py-2 px-4 rounded-md text-sm flex-1 text-center">
+                                        Ver Detalhes
+                                    </a>
+                                    <button class="btn-outline py-2 px-3 rounded-md text-sm" onclick="addToFavorites(this, 'Kumar Patologia')">
+                                        ♡
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mais livros podem ser adicionados aqui -->
+                        
+                    </div>
+
+                    <!-- Load More Button -->
+                    <div class="text-center mt-12">
+                        <button class="btn-outline px-8 py-3 rounded-full font-medium" onclick="loadMoreBooks()">
+                            Carregar Mais Livros
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Recommendations Section -->
+                <section class="py-16 px-6 container mx-auto bg-[var(--secondary-color)] rounded-xl">
+                    <h2 class="section-title">Recomendações por Ano de Curso</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4">1º-2º Ano</h3>
+                            <ul class="space-y-2 text-sm text-[var(--text-secondary)]">
+                                <li>• Netter - Atlas de Anatomia</li>
+                                <li>• Gray's Anatomy</li>
+                                <li>• Guyton - Fisiologia Médica</li>
+                                <li>• Moore - Anatomia Clínica</li>
+                                <li>• Junqueira - Histologia Básica</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4">3º-4º Ano</h3>
+                            <ul class="space-y-2 text-sm text-[var(--text-secondary)]">
+                                <li>• Robbins - Patologia Básica</li>
+                                <li>• Goodman & Gilman - Farmacologia</li>
+                                <li>• Harrison - Medicina Interna</li>
+                                <li>• Berne & Levy - Fisiologia</li>
+                                <li>• Kumar - Patologia</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold text-[var(--text-primary)] mb-4">5º-6º Ano</h3>
+                            <ul class="space-y-2 text-sm text-[var(--text-secondary)]">
+                                <li>• Cecil - Medicina Interna</li>
+                                <li>• Schwartz - Cirurgia</li>
+                                <li>• Nelson - Pediatria</li>
+                                <li>• Williams - Obstetrícia</li>
+                                <li>• DSM-5 - Psiquiatria</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-gray-800 text-gray-300 py-12">
+                <div class="container mx-auto px-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">MedResources</h4>
+                            <p class="text-sm mb-4">Seu portal de recursos essenciais para estudantes de medicina.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Categorias</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="books.html">Livros</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="apps.html">Aplicativos</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="study-tools.html">Ferramentas</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="exam-prep.html">Exames</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Suporte</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="contact.html">Contato</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="about.html">Sobre</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-white mb-3">Legal</h4>
+                            <ul class="space-y-2">
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="privacy.html">Privacidade</a></li>
+                                <li><a class="hover:text-[var(--primary-color)] transition-colors" href="terms.html">Termos</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 pt-8 text-center">
+                        <p class="text-sm">© 2024 MedResources. Todos os direitos reservados.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/books.js"></script>
+</body>
+</html>
