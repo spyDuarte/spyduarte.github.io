@@ -243,17 +243,17 @@ class PrintifyApp {
     setupEventListeners() {
       // Botões de "Add to Cart"
       document.addEventListener('click', (e) => {
-        if (e.target.matches('button:contains("Add to Cart")') || e.target.closest('button')?.textContent.includes('Add to Cart')) {
+        const button = e.target.closest('[data-add-to-cart]');
+        if (button) {
           e.preventDefault();
-          
-          // Dados mock do produto - em produção viria de uma API
+
           const productData = {
-            id: Date.now().toString(),
-            name: 'Produto 3D',
-            price: 29.99,
-            image: 'https://via.placeholder.com/200'
+            id: button.dataset.id || Date.now().toString(),
+            name: button.dataset.name || 'Produto 3D',
+            price: parseFloat(button.dataset.price) || 29.99,
+            image: button.dataset.image || 'https://via.placeholder.com/200'
           };
-          
+
           this.addToCart(productData);
         }
       });
