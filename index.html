@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Presença com QR Code e Verificação Anti-Fraude</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js"></script>
+    <style>
+        body { background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #qrcode { text-align: center; }
+        #message { color: red; text-align: center; }
+        .spinner { display: none; text-align: center; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Sistema Presença</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="#professor">Professor</a></li>
+                <li class="nav-item"><a class="nav-link" href="#student">Estudante</a></li>
+            </ul>
+            <button class="btn btn-outline-danger" onclick="logout()" id="logout-btn" style="display: none;">Logout</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4" id="professor-container">
+    <h2>Gerador de QR Code para Professores</h2>
+    <input type="email" class="form-control" id="email" placeholder="Email institucional" required>
+    <input type="password" class="form-control mt-2" id="password" placeholder="Senha" required>
+    <button class="btn btn-primary mt-2" onclick="loginUser('professor')">Login</button>
+    <button class="btn btn-secondary mt-2" onclick="signupUser('professor')">Cadastrar como Professor</button>
+    <div id="professor-form" style="display: none;">
+        <input type="text" class="form-control mt-2" id="aula-id" placeholder="ID da Aula (ex: Matematica101)" required>
+        <input type="datetime-local" class="form-control mt-2" id="aula-start" required>
+        <input type="number" class="form-control mt-2" id="aula-duration" placeholder="Duração em minutos (ex: 60)" required>
+        <button class="btn btn-success mt-2" onclick="generateQR()">Gerar QR Code</button>
+        <div id="qrcode" class="mt-3"></div>
+        <div id="reports" class="mt-3">
+            <h4>Relatório de Presenças</h4>
+            <button class="btn btn-info" onclick="loadReports()">Carregar Presenças da Aula</button>
+            <div class="spinner-border spinner mt-2" role="status"></div>
+            <ul id="presence-list" class="list-group mt-2"></ul>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4" id="student-container" style="display: none;">
+    <h2>Marcação de Presença para Estudantes</h2>
+    <input type="email" class="form-control" id="student-email" placeholder="Email institucional" required>
+    <input type="password" class="form-control mt-2" id="student-password" placeholder="Senha" required>
+    <button class="btn btn-primary mt-2" onclick="loginUser('student')">Login</button>
+    <button class="btn btn-secondary mt-2" onclick="signupUser('student')">Cadastrar como Estudante</button>
+    <div class="spinner-border spinner mt-2" role="status"></div>
+    <button class="btn btn-success mt-2" onclick="markPresence()" id="mark-btn" style="display: none;">Marcar Presença</button>
+    <div id="message" class="mt-2"></div>
+</div>
+
+<script>
+    // Configuração do Firebase (substitua com seus valores)
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY",
+        authDomain: "SEU_PROJETO.firebaseapp.com",
+        projectId: "SEU_PROJETO",
+        storageBucket: "SEU_PROJETO.appspot.com",
+        messagingSenderId: "SEU_SENDER_ID",
+        appId: "SUA_APP_ID"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Configurações da instituição
+    const campusLocation = { lat: -23.5505, lng: -46.6333 };
+    const allowedRadius = 100;
+
+    // Função Haversine
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3;
+        const φ1 = lat1 * Math.PI / 180;
+        const φ2 = lat2 * Math.PI / 180;
+        const Δφ = (lat2 - lat1) * Math.PI / 180;
+        const Δλ = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    // Logout
+    function logout() {
+        auth.signOut().then(() => {
+            location.reload();
+        });
+    }
+
+    // Login com role
+    function loginUser(role) {
+        const emailInput = role === 'professor' ? 'email' : 'student-email';
+        const passwordInput = role === 'professor' ? 'password' : 'student-password';
+        const email = document.getElementById(emailInput).value;
+        const password = document.getElementById(passwordInput).value;
+        if (!email || !password) return alert('Preencha email e senha!');
+        auth.signInWithEmailAndPassword(email, password)
+            .then(user => {
+                checkUserRole(user.uid, role);
+                document.getElementById('logout-btn').style.display = 'block';
+            })
+            .catch(error => alert('Erro no login: ' + error.message));
+    }
+
+    // Cadastro com role
+    function signupUser(role) {
+        const emailInput = role === 'professor' ? 'email' : 'student-email';
+        const passwordInput = role === 'professor' ? 'password' : 'student-password';
+        const email = document.getElementById(emailInput).value;
+        const password = document.getElementById(passwordInput).value;
+        if (!email || !password) return alert('Preencha email e senha!');
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(user => {
+                db.collection('users').doc(user.user.uid).set({ role, email });
+                alert(`${role.charAt(0).toUpperCase() + role.slice(1)} cadastrado!`);
+            })
+            .catch(error => alert('Erro no cadastro: ' + error.message));
+    }
+
+    // Verificar role
+    function checkUserRole(uid, expectedRole) {
+        db.collection('users').doc(uid).get().then(doc => {
+            if (doc.exists && doc.data().role === expectedRole) {
+                if (expectedRole === 'professor') {
+                    document.getElementById('professor-form').style.display = 'block';
+                    document.getElementById('student-container').style.display = 'none';
+                } else {
+                    document.getElementById('mark-btn').style.display = 'block';
+                    document.getElementById('professor-container').style.display = 'none';
+                }
+            } else {
+                alert('Acesso negado: Role incorreta.');
+                auth.signOut();
+            }
+        });
+    }
+
+    // Gerar QR
+    function generateQR() {
+        const aulaId = document.getElementById('aula-id').value;
+        const startTime = new Date(document.getElementById('aula-start').value).getTime();
+        const duration = parseInt(document.getElementById('aula-duration').value) * 60000;
+        if (!aulaId || isNaN(startTime) || !duration) return alert('Preencha todos os campos!');
+        const expiration = startTime + duration;
+        const token = crypto.randomUUID();
+        const qrData = `${window.location.origin}/#presence?aulaId=${aulaId}&exp=${expiration}&token=${token}`;
+        const qrcodeDiv = document.getElementById('qrcode');
+        qrcodeDiv.innerHTML = '';
+        new QRCode(qrcodeDiv, { text: qrData, width: 256, height: 256 });
+        db.collection('aulas').doc(aulaId).set({ professorId: auth.currentUser.uid, startTime, expiration, token });
+    }
+
+    // Detectar presença
+    let aulaId, expiration, token;
+    if (window.location.hash.includes('#presence')) {
+        document.getElementById('professor-container').style.display = 'none';
+        document.getElementById('student-container').style.display = 'block';
+        const params = new URLSearchParams(window.location.hash.substring(10));
+        aulaId = params.get('aulaId');
+        expiration = parseInt(params.get('exp'));
+        token = params.get('token');
+    }
+
+    // Marcar presença
+    async function markPresence() {
+        const messageDiv = document.getElementById('message');
+        const spinner = document.querySelector('#student-container .spinner');
+        spinner.style.display = 'block';
+        messageDiv.textContent = '';
+
+        if (Date.now() > expiration) {
+            messageDiv.textContent = 'QR Code expirado!';
+            spinner.style.display = 'none';
+            return;
+        }
+
+        const aulaDoc = await db.collection('aulas').doc(aulaId).get();
+        if (!aulaDoc.exists || aulaDoc.data().token !== token) {
+            messageDiv.textContent = 'QR Code inválido!';
+            spinner.style.display = 'none';
+            return;
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async position => {
+                const studentLat = position.coords.latitude;
+                const studentLng = position.coords.longitude;
+                const distance = calculateDistance(studentLat, studentLng, campusLocation.lat, campusLocation.lng);
+
+                if (distance > allowedRadius) {
+                    messageDiv.textContent = 'Fora da localização permitida!';
+                    spinner.style.display = 'none';
+                    return;
+                }
+
+                // Anti-fraude: Verificar se é dispositivo mobile
+                if (!/Mobi|Android/i.test(navigator.userAgent)) {
+                    messageDiv.textContent = 'Use um dispositivo móvel para marcar presença!';
+                    spinner.style.display = 'none';
+                    return;
+                }
+
+                const ipResponse = await fetch('https://ipapi.co/json/');
+                const ipData = await ipResponse.json();
+                if (ipData.error || Math.abs(ipData.latitude - studentLat) > 0.1) {
+                    messageDiv.textContent = 'Suspeita de fraude (IP não compatível)!';
+                    spinner.style.display = 'none';
+                    return;
+                }
+
+                db.collection('presencas').add({
+                    estudanteId: auth.currentUser.uid,
+                    aulaId,
+                    timestamp: Date.now(),
+                    location: { lat: studentLat, lng: studentLng },
+                    ip: ipData.ip
+                }).then(() => {
+                    messageDiv.textContent = 'Presença marcada!';
+                    messageDiv.style.color = 'green';
+                    spinner.style.display = 'none';
+                });
+            }, error => {
+                messageDiv.textContent = 'Erro na localização: ' + error.message;
+                spinner.style.display = 'none';
+            }, { enableHighAccuracy: true });
+        } else {
+            messageDiv.textContent = 'Geolocalização não suportada.';
+            spinner.style.display = 'none';
+        }
+    }
+
+    // Carregar relatórios com emails
+    async function loadReports() {
+        const aulaId = document.getElementById('aula-id').value;
+        if (!aulaId) return alert('Informe o ID da Aula!');
+        const spinner = document.querySelector('#reports .spinner');
+        spinner.style.display = 'block';
+
+        const presencas = await db.collection('presencas').where('aulaId', '==', aulaId).get();
+        const list = document.getElementById('presence-list');
+        list.innerHTML = '';
+        for (const doc of presencas.docs) {
+            const userDoc = await db.collection('users').doc(doc.data().estudanteId).get();
+            const email = userDoc.exists ? userDoc.data().email : 'Desconhecido';
+            const li = document.createElement('li');
+            li.classList.add('list-group-item');
+            li.textContent = `Estudante: ${email} - Hora: ${new Date(doc.data().timestamp).toLocaleString()}`;
+            list.appendChild(li);
+        }
+        spinner.style.display = 'none';
+    }
+</script>
+</body>
+</html>
