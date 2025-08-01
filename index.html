@@ -1,0 +1,1748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de Agendamento para Clínica Dental - Gerencie consultas odontológicas de forma eficiente">
+    <meta name="keywords" content="clínica dental, agendamento, odontologia, consultas">
+    <meta name="author" content="Clínica Dental">
+    
+    <!-- Preconnect para otimizar carregamento de recursos externos -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <title>Clínica Dental - Sistema de Agendamento</title>
+    
+    <!-- CSS Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* Animações customizadas */
+        @keyframes slideIn {
+            from { 
+                transform: translateY(-20px); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .animate-slideIn {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        /* Scrollbar customizada com melhor contraste */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #14b8a6;
+            border-radius: 5px;
+            border: 2px solid #f3f4f6;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d9488;
+        }
+        
+        /* Loading spinner aprimorado */
+        .spinner {
+            border: 3px solid rgba(20, 184, 166, 0.1);
+            border-top: 3px solid #14b8a6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Melhorias de acessibilidade - Focus visible */
+        *:focus {
+            outline: none;
+        }
+        
+        *:focus-visible {
+            outline: 2px solid #14b8a6;
+            outline-offset: 2px;
+        }
+        
+        /* Skip to content link para acessibilidade */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #14b8a6;
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 0 0 4px 0;
+        }
+        
+        .skip-link:focus {
+            top: 0;
+        }
+        
+        /* Melhorias para botões */
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 44px; /* Mínimo recomendado para touch targets */
+        }
+        
+        /* Modo de alto contraste */
+        @media (prefers-contrast: high) {
+            .bg-teal-500 {
+                background-color: #0f766e !important;
+            }
+        }
+        
+        /* Reduz animações para usuários que preferem */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Responsividade aprimorada */
+        @media (max-width: 640px) {
+            .btn-text-responsive {
+                font-size: 0.875rem;
+            }
+            
+            .btn-icon-only-mobile span {
+                display: none;
+            }
+            
+            .mobile-full-width {
+                width: 100%;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            
+            .print-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-teal-50 min-h-screen">
+    <!-- Skip link para acessibilidade -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- Container principal com melhor semântica -->
+    <div id="root" role="application" aria-label="Sistema de Agendamento da Clínica Dental"></div>
+    
+    <!-- Área para leitores de tela - anúncios dinâmicos -->
+    <div id="aria-live-region" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    
+    <!-- Scripts com integridade e crossorigin para segurança -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useCallback, useRef, memo } = React;
+        
+        // Configurações da clínica
+        const CLINIC_CONFIG = {
+            workDays: [1, 2, 3, 4, 5], // Segunda a Sexta
+            workHours: {
+                start: '08:00',
+                end: '18:00',
+                lunchStart: '12:00',
+                lunchEnd: '13:00'
+            },
+            appointmentDuration: 30, // minutos
+            holidays: ['2024-01-01', '2024-12-25'],
+            // Novos parâmetros de segurança
+            minPasswordLength: 8,
+            sessionTimeout: 30 * 60 * 1000, // 30 minutos
+            maxLoginAttempts: 5
+        };
+        
+        // Utilitário para anúncios de acessibilidade
+        const announceToScreenReader = (message) => {
+            const liveRegion = document.getElementById('aria-live-region');
+            if (liveRegion) {
+                liveRegion.textContent = message;
+                setTimeout(() => {
+                    liveRegion.textContent = '';
+                }, 1000);
+            }
+        };
+        
+        // Hook customizado para localStorage com melhor performance
+        const useLocalStorage = (key, initialValue) => {
+            const [storedValue, setStoredValue] = useState(() => {
+                try {
+                    const item = window.localStorage.getItem(key);
+                    return item ? JSON.parse(item) : initialValue;
+                } catch (error) {
+                    console.error(`Erro ao carregar ${key}:`, error);
+                    return initialValue;
+                }
+            });
+            
+            const setValue = useCallback((value) => {
+                try {
+                    const valueToStore = value instanceof Function ? value(storedValue) : value;
+                    setStoredValue(valueToStore);
+                    window.localStorage.setItem(key, JSON.stringify(valueToStore));
+                } catch (error) {
+                    console.error(`Erro ao salvar ${key}:`, error);
+                }
+            }, [key, storedValue]);
+            
+            return [storedValue, setValue];
+        };
+        
+        // Hook para gerenciar sessão com timeout
+        const useSession = () => {
+            const [lastActivity, setLastActivity] = useState(Date.now());
+            const timeoutRef = useRef(null);
+            
+            const resetTimeout = useCallback(() => {
+                setLastActivity(Date.now());
+                
+                if (timeoutRef.current) {
+                    clearTimeout(timeoutRef.current);
+                }
+                
+                timeoutRef.current = setTimeout(() => {
+                    localStorage.removeItem('authToken');
+                    localStorage.removeItem('currentUser');
+                    window.location.reload();
+                }, CLINIC_CONFIG.sessionTimeout);
+            }, []);
+            
+            useEffect(() => {
+                const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+                
+                events.forEach(event => {
+                    document.addEventListener(event, resetTimeout);
+                });
+                
+                resetTimeout();
+                
+                return () => {
+                    events.forEach(event => {
+                        document.removeEventListener(event, resetTimeout);
+                    });
+                    
+                    if (timeoutRef.current) {
+                        clearTimeout(timeoutRef.current);
+                    }
+                };
+            }, [resetTimeout]);
+            
+            return { lastActivity };
+        };
+        
+        // Hook para gerenciar toasts com melhor performance
+        const useToast = () => {
+            const [toasts, setToasts] = useState([]);
+            const timeoutsRef = useRef({});
+            
+            const showToast = useCallback((message, type = 'info', duration = 3000) => {
+                const id = Date.now();
+                setToasts(prev => [...prev, { id, message, type }]);
+                announceToScreenReader(message);
+                
+                timeoutsRef.current[id] = setTimeout(() => {
+                    removeToast(id);
+                }, duration);
+            }, []);
+            
+            const removeToast = useCallback((id) => {
+                setToasts(prev => prev.filter(toast => toast.id !== id));
+                
+                if (timeoutsRef.current[id]) {
+                    clearTimeout(timeoutsRef.current[id]);
+                    delete timeoutsRef.current[id];
+                }
+            }, []);
+            
+            useEffect(() => {
+                return () => {
+                    Object.values(timeoutsRef.current).forEach(timeout => clearTimeout(timeout));
+                };
+            }, []);
+            
+            return { toasts, showToast, removeToast };
+        };
+        
+        // Componente de Toast otimizado com memo
+        const Toast = memo(({ toast, onClose }) => {
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+            
+            return (
+                <div 
+                    className={`${colors[toast.type]} text-white px-6 py-4 rounded-lg shadow-lg flex items-center space-x-3 z-50 animate-slideIn max-w-md`}
+                    role="alert"
+                    aria-live="assertive"
+                >
+                    <i className={`fas ${icons[toast.type]} text-xl flex-shrink-0`} aria-hidden="true"></i>
+                    <span className="flex-1">{toast.message}</span>
+                    <button 
+                        onClick={() => onClose(toast.id)} 
+                        className="ml-4 hover:opacity-80 flex-shrink-0"
+                        aria-label="Fechar notificação"
+                    >
+                        <i className="fas fa-times" aria-hidden="true"></i>
+                    </button>
+                </div>
+            );
+        });
+        
+        // Componente de Modal de Confirmação com melhor acessibilidade
+        const ConfirmDialog = ({ isOpen, onClose, onConfirm, title, message }) => {
+            const cancelRef = useRef(null);
+            
+            useEffect(() => {
+                if (isOpen && cancelRef.current) {
+                    cancelRef.current.focus();
+                }
+            }, [isOpen]);
+            
+            if (!isOpen) return null;
+            
+            return (
+                <div 
+                    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="dialog-title"
+                    aria-describedby="dialog-description"
+                >
+                    <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-sm animate-slideIn">
+                        <h3 id="dialog-title" className="text-xl font-bold text-gray-900 mb-4">
+                            {title}
+                        </h3>
+                        <p id="dialog-description" className="text-gray-600 mb-6">
+                            {message}
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <button
+                                ref={cancelRef}
+                                onClick={onClose}
+                                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                onClick={() => {
+                                    onConfirm();
+                                    onClose();
+                                }}
+                                className="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                            >
+                                Confirmar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        // Utilitários de validação aprimorados
+        const validateEmail = (email) => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return {
+                isValid: emailRegex.test(email),
+                error: !emailRegex.test(email) ? 'Email inválido' : null
+            };
+        };
+        
+        const validatePassword = (password) => {
+            const errors = [];
+            
+            if (password.length < CLINIC_CONFIG.minPasswordLength) {
+                errors.push(`Mínimo ${CLINIC_CONFIG.minPasswordLength} caracteres`);
+            }
+            if (!/[A-Z]/.test(password)) {
+                errors.push('Pelo menos uma letra maiúscula');
+            }
+            if (!/[a-z]/.test(password)) {
+                errors.push('Pelo menos uma letra minúscula');
+            }
+            if (!/[0-9]/.test(password)) {
+                errors.push('Pelo menos um número');
+            }
+            
+            return {
+                isValid: errors.length === 0,
+                errors: errors
+            };
+        };
+        
+        const validatePhone = (phone) => {
+            const cleaned = phone.replace(/\D/g, '');
+            const patterns = {
+                mobile: /^55\d{2}9\d{8}$/,
+                landline: /^55\d{2}\d{8}$/,
+            };
+            
+            const isValid = patterns.mobile.test(cleaned) || patterns.landline.test(cleaned);
+            
+            return {
+                isValid,
+                formatted: isValid ? formatPhoneNumber(cleaned) : phone,
+                error: !isValid ? 'Número de telefone inválido' : null
+            };
+        };
+        
+        const formatPhoneNumber = (number) => {
+            const cleaned = number.replace(/\D/g, '');
+            
+            if (cleaned.length === 13) {
+                return `+${cleaned.slice(0, 2)} (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 9)}-${cleaned.slice(9)}`;
+            } else if (cleaned.length === 12) {
+                return `+${cleaned.slice(0, 2)} (${cleaned.slice(2, 4)}) ${cleaned.slice(4, 8)}-${cleaned.slice(8)}`;
+            }
+            
+            return number;
+        };
+        
+        const validateDate = (date) => {
+            const selected = new Date(date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selected < today) {
+                return { isValid: false, error: 'Não é possível agendar em datas passadas' };
+            }
+            
+            const dayOfWeek = selected.getDay();
+            if (!CLINIC_CONFIG.workDays.includes(dayOfWeek)) {
+                return { isValid: false, error: 'A clínica não atende neste dia da semana' };
+            }
+            
+            const dateStr = selected.toISOString().split('T')[0];
+            if (CLINIC_CONFIG.holidays.includes(dateStr)) {
+                return { isValid: false, error: 'A clínica não atende em feriados' };
+            }
+            
+            return { isValid: true, error: null };
+        };
+        
+        const timeToMinutes = (time) => {
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        };
+        
+        const validateTime = (time, date, existingAppointments) => {
+            const [hours, minutes] = time.split(':').map(Number);
+            const timeMinutes = hours * 60 + minutes;
+            const startMinutes = timeToMinutes(CLINIC_CONFIG.workHours.start);
+            const endMinutes = timeToMinutes(CLINIC_CONFIG.workHours.end);
+            const lunchStartMinutes = timeToMinutes(CLINIC_CONFIG.workHours.lunchStart);
+            const lunchEndMinutes = timeToMinutes(CLINIC_CONFIG.workHours.lunchEnd);
+            
+            if (timeMinutes < startMinutes || timeMinutes >= endMinutes) {
+                return {
+                    isValid: false,
+                    error: `Horário fora do expediente (${CLINIC_CONFIG.workHours.start} - ${CLINIC_CONFIG.workHours.end})`
+                };
+            }
+            
+            if (timeMinutes >= lunchStartMinutes && timeMinutes < lunchEndMinutes) {
+                return {
+                    isValid: false,
+                    error: 'Horário de almoço não disponível'
+                };
+            }
+            
+            const hasConflict = existingAppointments.some(apt => {
+                if (apt.date !== date) return false;
+                
+                const aptMinutes = timeToMinutes(apt.time);
+                const aptEndMinutes = aptMinutes + CLINIC_CONFIG.appointmentDuration;
+                const newEndMinutes = timeMinutes + CLINIC_CONFIG.appointmentDuration;
+                
+                return (timeMinutes >= aptMinutes && timeMinutes < aptEndMinutes) ||
+                       (newEndMinutes > aptMinutes && newEndMinutes <= aptEndMinutes);
+            });
+            
+            if (hasConflict) {
+                return {
+                    isValid: false,
+                    error: 'Este horário já está ocupado'
+                };
+            }
+            
+            return { isValid: true, error: null };
+        };
+        
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', {
+                weekday: 'short',
+                day: '2-digit',
+                month: '2-digit'
+            });
+        };
+        
+        const sanitizeInput = (input) => {
+            return input
+                .replace(/[<>]/g, '')
+                .trim()
+                .slice(0, 100);
+        };
+        
+        // Componente de Input de Telefone com melhor UX
+        const PhoneInput = ({ value, onChange, error }) => {
+            const handleChange = (e) => {
+                let input = e.target.value;
+                
+                input = input.replace(/[^\d+\s()-]/g, '');
+                
+                if (!input.startsWith('+55') && input.length > 0) {
+                    input = '+55 ' + input;
+                }
+                
+                if (input.startsWith('+55')) {
+                    const numbers = input.replace(/\D/g, '');
+                    if (numbers.length > 2) {
+                        let formatted = `+${numbers.slice(0, 2)}`;
+                        if (numbers.length > 2) {
+                            formatted += ` (${numbers.slice(2, 4)}`;
+                            if (numbers.length > 4) {
+                                formatted += `) ${numbers.slice(4, 9)}`;
+                                if (numbers.length > 9) {
+                                    formatted += `-${numbers.slice(9, 13)}`;
+                                }
+                            }
+                        }
+                        input = formatted;
+                    }
+                }
+                
+                onChange({ target: { name: 'phone', value: input } });
+            };
+            
+            return (
+                <div>
+                    <input
+                        type="tel"
+                        name="phone"
+                        value={value}
+                        onChange={handleChange}
+                        placeholder="+55 (11) 99999-9999"
+                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 ${error ? 'border-red-500' : 'border-gray-300'}`}
+                        required
+                        aria-invalid={!!error}
+                        aria-describedby={error ? 'phone-error' : undefined}
+                    />
+                    {error && (
+                        <p id="phone-error" className="text-red-500 text-sm mt-1" role="alert">
+                            {error}
+                        </p>
+                    )}
+                </div>
+            );
+        };
+        
+        // Componente de Dashboard otimizado
+        const Dashboard = memo(({ appointments }) => {
+            const stats = useMemo(() => {
+                const today = new Date().toISOString().split('T')[0];
+                const thisMonth = new Date().toISOString().slice(0, 7);
+                
+                return {
+                    total: appointments.length,
+                    todayCount: appointments.filter(apt => apt.date === today).length,
+                    monthCount: appointments.filter(apt => apt.date.startsWith(thisMonth)).length,
+                    confirmed: appointments.filter(apt => apt.confirmed).length,
+                    pending: appointments.filter(apt => !apt.confirmed).length,
+                    confirmationRate: appointments.length > 0
+                        ? Math.round((appointments.filter(apt => apt.confirmed).length / appointments.length) * 100)
+                        : 0
+                };
+            }, [appointments]);
+            
+            const cards = [
+                {
+                    icon: 'fa-calendar-alt',
+                    color: 'blue',
+                    label: 'Total',
+                    value: stats.total,
+                    subtitle: 'Agendamentos'
+                },
+                {
+                    icon: 'fa-check-circle',
+                    color: 'green',
+                    label: 'Taxa',
+                    value: `${stats.confirmationRate}%`,
+                    subtitle: 'Confirmação'
+                },
+                {
+                    icon: 'fa-clock',
+                    color: 'yellow',
+                    label: 'Hoje',
+                    value: stats.todayCount,
+                    subtitle: 'Consultas'
+                },
+                {
+                    icon: 'fa-calendar-check',
+                    color: 'purple',
+                    label: 'Mês',
+                    value: stats.monthCount,
+                    subtitle: 'Agendadas'
+                }
+            ];
+            
+            return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                    {cards.map((card, index) => (
+                        <div 
+                            key={index}
+                            className="bg-white rounded-xl shadow-md p-6 transform hover:scale-105 transition-transform"
+                        >
+                            <div className="flex items-center justify-between mb-4">
+                                <div className={`bg-${card.color}-100 p-3 rounded-lg`}>
+                                    <i className={`fas ${card.icon} text-${card.color}-600 text-xl`} aria-hidden="true"></i>
+                                </div>
+                                <span className="text-sm text-gray-500">{card.label}</span>
+                            </div>
+                            <h3 className="text-2xl font-bold text-gray-900">{card.value}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{card.subtitle}</p>
+                        </div>
+                    ))}
+                </div>
+            );
+        });
+        
+        // Componente de Busca e Filtros otimizado
+        const SearchAndFilters = memo(({ onSearchChange, onFilterChange, onSortChange }) => {
+            const [searchTerm, setSearchTerm] = useState('');
+            const [dateRange, setDateRange] = useState({ start: '', end: '' });
+            const [statusFilter, setStatusFilter] = useState('all');
+            const [sortBy, setSortBy] = useState('date-asc');
+            const searchTimeoutRef = useRef(null);
+            
+            // Debounce para busca
+            useEffect(() => {
+                if (searchTimeoutRef.current) {
+                    clearTimeout(searchTimeoutRef.current);
+                }
+                
+                searchTimeoutRef.current = setTimeout(() => {
+                    onSearchChange(searchTerm);
+                }, 300);
+                
+                return () => {
+                    if (searchTimeoutRef.current) {
+                        clearTimeout(searchTimeoutRef.current);
+                    }
+                };
+            }, [searchTerm, onSearchChange]);
+            
+            useEffect(() => {
+                onFilterChange({ dateRange, statusFilter });
+            }, [dateRange, statusFilter, onFilterChange]);
+            
+            useEffect(() => {
+                onSortChange(sortBy);
+            }, [sortBy, onSortChange]);
+            
+            return (
+                <div className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="relative sm:col-span-2 lg:col-span-1">
+                            <label htmlFor="search" className="sr-only">Buscar paciente ou telefone</label>
+                            <input
+                                id="search"
+                                type="text"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Buscar paciente ou telefone..."
+                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                                aria-label="Buscar paciente ou telefone"
+                            />
+                            <i className="fas fa-search absolute left-3 top-3 text-gray-400" aria-hidden="true"></i>
+                        </div>
+                        
+                        <div className="flex gap-2 sm:col-span-2 lg:col-span-2">
+                            <label htmlFor="date-start" className="sr-only">Data inicial</label>
+                            <input
+                                id="date-start"
+                                type="date"
+                                value={dateRange.start}
+                                onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 min-w-[140px]"
+                                aria-label="Data inicial"
+                            />
+                            <label htmlFor="date-end" className="sr-only">Data final</label>
+                            <input
+                                id="date-end"
+                                type="date"
+                                value={dateRange.end}
+                                onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 min-w-[140px]"
+                                aria-label="Data final"
+                            />
+                        </div>
+                        
+                        <label htmlFor="status-filter" className="sr-only">Filtrar por status</label>
+                        <select
+                            id="status-filter"
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                            aria-label="Filtrar por status"
+                        >
+                            <option value="all">Todos os status</option>
+                            <option value="confirmed">Confirmadas</option>
+                            <option value="pending">Aguardando confirmação</option>
+                            <option value="not-contacted">Não contactadas</option>
+                        </select>
+                        
+                        <label htmlFor="sort-by" className="sr-only">Ordenar por</label>
+                        <select
+                            id="sort-by"
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
+                            aria-label="Ordenar por"
+                        >
+                            <option value="date-asc">Data (mais próxima)</option>
+                            <option value="date-desc">Data (mais distante)</option>
+                            <option value="name-asc">Nome (A-Z)</option>
+                            <option value="name-desc">Nome (Z-A)</option>
+                        </select>
+                    </div>
+                </div>
+            );
+        });
+        
+        // Componente de Exportação otimizado
+        const ExportButtons = ({ appointments, showToast }) => {
+            const exportToExcel = () => {
+                try {
+                    const worksheet = XLSX.utils.json_to_sheet(
+                        appointments.map(apt => ({
+                            'Paciente': apt.patientName,
+                            'Email': apt.email || 'Não informado',
+                            'Data': formatDate(apt.date),
+                            'Horário': apt.time,
+                            'Telefone': apt.phone,
+                            'Status': apt.confirmed ? 'Confirmado' : 'Pendente',
+                            'Mensagem Enviada': apt.sentMessage ? 'Sim' : 'Não',
+                            'Data de Criação': new Date(apt.createdAt).toLocaleDateString('pt-BR')
+                        }))
+                    );
+                    
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Agendamentos');
+                    
+                    // Ajustar largura das colunas
+                    const colWidths = [
+                        { wch: 25 }, // Paciente
+                        { wch: 30 }, // Email
+                        { wch: 15 }, // Data
+                        { wch: 10 }, // Horário
+                        { wch: 20 }, // Telefone
+                        { wch: 12 }, // Status
+                        { wch: 15 }, // Mensagem Enviada
+                        { wch: 15 }  // Data de Criação
+                    ];
+                    worksheet['!cols'] = colWidths;
+                    
+                    XLSX.writeFile(workbook, `agendamentos_${new Date().toISOString().split('T')[0]}.xlsx`);
+                    showToast('Arquivo Excel exportado com sucesso!', 'success');
+                } catch (error) {
+                    console.error('Erro ao exportar Excel:', error);
+                    showToast('Erro ao exportar Excel', 'error');
+                }
+            };
+            
+            const generatePDFReport = () => {
+                try {
+                    const { jsPDF } = window.jspdf;
+                    const doc = new jsPDF();
+                    
+                    // Cabeçalho
+                    doc.setFontSize(20);
+                    doc.text('Relatório de Agendamentos', 20, 20);
+                    doc.setFontSize(12);
+                    doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}`, 20, 30);
+                    
+                    // Estatísticas
+                    const confirmed = appointments.filter(apt => apt.confirmed).length;
+                    const confirmationRate = appointments.length > 0
+                        ? Math.round((confirmed / appointments.length) * 100)
+                        : 0;
+                    
+                    doc.text(`Total de agendamentos: ${appointments.length}`, 20, 45);
+                    doc.text(`Confirmados: ${confirmed}`, 20, 53);
+                    doc.text(`Pendentes: ${appointments.length - confirmed}`, 20, 61);
+                    doc.text(`Taxa de confirmação: ${confirmationRate}%`, 20, 69);
+                    
+                    // Tabela
+                    const tableData = appointments.map(apt => [
+                        apt.patientName,
+                        formatDate(apt.date),
+                        apt.time,
+                        apt.phone,
+                        apt.confirmed ? 'Confirmado' : 'Pendente'
+                    ]);
+                    
+                    doc.autoTable({
+                        head: [['Paciente', 'Data', 'Horário', 'Telefone', 'Status']],
+                        body: tableData,
+                        startY: 80,
+                        styles: {
+                            fontSize: 10,
+                            cellPadding: 3
+                        },
+                        headStyles: {
+                            fillColor: [20, 184, 166] // Teal color
+                        }
+                    });
+                    
+                    doc.save(`relatorio_agendamentos_${new Date().toISOString().split('T')[0]}.pdf`);
+                    showToast('Relatório PDF gerado com sucesso!', 'success');
+                } catch (error) {
+                    console.error('Erro ao gerar PDF:', error);
+                    showToast('Erro ao gerar PDF', 'error');
+                }
+            };
+            
+            return (
+                <div className="flex flex-col sm:flex-row gap-3 mb-6 no-print">
+                    <button
+                        onClick={exportToExcel}
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg btn-icon-text transition-colors btn-icon-only-mobile"
+                        title="Exportar Excel"
+                        aria-label="Exportar dados para Excel"
+                    >
+                        <i className="fas fa-file-excel" aria-hidden="true"></i>
+                        <span>Exportar Excel</span>
+                    </button>
+                    <button
+                        onClick={generatePDFReport}
+                        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg btn-icon-text transition-colors btn-icon-only-mobile"
+                        title="Gerar Relatório PDF"
+                        aria-label="Gerar relatório em PDF"
+                    >
+                        <i className="fas fa-file-pdf" aria-hidden="true"></i>
+                        <span>Gerar Relatório PDF</span>
+                    </button>
+                </div>
+            );
+        };
+        
+        // Componente de Login e Criação de Conta aprimorado
+        const AuthForm = ({ onLogin }) => {
+            const [isLogin, setIsLogin] = useState(true);
+            const [username, setUsername] = useState('');
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [confirmPassword, setConfirmPassword] = useState('');
+            const [showPassword, setShowPassword] = useState(false);
+            const [error, setError] = useState(null);
+            const [passwordErrors, setPasswordErrors] = useState([]);
+            const [loginAttempts, setLoginAttempts] = useState(0);
+            const [isLocked, setIsLocked] = useState(false);
+            const [users, setUsers] = useLocalStorage('clinica-users', []);
+            
+            useEffect(() => {
+                // Inicializar com admin padrão se não existir
+                if (users.length === 0) {
+                    const hashed = CryptoJS.SHA256('Admin@123').toString();
+                    setUsers([{ 
+                        username: 'admin', 
+                        email: 'admin@clinicadental.com',
+                        password: hashed,
+                        createdAt: new Date().toISOString()
+                    }]);
+                }
+            }, []);
+            
+            useEffect(() => {
+                // Verificar tentativas de login
+                const attempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+                const lastAttempt = localStorage.getItem('lastLoginAttempt');
+                
+                if (attempts >= CLINIC_CONFIG.maxLoginAttempts && lastAttempt) {
+                    const timeSinceLastAttempt = Date.now() - parseInt(lastAttempt);
+                    const lockDuration = 15 * 60 * 1000; // 15 minutos
+                    
+                    if (timeSinceLastAttempt < lockDuration) {
+                        setIsLocked(true);
+                        setTimeout(() => {
+                            setIsLocked(false);
+                            localStorage.removeItem('loginAttempts');
+                            localStorage.removeItem('lastLoginAttempt');
+                        }, lockDuration - timeSinceLastAttempt);
+                    } else {
+                        localStorage.removeItem('loginAttempts');
+                        localStorage.removeItem('lastLoginAttempt');
+                    }
+                }
+            }, []);
+            
+            const handlePasswordChange = (value) => {
+                setPassword(value);
+                if (!isLogin) {
+                    const validation = validatePassword(value);
+                    setPasswordErrors(validation.errors);
+                }
+            };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setError(null);
+                
+                if (isLocked) {
+                    setError('Conta temporariamente bloqueada. Tente novamente em alguns minutos.');
+                    return;
+                }
+                
+                if (isLogin) {
+                    const hashed = CryptoJS.SHA256(password).toString();
+                    const user = users.find(u => 
+                        (u.username === username || u.email === username) && 
+                        u.password === hashed
+                    );
+                    
+                    if (user) {
+                        localStorage.setItem('authToken', 'loggedIn');
+                        localStorage.setItem('currentUser', JSON.stringify({
+                            username: user.username,
+                            email: user.email
+                        }));
+                        localStorage.removeItem('loginAttempts');
+                        localStorage.removeItem('lastLoginAttempt');
+                        announceToScreenReader('Login realizado com sucesso');
+                        onLogin();
+                    } else {
+                        const attempts = loginAttempts + 1;
+                        setLoginAttempts(attempts);
+                        localStorage.setItem('loginAttempts', attempts.toString());
+                        localStorage.setItem('lastLoginAttempt', Date.now().toString());
+                        
+                        if (attempts >= CLINIC_CONFIG.maxLoginAttempts) {
+                            setIsLocked(true);
+                            setError('Muitas tentativas falhadas. Conta bloqueada temporariamente.');
+                        } else {
+                            setError(`Credenciais inválidas. ${CLINIC_CONFIG.maxLoginAttempts - attempts} tentativas restantes.`);
+                        }
+                    }
+                } else {
+                    // Validações de registro
+                    const emailValidation = validateEmail(email);
+                    if (!emailValidation.isValid) {
+                        setError(emailValidation.error);
+                        return;
+                    }
+                    
+                    const passwordValidation = validatePassword(password);
+                    if (!passwordValidation.isValid) {
+                        setError('Senha não atende aos requisitos');
+                        return;
+                    }
+                    
+                    if (password !== confirmPassword) {
+                        setError('As senhas não coincidem');
+                        return;
+                    }
+                    
+                    if (users.some(u => u.username === username)) {
+                        setError('Nome de usuário já existe');
+                        return;
+                    }
+                    
+                    if (users.some(u => u.email === email)) {
+                        setError('Email já cadastrado');
+                        return;
+                    }
+                    
+                    const hashed = CryptoJS.SHA256(password).toString();
+                    const newUser = {
+                        username,
+                        email,
+                        password: hashed,
+                        createdAt: new Date().toISOString()
+                    };
+                    
+                    setUsers([...users, newUser]);
+                    announceToScreenReader('Conta criada com sucesso');
+                    showToast('Conta criada com sucesso! Faça login.', 'success');
+                    
+                    // Limpar formulário e voltar para login
+                    setUsername('');
+                    setEmail('');
+                    setPassword('');
+                    setConfirmPassword('');
+                    setIsLogin(true);
+                }
+            };
+            
+            return (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md animate-slideIn">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                            {isLogin ? 'Login' : 'Criar Conta'}
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <div>
+                                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+                                    {isLogin ? 'Usuário ou Email' : 'Usuário'}
+                                </label>
+                                <input
+                                    id="username"
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 border-gray-300"
+                                    required
+                                    disabled={isLocked}
+                                    aria-describedby={error ? 'auth-error' : undefined}
+                                />
+                            </div>
+                            
+                            {!isLogin && (
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Email
+                                    </label>
+                                    <input
+                                        id="email"
+                                        type="email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 border-gray-300"
+                                        required
+                                    />
+                                </div>
+                            )}
+                            
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+                                    Senha
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        id="password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={password}
+                                        onChange={(e) => handlePasswordChange(e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 border-gray-300 pr-10"
+                                        required
+                                        disabled={isLocked}
+                                        aria-describedby={passwordErrors.length > 0 ? 'password-requirements' : undefined}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                                        aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                                    >
+                                        <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                {!isLogin && passwordErrors.length > 0 && (
+                                    <div id="password-requirements" className="mt-2">
+                                        <p className="text-sm text-gray-600 font-medium">Requisitos da senha:</p>
+                                        <ul className="text-sm text-red-500 list-disc list-inside">
+                                            {passwordErrors.map((error, index) => (
+                                                <li key={index}>{error}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {!isLogin && (
+                                <div>
+                                    <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
+                                        Confirmar Senha
+                                    </label>
+                                    <input
+                                        id="confirm-password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 border-gray-300"
+                                        required
+                                    />
+                                </div>
+                            )}
+                            
+                            {error && (
+                                <p id="auth-error" className="text-red-500 text-sm" role="alert">
+                                    {error}
+                                </p>
+                            )}
+                            
+                            <button
+                                type="submit"
+                                className="w-full px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={isLocked}
+                            >
+                                {isLogin ? 'Entrar' : 'Criar Conta'}
+                            </button>
+                        </form>
+                        
+                        <button
+                            onClick={() => {
+                                setIsLogin(!isLogin);
+                                setError(null);
+                                setPasswordErrors([]);
+                            }}
+                            className="w-full mt-4 text-teal-500 hover:underline"
+                            disabled={isLocked}
+                        >
+                            {isLogin ? 'Criar nova conta' : 'Já tem conta? Faça login'}
+                        </button>
+                        
+                        {isLogin && (
+                            <p className="text-xs text-gray-500 text-center mt-4">
+                                Credenciais padrão: admin / Admin@123
+                            </p>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+        
+        // Componente Principal otimizado
+        const App = () => {
+            const [appointments, setAppointments] = useLocalStorage('clinica-appointments', []);
+            const [showForm, setShowForm] = useState(false);
+            const [formData, setFormData] = useState({
+                patientName: '',
+                email: '',
+                date: '',
+                time: '',
+                phone: ''
+            });
+            const [formErrors, setFormErrors] = useState({});
+            const [filter, setFilter] = useState('all');
+            const [searchTerm, setSearchTerm] = useState('');
+            const [filterOptions, setFilterOptions] = useState({ dateRange: { start: '', end: '' }, statusFilter: 'all' });
+            const [sortBy, setSortBy] = useState('date-asc');
+            const [deleteConfirm, setDeleteConfirm] = useState({ show: false, id: null });
+            const { toasts, showToast, removeToast } = useToast();
+            const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('authToken'));
+            const [currentUser, setCurrentUser] = useState(null);
+            
+            // Hook de sessão
+            useSession();
+            
+            useEffect(() => {
+                // Carregar usuário atual
+                const userStr = localStorage.getItem('currentUser');
+                if (userStr) {
+                    setCurrentUser(JSON.parse(userStr));
+                }
+                
+                // Definir data padrão
+                const today = new Date().toISOString().split('T')[0];
+                setFormData(prev => ({ ...prev, date: today }));
+            }, []);
+            
+            const handleLogout = () => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                setIsLoggedIn(false);
+                announceToScreenReader('Logout realizado com sucesso');
+            };
+            
+            const handleInputChange = (e) => {
+                const { name, value } = e.target;
+                const sanitized = ['patientName', 'email'].includes(name) ? sanitizeInput(value) : value;
+                setFormData(prev => ({ ...prev, [name]: sanitized }));
+                
+                // Limpar erro do campo quando o usuário digita
+                if (formErrors[name]) {
+                    setFormErrors(prev => ({ ...prev, [name]: null }));
+                }
+            };
+            
+            const validateForm = () => {
+                const errors = {};
+                
+                if (!formData.patientName.trim()) {
+                    errors.patientName = 'Nome é obrigatório';
+                }
+                
+                if (formData.email) {
+                    const emailValidation = validateEmail(formData.email);
+                    if (!emailValidation.isValid) {
+                        errors.email = emailValidation.error;
+                    }
+                }
+                
+                const dateValidation = validateDate(formData.date);
+                if (!dateValidation.isValid) {
+                    errors.date = dateValidation.error;
+                }
+                
+                const timeValidation = validateTime(formData.time, formData.date, appointments);
+                if (!timeValidation.isValid) {
+                    errors.time = timeValidation.error;
+                }
+                
+                const phoneValidation = validatePhone(formData.phone);
+                if (!phoneValidation.isValid) {
+                    errors.phone = phoneValidation.error;
+                }
+                
+                setFormErrors(errors);
+                return Object.keys(errors).length === 0;
+            };
+            
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    showToast('Por favor, corrija os erros no formulário', 'error');
+                    return;
+                }
+                
+                const phoneValidation = validatePhone(formData.phone);
+                const newAppointment = {
+                    id: Date.now(),
+                    ...formData,
+                    phone: phoneValidation.formatted,
+                    confirmed: false,
+                    sentMessage: false,
+                    createdAt: new Date().toISOString(),
+                    createdBy: currentUser?.username || 'admin'
+                };
+                
+                setAppointments(prev => [...prev, newAppointment]);
+                setFormData({ patientName: '', email: '', date: '', time: '', phone: '' });
+                setFormErrors({});
+                setShowForm(false);
+                showToast('Agendamento criado com sucesso!', 'success');
+                announceToScreenReader('Agendamento criado com sucesso');
+            };
+            
+            const sendMessage = useCallback((appointment) => {
+                const message = `Olá ${appointment.patientName}, gostaríamos de confirmar sua consulta odontológica marcada para ${formatDate(appointment.date)} às ${appointment.time}. Por favor, responda com SIM para confirmar ou NÃO para remarcar. Obrigado! - Clínica Dental`;
+                const whatsappUrl = `https://wa.me/${appointment.phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                
+                setAppointments(prev =>
+                    prev.map(apt =>
+                        apt.id === appointment.id
+                            ? { ...apt, sentMessage: true, lastMessageDate: new Date().toISOString() }
+                            : apt
+                    )
+                );
+                showToast('Mensagem enviada via WhatsApp', 'success');
+            }, [setAppointments, showToast]);
+            
+            const confirmAppointment = useCallback((id) => {
+                setAppointments(prev =>
+                    prev.map(apt =>
+                        apt.id === id
+                            ? { ...apt, confirmed: true, confirmedDate: new Date().toISOString() }
+                            : apt
+                    )
+                );
+                showToast('Consulta confirmada!', 'success');
+                announceToScreenReader('Consulta confirmada');
+            }, [setAppointments, showToast]);
+            
+            const deleteAppointment = useCallback((id) => {
+                setAppointments(prev => prev.filter(apt => apt.id !== id));
+                showToast('Agendamento excluído', 'info');
+                setDeleteConfirm({ show: false, id: null });
+                announceToScreenReader('Agendamento excluído');
+            }, [setAppointments, showToast]);
+            
+            const filteredAppointments = useMemo(() => {
+                let filtered = [...appointments];
+                
+                // Busca por texto
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filtered = filtered.filter(apt =>
+                        apt.patientName.toLowerCase().includes(term) ||
+                        apt.phone.includes(searchTerm) ||
+                        (apt.email && apt.email.toLowerCase().includes(term))
+                    );
+                }
+                
+                // Filtro de data
+                const { dateRange, statusFilter } = filterOptions;
+                if (dateRange.start) {
+                    filtered = filtered.filter(apt => apt.date >= dateRange.start);
+                }
+                if (dateRange.end) {
+                    filtered = filtered.filter(apt => apt.date <= dateRange.end);
+                }
+                
+                // Filtro de status
+                if (statusFilter !== 'all') {
+                    filtered = filtered.filter(apt => {
+                        if (statusFilter === 'confirmed') return apt.confirmed;
+                        if (statusFilter === 'pending') return !apt.confirmed && apt.sentMessage;
+                        if (statusFilter === 'not-contacted') return !apt.sentMessage;
+                        return true;
+                    });
+                }
+                
+                // Filtro rápido
+                if (filter !== 'all') {
+                    filtered = filtered.filter(apt => {
+                        if (filter === 'confirmed') return apt.confirmed;
+                        if (filter === 'pending') return !apt.confirmed;
+                        return true;
+                    });
+                }
+                
+                // Ordenação
+                filtered.sort((a, b) => {
+                    switch (sortBy) {
+                        case 'date-asc':
+                            return new Date(a.date + ' ' + a.time) - new Date(b.date + ' ' + b.time);
+                        case 'date-desc':
+                            return new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time);
+                        case 'name-asc':
+                            return a.patientName.localeCompare(b.patientName);
+                        case 'name-desc':
+                            return b.patientName.localeCompare(a.patientName);
+                        default:
+                            return 0;
+                    }
+                });
+                
+                return filtered;
+            }, [appointments, searchTerm, filterOptions, filter, sortBy]);
+            
+            if (!isLoggedIn) {
+                return <AuthForm onLogin={() => setIsLoggedIn(true)} />;
+            }
+            
+            return (
+                <div className="container mx-auto px-4 py-8 max-w-7xl">
+                    {/* Toasts */}
+                    <div className="fixed top-4 right-4 z-50 space-y-2" role="region" aria-label="Notificações">
+                        {toasts.map(toast => (
+                            <Toast key={toast.id} toast={toast} onClose={removeToast} />
+                        ))}
+                    </div>
+                    
+                    {/* Header */}
+                    <header className="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-8">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div>
+                                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                                    <i className="fas fa-tooth text-teal-500" aria-hidden="true"></i>
+                                    <span>Clínica Dental</span>
+                                </h1>
+                                <p className="text-gray-600 mt-2">Sistema de Agendamento</p>
+                                {currentUser && (
+                                    <p className="text-sm text-gray-500 mt-1">
+                                        Logado como: {currentUser.username}
+                                    </p>
+                                )}
+                            </div>
+                            <nav className="flex gap-3" role="navigation" aria-label="Ações principais">
+                                <button
+                                    onClick={() => setShowForm(true)}
+                                    className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-3 rounded-lg btn-icon-text transition-colors duration-200 shadow-md transform hover:scale-105"
+                                    aria-label="Criar novo agendamento"
+                                >
+                                    <i className="fas fa-plus" aria-hidden="true"></i>
+                                    <span>Nova Consulta</span>
+                                </button>
+                                <button
+                                    onClick={handleLogout}
+                                    className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg btn-icon-text transition-colors duration-200 shadow-md transform hover:scale-105"
+                                    aria-label="Fazer logout do sistema"
+                                >
+                                    <i className="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                    <span>Sair</span>
+                                </button>
+                            </nav>
+                        </div>
+                    </header>
+                    
+                    {/* Main Content */}
+                    <main id="main-content">
+                        {/* Dashboard */}
+                        <section aria-label="Estatísticas">
+                            <Dashboard appointments={appointments} />
+                        </section>
+                        
+                        {/* Busca e Filtros */}
+                        <section aria-label="Busca e filtros">
+                            <SearchAndFilters
+                                onSearchChange={setSearchTerm}
+                                onFilterChange={setFilterOptions}
+                                onSortChange={setSortBy}
+                            />
+                        </section>
+                        
+                        {/* Botões de Exportação */}
+                        {filteredAppointments.length > 0 && (
+                            <section aria-label="Exportação de dados">
+                                <ExportButtons appointments={filteredAppointments} showToast={showToast} />
+                            </section>
+                        )}
+                        
+                        {/* Filtros Rápidos */}
+                        <section aria-label="Filtros rápidos" className="flex flex-wrap gap-2 sm:gap-4 mb-6">
+                            <button
+                                onClick={() => setFilter('all')}
+                                className={`px-4 py-2 rounded-lg transition-colors duration-200 btn-text-responsive ${
+                                    filter === 'all'
+                                        ? 'bg-teal-500 text-white shadow-md'
+                                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                                }`}
+                                aria-pressed={filter === 'all'}
+                            >
+                                Todas ({appointments.length})
+                            </button>
+                            <button
+                                onClick={() => setFilter('confirmed')}
+                                className={`px-4 py-2 rounded-lg transition-colors duration-200 btn-text-responsive ${
+                                    filter === 'confirmed'
+                                        ? 'bg-green-500 text-white shadow-md'
+                                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                                }`}
+                                aria-pressed={filter === 'confirmed'}
+                            >
+                                <i className="fas fa-check-circle mr-2" aria-hidden="true"></i>
+                                Confirmadas ({appointments.filter(a => a.confirmed).length})
+                            </button>
+                            <button
+                                onClick={() => setFilter('pending')}
+                                className={`px-4 py-2 rounded-lg transition-colors duration-200 btn-text-responsive ${
+                                    filter === 'pending'
+                                        ? 'bg-orange-500 text-white shadow-md'
+                                        : 'bg-white text-gray-700 hover:bg-gray-50'
+                                }`}
+                                aria-pressed={filter === 'pending'}
+                            >
+                                <i className="fas fa-clock mr-2" aria-hidden="true"></i>
+                                Pendentes ({appointments.filter(a => !a.confirmed).length})
+                            </button>
+                        </section>
+                        
+                        {/* Lista de Agendamentos */}
+                        <section aria-label="Lista de agendamentos">
+                            {filteredAppointments.length > 0 ? (
+                                <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                                    {filteredAppointments.map((appointment) => (
+                                        <article
+                                            key={appointment.id}
+                                            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 hover:shadow-xl transition-shadow duration-300"
+                                        >
+                                            <div className="flex items-start justify-between mb-4">
+                                                <div className="flex items-center gap-3 flex-1 min-w-0">
+                                                    <div className="bg-teal-100 p-2 rounded-lg flex-shrink-0">
+                                                        <i className="fas fa-user text-teal-600" aria-hidden="true"></i>
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                        <h3 className="font-semibold text-gray-900 truncate">
+                                                            {appointment.patientName}
+                                                        </h3>
+                                                        <p className="text-sm text-gray-500 truncate">{appointment.phone}</p>
+                                                        {appointment.email && (
+                                                            <p className="text-sm text-gray-500 truncate">{appointment.email}</p>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    onClick={() => setDeleteConfirm({ show: true, id: appointment.id })}
+                                                    className="text-gray-400 hover:text-red-500 transition-colors duration-200 ml-2 flex-shrink-0"
+                                                    aria-label={`Excluir agendamento de ${appointment.patientName}`}
+                                                >
+                                                    <i className="fas fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </div>
+                                            
+                                            <div className="space-y-3 mb-6">
+                                                <div className="flex items-center gap-2 text-gray-600">
+                                                    <i className="fas fa-calendar flex-shrink-0" aria-hidden="true"></i>
+                                                    <span className="text-sm">{formatDate(appointment.date)}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-gray-600">
+                                                    <i className="fas fa-clock flex-shrink-0" aria-hidden="true"></i>
+                                                    <span className="text-sm">{appointment.time}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="flex items-center justify-between mb-4">
+                                                <div className="flex items-center gap-2">
+                                                    {appointment.confirmed ? (
+                                                        <i className="fas fa-check-circle text-green-500" aria-hidden="true"></i>
+                                                    ) : (
+                                                        <div className="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
+                                                    )}
+                                                    <span className={`text-sm font-medium ${
+                                                        appointment.confirmed ? 'text-green-600' : 'text-orange-600'
+                                                    }`}>
+                                                        {appointment.confirmed ? 'Confirmada' : 'Pendente'}
+                                                    </span>
+                                                </div>
+                                                {appointment.sentMessage && (
+                                                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full flex items-center gap-1">
+                                                        <i className="fas fa-check" aria-hidden="true"></i>
+                                                        <span className="hidden sm:inline">Mensagem</span> Enviada
+                                                    </span>
+                                                )}
+                                            </div>
+                                            
+                                            <div className="flex flex-col sm:flex-row gap-2">
+                                                {!appointment.sentMessage && (
+                                                    <button
+                                                        onClick={() => sendMessage(appointment)}
+                                                        className="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-lg btn-icon-text transition-colors duration-200 transform hover:scale-105 text-sm"
+                                                        aria-label={`Enviar mensagem WhatsApp para ${appointment.patientName}`}
+                                                    >
+                                                        <i className="fab fa-whatsapp" aria-hidden="true"></i>
+                                                        <span>Enviar WhatsApp</span>
+                                                    </button>
+                                                )}
+                                                {!appointment.confirmed && appointment.sentMessage && (
+                                                    <button
+                                                        onClick={() => confirmAppointment(appointment.id)}
+                                                        className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-3 rounded-lg btn-icon-text transition-colors duration-200 transform hover:scale-105 text-sm"
+                                                        aria-label={`Confirmar consulta de ${appointment.patientName}`}
+                                                    >
+                                                        <i className="fas fa-check-circle" aria-hidden="true"></i>
+                                                        <span>Confirmar</span>
+                                                    </button>
+                                                )}
+                                                {appointment.confirmed && (
+                                                    <div className="flex-1 bg-green-100 text-green-800 py-2 px-3 rounded-lg btn-icon-text text-sm">
+                                                        <i className="fas fa-check-double" aria-hidden="true"></i>
+                                                        <span>Consulta Confirmada</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </article>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-12 bg-white rounded-xl shadow-md">
+                                    <i className="fas fa-calendar text-gray-300 text-6xl mb-4" aria-hidden="true"></i>
+                                    <h3 className="text-xl font-medium text-gray-900 mb-2">
+                                        Nenhuma consulta encontrada
+                                    </h3>
+                                    <p className="text-gray-500">
+                                        {searchTerm || filterOptions.dateRange.start || filterOptions.statusFilter !== 'all'
+                                            ? 'Tente ajustar os filtros de busca'
+                                            : 'Agende uma nova consulta para começar'}
+                                    </p>
+                                </div>
+                            )}
+                        </section>
+                    </main>
+                    
+                    {/* Modal de Formulário */}
+                    {showForm && (
+                        <div 
+                            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="form-title"
+                        >
+                            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md animate-slideIn">
+                                <h2 id="form-title" className="text-2xl font-bold text-gray-900 mb-6">
+                                    Nova Consulta
+                                </h2>
+                                <form onSubmit={handleSubmit} className="space-y-4">
+                                    <div>
+                                        <label htmlFor="patient-name" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Nome do Paciente *
+                                        </label>
+                                        <input
+                                            id="patient-name"
+                                            type="text"
+                                            name="patientName"
+                                            value={formData.patientName}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                                                formErrors.patientName ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                            required
+                                            aria-invalid={!!formErrors.patientName}
+                                            aria-describedby={formErrors.patientName ? 'patient-name-error' : undefined}
+                                        />
+                                        {formErrors.patientName && (
+                                            <p id="patient-name-error" className="text-red-500 text-sm mt-1" role="alert">
+                                                {formErrors.patientName}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="patient-email" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Email (opcional)
+                                        </label>
+                                        <input
+                                            id="patient-email"
+                                            type="email"
+                                            name="email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                                                formErrors.email ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                            aria-invalid={!!formErrors.email}
+                                            aria-describedby={formErrors.email ? 'patient-email-error' : undefined}
+                                        />
+                                        {formErrors.email && (
+                                            <p id="patient-email-error" className="text-red-500 text-sm mt-1" role="alert">
+                                                {formErrors.email}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="appointment-date" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Data *
+                                        </label>
+                                        <input
+                                            id="appointment-date"
+                                            type="date"
+                                            name="date"
+                                            value={formData.date}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                                                formErrors.date ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                            required
+                                            aria-invalid={!!formErrors.date}
+                                            aria-describedby={formErrors.date ? 'appointment-date-error' : undefined}
+                                        />
+                                        {formErrors.date && (
+                                            <p id="appointment-date-error" className="text-red-500 text-sm mt-1" role="alert">
+                                                {formErrors.date}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="appointment-time" className="block text-sm font-medium text-gray-700 mb-1">
+                                            Horário *
+                                        </label>
+                                        <input
+                                            id="appointment-time"
+                                            type="time"
+                                            name="time"
+                                            value={formData.time}
+                                            onChange={handleInputChange}
+                                            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent ${
+                                                formErrors.time ? 'border-red-500' : 'border-gray-300'
+                                            }`}
+                                            required
+                                            aria-invalid={!!formErrors.time}
+                                            aria-describedby={formErrors.time ? 'appointment-time-error' : undefined}
+                                        />
+                                        {formErrors.time && (
+                                            <p id="appointment-time-error" className="text-red-500 text-sm mt-1" role="alert">
+                                                {formErrors.time}
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <div>
+                                        <label htmlFor="patient-phone" className="block text-sm font-medium text-gray-700 mb-1">
+                                            WhatsApp *
+                                        </label>
+                                        <PhoneInput
+                                            value={formData.phone}
+                                            onChange={handleInputChange}
+                                            error={formErrors.phone}
+                                        />
+                                    </div>
+                                    
+                                    <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowForm(false);
+                                                setFormErrors({});
+                                            }}
+                                            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                                        >
+                                            Cancelar
+                                        </button>
+                                        <button
+                                            type="submit"
+                                            className="flex-1 px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors duration-200"
+                                        >
+                                            Agendar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* Modal de Confirmação de Exclusão */}
+                    <ConfirmDialog
+                        isOpen={deleteConfirm.show}
+                        onClose={() => setDeleteConfirm({ show: false, id: null })}
+                        onConfirm={() => deleteAppointment(deleteConfirm.id)}
+                        title="Excluir Agendamento"
+                        message="Tem certeza que deseja excluir este agendamento? Esta ação não pode ser desfeita."
+                    />
+                </div>
+            );
+        };
+        
+        // Renderizar a aplicação
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
