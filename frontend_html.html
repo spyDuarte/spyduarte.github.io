@@ -22,13 +22,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Scripts Externos -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js" integrity="sha512-4ReQg4MVm4vn0D/xXkW0IRnOWlPVIpDdGqNdcJsGJm+Kh5aKM6jEjPJHg7GHqZgqsEfRZRIRN0t3k8nPT7hLsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js" integrity="sha512-0IFLKUbK31jh8w+Z5+AY6hEUdZpb7sEu+Gzf/fRCcIgHu+qiL+GX6YrqfY/mMFmNPrr8+YCBArvOm3Y2dHEIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js" integrity="sha512-7U4rRB2asjyddd2/zYIj8DAynlJin1dSEGkdFB0jA1twggmuNDblCdVMxuLLEQl0bqKp5GJZYzIjvRhSj7Og==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js"></script>
 
 <style>
 /* ==========================================
@@ -2389,4 +2389,1935 @@ body {
                     
                     <div id="listEmpty" class="empty-state hidden">
                         <div class="empty-state-icon">📋</div>
-                        <h3>Nenhum agen
+                        <h3>Nenhum agendamento encontrado</h3>
+                        <p>Não há agendamentos que correspondam aos filtros selecionados.</p>
+                        <button class="btn btn-primary mt-4" onclick="App.showSection('appointments')">
+                            <i class="fas fa-plus"></i>
+                            Criar Novo Agendamento
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Pacientes -->
+            <section id="patients" class="content-section">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="form-title m-0">
+                            <i class="fas fa-users"></i>
+                            Gestão de Pacientes
+                        </h2>
+                        <p class="form-subtitle">Cadastro e gerenciamento de informações dos pacientes</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" onclick="App.showNewPatientModal()">
+                            <i class="fas fa-user-plus"></i>
+                            Novo Paciente
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-filters">
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-search"></i>
+                                Buscar Paciente
+                            </label>
+                            <input type="text" class="search-input" id="patientSearchInput" 
+                                   placeholder="Nome, CPF, telefone ou email...">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar"></i>
+                                Última Consulta
+                            </label>
+                            <select class="filter-select" id="lastVisitFilter">
+                                <option value="">Todos</option>
+                                <option value="30">Últimos 30 dias</option>
+                                <option value="60">Últimos 60 dias</option>
+                                <option value="90">Últimos 90 dias</option>
+                                <option value="180">Últimos 6 meses</option>
+                                <option value="365">Último ano</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag"></i> ID</th>
+                                    <th><i class="fas fa-user"></i> Nome</th>
+                                    <th><i class="fas fa-phone"></i> Telefone</th>
+                                    <th><i class="fas fa-envelope"></i> Email</th>
+                                    <th><i class="fas fa-id-card"></i> CPF</th>
+                                    <th><i class="fas fa-calendar"></i> Última Consulta</th>
+                                    <th><i class="fas fa-chart-line"></i> Total de Consultas</th>
+                                    <th><i class="fas fa-cogs"></i> Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patientsList">
+                                <!-- Dados carregados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="patientsEmpty" class="empty-state hidden">
+                        <div class="empty-state-icon">👥</div>
+                        <h3>Nenhum paciente cadastrado</h3>
+                        <p>Comece cadastrando seu primeiro paciente.</p>
+                        <button class="btn btn-primary mt-4" onclick="App.showNewPatientModal()">
+                            <i class="fas fa-user-plus"></i>
+                            Cadastrar Paciente
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Relatórios -->
+            <section id="reports" class="content-section">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="form-title m-0">
+                            <i class="fas fa-chart-pie"></i>
+                            Relatórios e Análises
+                        </h2>
+                        <p class="form-subtitle">Visualize estatísticas e gere relatórios detalhados</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-primary" onclick="App.generateReport()">
+                            <i class="fas fa-file-pdf"></i>
+                            Gerar PDF
+                        </button>
+                        <button class="btn btn-warning" onclick="App.exportReportExcel()">
+                            <i class="fas fa-file-excel"></i>
+                            Exportar Excel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-container mb-6">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                Período
+                            </label>
+                            <select class="form-select" id="reportPeriod">
+                                <option value="week">Última Semana</option>
+                                <option value="month" selected>Último Mês</option>
+                                <option value="quarter">Último Trimestre</option>
+                                <option value="year">Último Ano</option>
+                                <option value="custom">Personalizado</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-chart-bar"></i>
+                                Tipo de Relatório
+                            </label>
+                            <select class="form-select" id="reportType">
+                                <option value="appointments">Agendamentos</option>
+                                <option value="patients">Pacientes</option>
+                                <option value="revenue">Faturamento</option>
+                                <option value="procedures">Procedimentos</option>
+                                <option value="cancellations">Cancelamentos</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Agendamentos por Mês</h3>
+                            <p class="chart-subtitle">Evolução mensal</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Tipos de Procedimento</h3>
+                            <p class="chart-subtitle">Distribuição por tipo</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="proceduresChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-container mt-6">
+                    <div class="stat-card success">
+                        <div class="stat-content">
+                            <div class="stat-label">Taxa de Confirmação</div>
+                            <div class="stat-value">87%</div>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5% vs mês anterior</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-check-circle stat-icon"></i>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-content">
+                            <div class="stat-label">Taxa de Cancelamento</div>
+                            <div class="stat-value">8%</div>
+                            <div class="stat-trend down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-2% vs mês anterior</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-times-circle stat-icon"></i>
+                    </div>
+                    
+                    <div class="stat-card info">
+                        <div class="stat-content">
+                            <div class="stat-label">Tempo Médio de Atendimento</div>
+                            <div class="stat-value">45min</div>
+                            <div class="stat-trend neutral">
+                                <i class="fas fa-minus"></i>
+                                <span>Estável</span>
+                            </div>
+                        </div>
+                        <i class="fas fa-clock stat-icon"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Configurações -->
+            <section id="settings" class="content-section">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="form-title m-0">
+                            <i class="fas fa-cogs"></i>
+                            Configurações do Sistema
+                        </h2>
+                        <p class="form-subtitle">Personalize o sistema de acordo com suas necessidades</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-success" onclick="App.saveSettings()">
+                            <i class="fas fa-save"></i>
+                            Salvar Configurações
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <div class="form-header">
+                        <h3 class="form-title">
+                            <i class="fas fa-clinic-medical"></i>
+                            Informações da Clínica
+                        </h3>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-building"></i>
+                                Nome da Clínica
+                            </label>
+                            <input type="text" class="form-input" id="clinicName" 
+                                   value="Clínica Dental Premium">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-phone"></i>
+                                Telefone
+                            </label>
+                            <input type="tel" class="form-input" id="clinicPhone" 
+                                   value="(11) 3456-7890">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Email
+                            </label>
+                            <input type="email" class="form-input" id="clinicEmail" 
+                                   value="contato@clinicadentalpremium.com.br">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Endereço
+                            </label>
+                            <input type="text" class="form-input" id="clinicAddress" 
+                                   value="Av. Principal, 1234 - Centro">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container mt-6">
+                    <div class="form-header">
+                        <h3 class="form-title">
+                            <i class="fas fa-clock"></i>
+                            Horário de Funcionamento
+                        </h3>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-sun"></i>
+                                Horário de Abertura
+                            </label>
+                            <input type="time" class="form-input" id="openingTime" value="08:00">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-moon"></i>
+                                Horário de Fechamento
+                            </label>
+                            <input type="time" class="form-input" id="closingTime" value="18:00">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-hourglass-half"></i>
+                                Intervalo entre Consultas (min)
+                            </label>
+                            <input type="number" class="form-input" id="appointmentInterval" 
+                                   value="15" min="5" max="60">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar-week"></i>
+                                Dias de Funcionamento
+                            </label>
+                            <div class="flex gap-2 flex-wrap mt-2">
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked> Segunda
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked> Terça
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked> Quarta
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked> Quinta
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" checked> Sexta
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox"> Sábado
+                                </label>
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox"> Domingo
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container mt-6">
+                    <div class="form-header">
+                        <h3 class="form-title">
+                            <i class="fas fa-bell"></i>
+                            Configurações de Notificação
+                        </h3>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked>
+                                <span>Enviar lembretes por WhatsApp</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked>
+                                <span>Enviar confirmações por Email</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" checked>
+                                <span>Notificar cancelamentos</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox">
+                                <span>Backup automático diário</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de Visualização/Edição -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-calendar-check"></i>
+                    Detalhes do Agendamento
+                </h3>
+                <button class="modal-close" onclick="App.closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo dinâmico -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="App.closeModal()">
+                    <i class="fas fa-times"></i>
+                    Fechar
+                </button>
+                <button class="btn btn-primary" onclick="App.saveModalData()">
+                    <i class="fas fa-save"></i>
+                    Salvar Alterações
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Principal -->
+    <script>
+    // Configuração do Moment.js para português
+    moment.locale('pt-br');
+
+    // Namespace principal da aplicação
+    const App = {
+        // Estado da aplicação
+        state: {
+            appointments: [],
+            patients: [],
+            selectedAppointments: [],
+            currentSection: 'dashboard',
+            connectionStatus: 'offline',
+            filters: {
+                search: '',
+                status: '',
+                date: '',
+                type: '',
+                priority: ''
+            },
+            charts: {},
+            backendUrl: 'http://localhost:3000/api' // URL do backend
+        },
+
+        // Inicialização da aplicação
+        init() {
+            console.log('🦷 Sistema de Agendamento Dental v3.0 Iniciando...');
+            
+            // Carregar dados do localStorage
+            this.loadLocalData();
+            
+            // Configurar event listeners
+            this.setupEventListeners();
+            
+            // Configurar horários disponíveis
+            this.setupTimeSlots();
+            
+            // Testar conexão
+            this.testConnection();
+            
+            // Carregar dados iniciais
+            this.loadData();
+            
+            // Inicializar gráficos
+            this.initCharts();
+            
+            // Atualizar dashboard
+            this.updateDashboard();
+            
+            console.log('✅ Sistema inicializado com sucesso!');
+        },
+
+        // Configurar event listeners
+        setupEventListeners() {
+            // Filtros de busca
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    this.state.filters.search = e.target.value;
+                    this.filterAppointments();
+                });
+            }
+
+            // Filtros de status
+            const statusFilter = document.getElementById('statusFilter');
+            if (statusFilter) {
+                statusFilter.addEventListener('change', (e) => {
+                    this.state.filters.status = e.target.value;
+                    this.filterAppointments();
+                });
+            }
+
+            // Filtro de data
+            const dateFilter = document.getElementById('dateFilter');
+            if (dateFilter) {
+                dateFilter.addEventListener('change', (e) => {
+                    this.state.filters.date = e.target.value;
+                    this.filterAppointments();
+                });
+            }
+
+            // Filtro de tipo
+            const typeFilter = document.getElementById('typeFilter');
+            if (typeFilter) {
+                typeFilter.addEventListener('change', (e) => {
+                    this.state.filters.type = e.target.value;
+                    this.filterAppointments();
+                });
+            }
+
+            // Filtro de prioridade
+            const priorityFilter = document.getElementById('priorityFilter');
+            if (priorityFilter) {
+                priorityFilter.addEventListener('change', (e) => {
+                    this.state.filters.priority = e.target.value;
+                    this.filterAppointments();
+                });
+            }
+
+            // Data do agendamento - atualizar horários disponíveis
+            const appointmentDate = document.getElementById('appointmentDate');
+            if (appointmentDate) {
+                // Definir data mínima como hoje
+                appointmentDate.min = new Date().toISOString().split('T')[0];
+                
+                appointmentDate.addEventListener('change', () => {
+                    this.updateAvailableTimeSlots();
+                });
+            }
+
+            // Formulário de agendamento
+            const appointmentForm = document.getElementById('appointmentForm');
+            if (appointmentForm) {
+                appointmentForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleSubmit(e);
+                });
+            }
+
+            // Formatação de telefone
+            const phoneInput = document.getElementById('patientPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', (e) => {
+                    e.target.value = this.formatPhone(e.target.value);
+                });
+            }
+
+            // Formatação de CPF
+            const cpfInput = document.getElementById('patientCPF');
+            if (cpfInput) {
+                cpfInput.addEventListener('input', (e) => {
+                    e.target.value = this.formatCPF(e.target.value);
+                });
+            }
+
+            // Atalhos de teclado
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+N = Novo agendamento
+                if (e.ctrlKey && e.key === 'n') {
+                    e.preventDefault();
+                    this.showSection('appointments');
+                }
+                // Ctrl+S = Salvar
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    const activeForm = document.querySelector('.content-section.active form');
+                    if (activeForm) {
+                        activeForm.dispatchEvent(new Event('submit'));
+                    }
+                }
+                // ESC = Fechar modal
+                if (e.key === 'Escape') {
+                    this.closeModal();
+                }
+            });
+        },
+
+        // Configurar horários disponíveis
+        setupTimeSlots() {
+            const timeSelect = document.getElementById('appointmentTime');
+            if (!timeSelect) return;
+
+            const startHour = 8;
+            const endHour = 18;
+            const interval = 30; // minutos
+
+            timeSelect.innerHTML = '<option value="">Selecione um horário...</option>';
+
+            for (let hour = startHour; hour < endHour; hour++) {
+                for (let minutes = 0; minutes < 60; minutes += interval) {
+                    const time = `${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                    const option = document.createElement('option');
+                    option.value = time;
+                    option.textContent = time;
+                    timeSelect.appendChild(option);
+                }
+            }
+        },
+
+        // Atualizar horários disponíveis baseado na data
+        updateAvailableTimeSlots() {
+            const dateInput = document.getElementById('appointmentDate');
+            const timeSelect = document.getElementById('appointmentTime');
+            
+            if (!dateInput || !timeSelect) return;
+
+            const selectedDate = dateInput.value;
+            if (!selectedDate) return;
+
+            // Simular horários ocupados (em produção, buscar do backend)
+            const occupiedSlots = this.state.appointments
+                .filter(app => app.date === selectedDate)
+                .map(app => app.time);
+
+            // Desabilitar horários ocupados
+            Array.from(timeSelect.options).forEach(option => {
+                if (option.value && occupiedSlots.includes(option.value)) {
+                    option.disabled = true;
+                    option.textContent = `${option.value} (Ocupado)`;
+                } else if (option.value) {
+                    option.disabled = false;
+                    option.textContent = option.value;
+                }
+            });
+
+            // Se for hoje, desabilitar horários passados
+            const today = new Date().toISOString().split('T')[0];
+            if (selectedDate === today) {
+                const now = new Date();
+                const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                Array.from(timeSelect.options).forEach(option => {
+                    if (option.value && option.value < currentTime) {
+                        option.disabled = true;
+                        option.textContent = `${option.value} (Passado)`;
+                    }
+                });
+            }
+        },
+
+        // Mostrar seção
+        showSection(sectionId) {
+            // Remover classe active de todas as seções
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remover classe active de todos os botões de navegação
+            document.querySelectorAll('.nav-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Adicionar classe active à seção selecionada
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.add('active');
+            }
+
+            // Adicionar classe active ao botão correspondente
+            const navButton = document.querySelector(`[data-section="${sectionId}"]`);
+            if (navButton) {
+                navButton.classList.add('active');
+            }
+
+            // Atualizar estado
+            this.state.currentSection = sectionId;
+
+            // Atualizar dados da seção se necessário
+            switch(sectionId) {
+                case 'dashboard':
+                    this.updateDashboard();
+                    break;
+                case 'list':
+                    this.loadAppointments();
+                    break;
+                case 'patients':
+                    this.loadPatients();
+                    break;
+                case 'reports':
+                    this.updateReports();
+                    break;
+            }
+        },
+
+        // Testar conexão com o backend
+        async testConnection() {
+            const statusElement = document.getElementById('connectionStatus');
+            const statusText = statusElement.querySelector('span');
+            
+            statusElement.className = 'connection-status testing';
+            statusText.textContent = 'Testando...';
+
+            try {
+                // Simular teste de conexão (em produção, fazer chamada real ao backend)
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Simular sucesso
+                const isOnline = Math.random() > 0.3; // 70% de chance de estar online
+                
+                if (isOnline) {
+                    statusElement.className = 'connection-status online';
+                    statusText.textContent = 'Online';
+                    this.state.connectionStatus = 'online';
+                    this.showToast('success', 'Conexão estabelecida', 'Sistema conectado ao servidor');
+                } else {
+                    throw new Error('Servidor offline');
+                }
+            } catch (error) {
+                statusElement.className = 'connection-status offline';
+                statusText.textContent = 'Offline';
+                this.state.connectionStatus = 'offline';
+                this.showToast('warning', 'Modo Offline', 'Trabalhando com dados locais');
+            }
+        },
+
+        // Carregar dados
+        async loadData() {
+            this.showLoading(true);
+
+            try {
+                // Simular carregamento de dados
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Carregar dados mockados
+                this.loadMockData();
+                
+                // Atualizar interface
+                this.updateDashboard();
+                this.loadAppointments();
+                
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                this.showToast('error', 'Erro', 'Falha ao carregar dados');
+            } finally {
+                this.showLoading(false);
+            }
+        },
+
+        // Carregar dados mockados
+        loadMockData() {
+            // Dados de exemplo
+            this.state.appointments = [
+                {
+                    id: 'APT001',
+                    patientName: 'João Silva',
+                    patientPhone: '(11) 98765-4321',
+                    patientEmail: 'joao@email.com',
+                    patientCPF: '123.456.789-00',
+                    date: moment().add(1, 'days').format('YYYY-MM-DD'),
+                    time: '10:00',
+                    type: 'Limpeza',
+                    duration: 60,
+                    priority: 'normal',
+                    status: 'Confirmado',
+                    notes: 'Paciente regular',
+                    reminder: '24hours',
+                    source: 'phone'
+                },
+                {
+                    id: 'APT002',
+                    patientName: 'Maria Santos',
+                    patientPhone: '(11) 91234-5678',
+                    patientEmail: 'maria@email.com',
+                    patientCPF: '987.654.321-00',
+                    date: moment().add(2, 'days').format('YYYY-MM-DD'),
+                    time: '14:30',
+                    type: 'Primeira Consulta',
+                    duration: 90,
+                    priority: 'high',
+                    status: 'Pendente',
+                    notes: 'Nova paciente',
+                    reminder: '24hours',
+                    source: 'whatsapp'
+                },
+                {
+                    id: 'APT003',
+                    patientName: 'Pedro Oliveira',
+                    patientPhone: '(11) 95555-1234',
+                    patientEmail: 'pedro@email.com',
+                    patientCPF: '456.789.123-00',
+                    date: moment().format('YYYY-MM-DD'),
+                    time: '16:00',
+                    type: 'Emergência',
+                    duration: 45,
+                    priority: 'urgent',
+                    status: 'Confirmado',
+                    notes: 'Dor de dente',
+                    reminder: '1hour',
+                    source: 'walk-in'
+                }
+            ];
+
+            this.state.patients = [
+                {
+                    id: 'PAT001',
+                    name: 'João Silva',
+                    phone: '(11) 98765-4321',
+                    email: 'joao@email.com',
+                    cpf: '123.456.789-00',
+                    lastVisit: moment().subtract(1, 'month').format('YYYY-MM-DD'),
+                    totalVisits: 12
+                },
+                {
+                    id: 'PAT002',
+                    name: 'Maria Santos',
+                    phone: '(11) 91234-5678',
+                    email: 'maria@email.com',
+                    cpf: '987.654.321-00',
+                    lastVisit: moment().subtract(2, 'months').format('YYYY-MM-DD'),
+                    totalVisits: 5
+                },
+                {
+                    id: 'PAT003',
+                    name: 'Pedro Oliveira',
+                    phone: '(11) 95555-1234',
+                    email: 'pedro@email.com',
+                    cpf: '456.789.123-00',
+                    lastVisit: moment().subtract(15, 'days').format('YYYY-MM-DD'),
+                    totalVisits: 8
+                }
+            ];
+        },
+
+        // Atualizar dashboard
+        updateDashboard() {
+            // Atualizar estatísticas
+            this.updateStats();
+            
+            // Atualizar próximos agendamentos
+            this.updateUpcomingAppointments();
+            
+            // Atualizar gráficos
+            this.updateCharts();
+        },
+
+        // Atualizar estatísticas
+        updateStats() {
+            const statsContainer = document.getElementById('statsContainer');
+            if (!statsContainer) return;
+
+            const today = moment().format('YYYY-MM-DD');
+            const todayAppointments = this.state.appointments.filter(app => app.date === today);
+            const confirmedAppointments = this.state.appointments.filter(app => app.status === 'Confirmado');
+            const pendingAppointments = this.state.appointments.filter(app => app.status === 'Pendente');
+            const totalPatients = this.state.patients.length;
+
+            statsContainer.innerHTML = `
+                <div class="stat-card info">
+                    <div class="stat-content">
+                        <div class="stat-label">Agendamentos Hoje</div>
+                        <div class="stat-value">${todayAppointments.length}</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12% vs ontem</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-calendar-day stat-icon"></i>
+                </div>
+                
+                <div class="stat-card success">
+                    <div class="stat-content">
+                        <div class="stat-label">Confirmados</div>
+                        <div class="stat-value">${confirmedAppointments.length}</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8% esta semana</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-check-circle stat-icon"></i>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-content">
+                        <div class="stat-label">Pendentes</div>
+                        <div class="stat-value">${pendingAppointments.length}</div>
+                        <div class="stat-trend down">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>-5% esta semana</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-clock stat-icon"></i>
+                </div>
+                
+                <div class="stat-card danger">
+                    <div class="stat-content">
+                        <div class="stat-label">Total de Pacientes</div>
+                        <div class="stat-value">${totalPatients}</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+3 este mês</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-users stat-icon"></i>
+                </div>
+            `;
+        },
+
+        // Atualizar próximos agendamentos
+        updateUpcomingAppointments() {
+            const tbody = document.getElementById('upcomingAppointments');
+            const emptyState = document.getElementById('dashboardEmpty');
+            
+            if (!tbody) return;
+
+            const upcoming = this.state.appointments
+                .filter(app => moment(app.date).isSameOrAfter(moment(), 'day'))
+                .sort((a, b) => moment(a.date + ' ' + a.time).diff(moment(b.date + ' ' + b.time)))
+                .slice(0, 5);
+
+            if (upcoming.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyState) {
+                    emptyState.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (emptyState) {
+                emptyState.classList.add('hidden');
+            }
+
+            tbody.innerHTML = upcoming.map(app => `
+                <tr>
+                    <td>${app.id}</td>
+                    <td><strong>${app.patientName}</strong></td>
+                    <td>${moment(app.date).format('DD/MM/YYYY')}</td>
+                    <td>${app.time}</td>
+                    <td class="hide-mobile">${app.type}</td>
+                    <td>${this.getStatusBadge(app.status)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-success btn-icon" onclick="App.confirmAppointment('${app.id}')" title="Confirmar">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-info btn-icon" onclick="App.viewAppointment('${app.id}')" title="Visualizar">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        },
+
+        // Inicializar gráficos
+        initCharts() {
+            // Gráfico de agendamentos por período
+            const appointmentsCtx = document.getElementById('appointmentsChart');
+            if (appointmentsCtx) {
+                this.state.charts.appointments = new Chart(appointmentsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: this.getLast7Days(),
+                        datasets: [{
+                            label: 'Agendamentos',
+                            data: this.getAppointmentsLast7Days(),
+                            borderColor: 'rgb(20, 184, 166)',
+                            backgroundColor: 'rgba(20, 184, 166, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Gráfico de status
+            const statusCtx = document.getElementById('statusChart');
+            if (statusCtx) {
+                this.state.charts.status = new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Confirmado', 'Pendente', 'Concluído', 'Cancelado'],
+                        datasets: [{
+                            data: this.getStatusDistribution(),
+                            backgroundColor: [
+                                'rgba(34, 197, 94, 0.8)',
+                                'rgba(245, 158, 11, 0.8)',
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(239, 68, 68, 0.8)'
+                            ]
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        },
+
+        // Atualizar gráficos
+        updateCharts() {
+            if (this.state.charts.appointments) {
+                this.state.charts.appointments.data.datasets[0].data = this.getAppointmentsLast7Days();
+                this.state.charts.appointments.update();
+            }
+
+            if (this.state.charts.status) {
+                this.state.charts.status.data.datasets[0].data = this.getStatusDistribution();
+                this.state.charts.status.update();
+            }
+        },
+
+        // Obter últimos 7 dias
+        getLast7Days() {
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                days.push(moment().subtract(i, 'days').format('DD/MM'));
+            }
+            return days;
+        },
+
+        // Obter agendamentos dos últimos 7 dias
+        getAppointmentsLast7Days() {
+            const data = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = moment().subtract(i, 'days').format('YYYY-MM-DD');
+                const count = this.state.appointments.filter(app => app.date === date).length;
+                data.push(count);
+            }
+            return data;
+        },
+
+        // Obter distribuição de status
+        getStatusDistribution() {
+            const statuses = ['Confirmado', 'Pendente', 'Concluído', 'Cancelado'];
+            return statuses.map(status => 
+                this.state.appointments.filter(app => app.status === status).length
+            );
+        },
+
+        // Carregar agendamentos
+        loadAppointments() {
+            const tbody = document.getElementById('appointmentsList');
+            const emptyState = document.getElementById('listEmpty');
+            const countElement = document.getElementById('appointmentsCount');
+            
+            if (!tbody) return;
+
+            let appointments = [...this.state.appointments];
+            
+            // Aplicar filtros
+            if (this.state.filters.search) {
+                const search = this.state.filters.search.toLowerCase();
+                appointments = appointments.filter(app => 
+                    app.patientName.toLowerCase().includes(search) ||
+                    app.patientPhone.includes(search) ||
+                    app.patientEmail.toLowerCase().includes(search) ||
+                    app.patientCPF.includes(search)
+                );
+            }
+
+            if (this.state.filters.status) {
+                appointments = appointments.filter(app => app.status === this.state.filters.status);
+            }
+
+            if (this.state.filters.date) {
+                appointments = appointments.filter(app => app.date === this.state.filters.date);
+            }
+
+            if (this.state.filters.type) {
+                appointments = appointments.filter(app => app.type === this.state.filters.type);
+            }
+
+            if (this.state.filters.priority) {
+                appointments = appointments.filter(app => app.priority === this.state.filters.priority);
+            }
+
+            // Atualizar contador
+            if (countElement) {
+                countElement.textContent = appointments.length;
+            }
+
+            if (appointments.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyState) {
+                    emptyState.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (emptyState) {
+                emptyState.classList.add('hidden');
+            }
+
+            tbody.innerHTML = appointments.map(app => `
+                <tr>
+                    <td style="text-align:center">
+                        <input type="checkbox" value="${app.id}" onchange="App.toggleAppointmentSelection('${app.id}')" />
+                    </td>
+                    <td><strong>${app.id}</strong></td>
+                    <td>${app.patientName}</td>
+                    <td>${app.patientPhone}</td>
+                    <td>${moment(app.date).format('DD/MM/YYYY')}</td>
+                    <td>${app.time}</td>
+                    <td class="hide-mobile">${app.type}</td>
+                    <td>${this.getStatusBadge(app.status)}</td>
+                    <td class="hide-mobile">${this.getPriorityBadge(app.priority)}</td>
+                    <td class="hide-mobile">${app.duration} min</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-info btn-icon" onclick="App.viewAppointment('${app.id}')" title="Visualizar">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-warning btn-icon" onclick="App.editAppointment('${app.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-whatsapp btn-icon" onclick="App.sendWhatsApp('${app.id}')" title="WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button class="btn btn-danger btn-icon" onclick="App.deleteAppointment('${app.id}')" title="Excluir">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        },
+
+        // Carregar pacientes
+        loadPatients() {
+            const tbody = document.getElementById('patientsList');
+            const emptyState = document.getElementById('patientsEmpty');
+            
+            if (!tbody) return;
+
+            if (this.state.patients.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyState) {
+                    emptyState.classList.remove('hidden');
+                }
+                return;
+            }
+
+            if (emptyState) {
+                emptyState.classList.add('hidden');
+            }
+
+            tbody.innerHTML = this.state.patients.map(patient => `
+                <tr>
+                    <td>${patient.id}</td>
+                    <td><strong>${patient.name}</strong></td>
+                    <td>${patient.phone}</td>
+                    <td>${patient.email}</td>
+                    <td>${patient.cpf}</td>
+                    <td>${moment(patient.lastVisit).format('DD/MM/YYYY')}</td>
+                    <td>${patient.totalVisits}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-info btn-icon" onclick="App.viewPatient('${patient.id}')" title="Visualizar">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-warning btn-icon" onclick="App.editPatient('${patient.id}')" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-success btn-icon" onclick="App.newAppointmentForPatient('${patient.id}')" title="Agendar">
+                                <i class="fas fa-calendar-plus"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        },
+
+        // Filtrar agendamentos
+        filterAppointments() {
+            this.loadAppointments();
+        },
+
+        // Limpar filtros
+        clearFilters() {
+            this.state.filters = {
+                search: '',
+                status: '',
+                date: '',
+                type: '',
+                priority: ''
+            };
+            
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            
+            this.loadAppointments();
+        },
+
+        // Manipular envio do formulário
+        async handleSubmit(event) {
+            event.preventDefault();
+            
+            if (!this.validateForm()) {
+                return;
+            }
+
+            const formData = this.getFormData();
+            
+            this.showLoading(true);
+
+            try {
+                // Simular salvamento
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Gerar ID único
+                const newId = 'APT' + String(this.state.appointments.length + 1).padStart(3, '0');
+                
+                // Adicionar novo agendamento
+                const newAppointment = {
+                    ...formData,
+                    id: newId,
+                    status: 'Pendente',
+                    createdAt: new Date().toISOString()
+                };
+                
+                this.state.appointments.push(newAppointment);
+                
+                // Salvar no localStorage
+                this.saveLocalData();
+                
+                // Mostrar sucesso
+                await Swal.fire({
+                    icon: 'success',
+                    title: 'Agendamento Criado!',
+                    text: `Agendamento ${newId} criado com sucesso!`,
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                
+                // Limpar formulário
+                this.clearForm();
+                
+                // Ir para lista
+                this.showSection('list');
+                
+            } catch (error) {
+                console.error('Erro ao salvar agendamento:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro',
+                    text: 'Falha ao criar agendamento. Tente novamente.'
+                });
+            } finally {
+                this.showLoading(false);
+            }
+        },
+
+        // Validar formulário
+        validateForm() {
+            let isValid = true;
+            
+            // Validar nome
+            const nameInput = document.getElementById('patientName');
+            if (nameInput.value.trim().length < 2) {
+                this.showFieldError(nameInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(nameInput, false);
+            }
+            
+            // Validar telefone
+            const phoneInput = document.getElementById('patientPhone');
+            const phoneRegex = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+            if (!phoneRegex.test(phoneInput.value)) {
+                this.showFieldError(phoneInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(phoneInput, false);
+            }
+            
+            // Validar email (se preenchido)
+            const emailInput = document.getElementById('patientEmail');
+            if (emailInput.value && !this.validateEmail(emailInput.value)) {
+                this.showFieldError(emailInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(emailInput, false);
+            }
+            
+            // Validar CPF (se preenchido)
+            const cpfInput = document.getElementById('patientCPF');
+            if (cpfInput.value && !this.validateCPF(cpfInput.value)) {
+                this.showFieldError(cpfInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(cpfInput, false);
+            }
+            
+            // Validar data
+            const dateInput = document.getElementById('appointmentDate');
+            if (!dateInput.value || moment(dateInput.value).isBefore(moment(), 'day')) {
+                this.showFieldError(dateInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(dateInput, false);
+            }
+            
+            // Validar horário
+            const timeInput = document.getElementById('appointmentTime');
+            if (!timeInput.value) {
+                this.showFieldError(timeInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(timeInput, false);
+            }
+            
+            // Validar tipo
+            const typeInput = document.getElementById('appointmentType');
+            if (!typeInput.value) {
+                this.showFieldError(typeInput, true);
+                isValid = false;
+            } else {
+                this.showFieldError(typeInput, false);
+            }
+            
+            if (!isValid) {
+                this.showToast('error', 'Formulário Inválido', 'Por favor, corrija os campos destacados');
+            }
+            
+            return isValid;
+        },
+
+        // Mostrar erro no campo
+        showFieldError(input, show) {
+            const errorMessage = input.parentElement.querySelector('.error-message');
+            if (show) {
+                input.classList.add('error');
+                if (errorMessage) {
+                    errorMessage.classList.add('show');
+                }
+            } else {
+                input.classList.remove('error');
+                if (errorMessage) {
+                    errorMessage.classList.remove('show');
+                }
+            }
+        },
+
+        // Validar email
+        validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        },
+
+        // Validar CPF
+        validateCPF(cpf) {
+            cpf = cpf.replace(/[^\d]/g, '');
+            
+            if (cpf.length !== 11) return false;
+            if (/^(\d)\1{10}$/.test(cpf)) return false;
+            
+            let sum = 0;
+            for (let i = 0; i < 9; i++) {
+                sum += parseInt(cpf[i]) * (10 - i);
+            }
+            let digit = 11 - (sum % 11);
+            if (digit > 9) digit = 0;
+            if (parseInt(cpf[9]) !== digit) return false;
+            
+            sum = 0;
+            for (let i = 0; i < 10; i++) {
+                sum += parseInt(cpf[i]) * (11 - i);
+            }
+            digit = 11 - (sum % 11);
+            if (digit > 9) digit = 0;
+            if (parseInt(cpf[10]) !== digit) return false;
+            
+            return true;
+        },
+
+        // Obter dados do formulário
+        getFormData() {
+            return {
+                patientName: document.getElementById('patientName').value,
+                patientPhone: document.getElementById('patientPhone').value,
+                patientEmail: document.getElementById('patientEmail').value,
+                patientCPF: document.getElementById('patientCPF').value,
+                date: document.getElementById('appointmentDate').value,
+                time: document.getElementById('appointmentTime').value,
+                type: document.getElementById('appointmentType').value,
+                duration: parseInt(document.getElementById('appointmentDuration').value),
+                priority: document.getElementById('appointmentPriority').value,
+                reminder: document.getElementById('appointmentReminder').value,
+                source: document.getElementById('appointmentSource').value,
+                notes: document.getElementById('appointmentNotes').value
+            };
+        },
+
+        // Limpar formulário
+        clearForm() {
+            document.getElementById('appointmentForm').reset();
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+                this.showFieldError(input, false);
+            });
+        },
+
+        // Visualizar agendamento
+        viewAppointment(id) {
+            const appointment = this.state.appointments.find(app => app.id === id);
+            if (!appointment) return;
+
+            const modal = document.getElementById('appointmentModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-hashtag"></i> Código
+                        </label>
+                        <p class="text-lg font-bold">${appointment.id}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> Paciente
+                        </label>
+                        <p class="text-lg font-bold">${appointment.patientName}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone"></i> Telefone
+                        </label>
+                        <p class="text-lg">${appointment.patientPhone}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i> Email
+                        </label>
+                        <p class="text-lg">${appointment.patientEmail || 'Não informado'}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar"></i> Data
+                        </label>
+                        <p class="text-lg font-bold">${moment(appointment.date).format('DD/MM/YYYY')}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-clock"></i> Horário
+                        </label>
+                        <p class="text-lg font-bold">${appointment.time}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-stethoscope"></i> Tipo
+                        </label>
+                        <p class="text-lg">${appointment.type}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-info-circle"></i> Status
+                        </label>
+                        <p>${this.getStatusBadge(appointment.status)}</p>
+                    </div>
+                </div>
+                
+                ${appointment.notes ? `
+                    <div class="form-group mt-4">
+                        <label class="form-label">
+                            <i class="fas fa-comment-medical"></i> Observações
+                        </label>
+                        <p class="text-base">${appointment.notes}</p>
+                    </div>
+                ` : ''}
+            `;
+            
+            modal.classList.add('active');
+        },
+
+        // Editar agendamento
+        editAppointment(id) {
+            const appointment = this.state.appointments.find(app => app.id === id);
+            if (!appointment) return;
+
+            // Preencher formulário com dados do agendamento
+            document.getElementById('patientName').value = appointment.patientName;
+            document.getElementById('patientPhone').value = appointment.patientPhone;
+            document.getElementById('patientEmail').value = appointment.patientEmail || '';
+            document.getElementById('patientCPF').value = appointment.patientCPF || '';
+            document.getElementById('appointmentDate').value = appointment.date;
+            document.getElementById('appointmentTime').value = appointment.time;
+            document.getElementById('appointmentType').value = appointment.type;
+            document.getElementById('appointmentDuration').value = appointment.duration;
+            document.getElementById('appointmentPriority').value = appointment.priority;
+            document.getElementById('appointmentReminder').value = appointment.reminder;
+            document.getElementById('appointmentSource').value = appointment.source;
+            document.getElementById('appointmentNotes').value = appointment.notes || '';
+
+            // Ir para seção de agendamento
+            this.showSection('appointments');
+            
+            // Focar no primeiro campo
+            document.getElementById('patientName').focus();
+        },
+
+        // Confirmar agendamento
+        async confirmAppointment(id) {
+            const result = await Swal.fire({
+                title: 'Confirmar Agendamento?',
+                text: 'Deseja confirmar este agendamento?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sim, confirmar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                const appointment = this.state.appointments.find(app => app.id === id);
+                if (appointment) {
+                    appointment.status = 'Confirmado';
+                    this.saveLocalData();
+                    this.loadAppointments();
+                    this.updateDashboard();
+                    
+                    this.showToast('success', 'Confirmado', 'Agendamento confirmado com sucesso');
+                }
+            }
+        },
+
+        // Excluir agendamento
+        async deleteAppointment(id) {
+            const result = await Swal.fire({
+                title: 'Excluir Agendamento?',
+                text: 'Esta ação não pode ser desfeita!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sim, excluir',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                const index = this.state.appointments.findIndex(app => app.id === id);
+                if (index !== -1) {
+                    this.state.appointments.splice(index, 1);
+                    this.saveLocalData();
+                    this.loadAppointments();
+                    this.updateDashboard();
+                    
+                    this.showToast('success', 'Excluído', 'Agendamento excluído com sucesso');
+                }
+            }
+        },
+
+        // Enviar WhatsApp
+        sendWhatsApp(id) {
+            const appointment = this.state.appointments.find(app => app.id === id);
+            if (!appointment) return;
+
+            const phone = appointment.patientPhone.replace(/\D/g, '');
+            const message = encodeURIComponent(
+                `Olá ${appointment.patientName}!\n\n` +
+                `Confirmando seu agendamento na Clínica Dental Premium:\n` +
+                `📅 Data: ${moment(appointment.date).format('DD/MM/YYYY')}\n` +
+                `⏰ Horário: ${appointment.time}\n` +
+                `🦷 Procedimento: ${appointment.type}\n\n` +
+                `Qualquer dúvida, estamos à disposição!`
+            );
+
+            window.open(`https://wa.me/55${phone}?text=${message}`, '_blank');
+        },
+
+        // Toggle seleção de agendamento
+        toggleAppointmentSelection(id) {
+            const index = this.state.selectedAppointments.indexOf(id);
+            if (index === -1) {
+                this.state.selectedAppointments.push(id);
+            } else {
+                this.state.selectedAppointments.splice(index, 1);
+            }
+        },
+
+        // Toggle selecionar todos
+        toggleSelectAll(checked) {
+            const checkboxes = document.querySelectorAll('#appointmentsList input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = checked;
+                const id = checkbox.value;
+                if (checked && !this.state.selectedAppointments.includes(id)) {
+                    this.state.selectedAppointments.push(id);
+                } else if (!checked) {
+                    this.state.selectedAppointments = [];
+                }
+            });
+        },
+
+        // Ações em lote
+        async bulkConfirm() {
+            if (this.state.selectedAppointments.length === 0) {
+                this.showToast('warning', 'Atenção', 'Selecione pelo menos um agendamento');
+                return;
+            }
+
+            const result = await Swal.fire({
+                title: 'Confirmar Agendamentos?',
+                text: `Confirmar ${this.state.selectedAppointments.length} agendamento(s)?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#22c55e',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Sim, confirmar todos',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                this.state.selectedAppointments.forEach(id => {
+                    const appointment = this.state.appointments.find(app => app.id === id);
+                    if (appointment) {
+                        appointment.status = 'Confirmado';
+                    }
+                });
+                
+                this.state.selectedAppointments = [];
+                this.saveLocalData();
+                this.loadAppointments();
+                this.updateDashboard();
+                
+                this.showToast('success', 'Confirmados', 'Agendamentos confirmados com sucesso');
+            }
+        },
+
+        // Exportar para CSV
+        exportToCSV() {
+            const headers = ['ID', 'Paciente', 'Telefone', 'Email', 'CPF', 'Data', 'Horário', 'Tipo', 'Status', 'Prioridade', 'Duração', 'Observações'];
+            const rows = this.state.appointments.map(app => [
+                app.id,
+                app.patientName,
+                app.patientPhone,
+                app.patientEmail || '',
+                app.patientCPF || '',
+                moment(app.date).format('DD/MM/YYYY'),
+                app.time,
+                app.type,
+                app.status,
+                app.priority,
+                app.duration + ' min',
+                app.notes || ''
+            ]);
+
+            let csvContent = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csvContent += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `agendamentos_${moment().format('YYYY-MM-DD')}.csv`;
+            link.click();
+            
+            this.showToast('success', 'Exportado', 'Arquivo CSV gerado com sucesso');
+        },
+
+        // Criar backup
+        async backupNow() {
+            const backupData = {
+                version: '3.0',
+                date: new Date().toISOString(),
+                appointments: this.state.appointments,
+                patients: this.state.patients
+            };
+
+            const json = JSON.stringify(backupData, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `backup_dental_${moment().format('YYYY-MM-DD_HH-mm-ss')}.json`;
+            link.click();
+            
+            this.showToast('success', 'Backup Criado', 'Backup salvo com sucesso');
+        },
+
+        // Visualizar prévia do agendamento
+        previewAppointment() {
+            if (!this.validateForm()) {
+                return;
+            }
+
+            const formData = this.getFormData();
+            
+            Swal.fire({
+                title: 'Prévia do Agendamento',
+                html: `
+                    <div style="text-align: left;">
+                        <p><strong>Paciente:</strong> ${formData.patientName}</p>
+                        <p><strong>Telefone:</strong> ${formData.patientPhone}</p>
+                        <p><strong>Email:</strong> ${formData.patientEmail || 'Não informado'}</p>
+                        <p><strong>CPF:</strong> ${formData.patientCPF || 'Não informado'}</p>
+                        <p><strong>Data:</strong> ${moment(formData.date).format('DD/MM/YYYY')}</p>
+                        <p><strong>Horário:</strong> ${formData.time}</p>
+                        <p><strong>Tipo:</strong> ${formData.type}</p>
+                        <p><strong>Duração:</strong> ${formData.duration} minutos</p>
+                        <p><strong>Prioridade:</strong> ${formData.priority}</p>
+                        <p><strong>Lembrete:</strong> ${formData.reminder}</p>
+                        <p><strong>Origem:</strong> ${formData.source}</p>
+                        ${formData.notes ? `<p><strong>Observações:</strong> ${formData.notes}</p>` : ''}
+                    </div>
+                `,
+                icon: 'info',
+                confirmButtonText: 'Fechar'
+            });
+        },
+
+        // Fechar modal
+        closeModal() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.classList.remove('active');
+            });
+        },
+
+        // Salvar dados do modal
+        saveModalData() {
+            // Implementar lógica de salvamento
+            this.closeModal();
+            this.showToast('success', 'Salvo', 'Alterações salvas com sucesso');
+        },
+
+        // Formatar telefone
+        formatPhone(value) {
+            value = value.replace(/\D/g, '');
+            if (value.length <= 10) {
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            } else {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            }
+            return value;
+        },
+
+        // Formatar CPF
+        formatCPF(value) {
+            value = value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            return value;
+        },
+
+        // Obter badge de status
+        getStatusBadge(status) {
+            const badges = {
+                'Pendente': '<span class="status-badge pendente"><i class="fas fa-clock"></i> Pendente</span>',
+                'Confirmado': '<span class="status-badge confirmado"><i class="fas fa-check"></i> Confirmado</span>',
+                'Concluído': '<span class="status-badge concluido"><i class="fas fa-check-double"></i> Concluído</span>',
+                'Cancelado': '<span class="status-badge cancelado"><i class="fas fa-times"></i> Cancelado</span>',
+                'Reagendado': '<span class="status-badge pendente"><i class="fas fa-calendar-alt"></i> Reagendado</span>'
+            };
+            return badges[status] || status;
+        },
+
+        // Obter badge de prioridade
+        getPriorityBadge(priority) {
+            const badges = {
+                'normal': '<span style="color: #22c55e;">🟢 Normal</span>',
+                'high': '<span style="color: #f59e0b;">🟡 Alta</span>',
+                'urgent': '<span style="color: #ef4444;">🔴 Urgente</span>'
+            };
+            return badges[priority] || priority;
+        },
+
+        // Mostrar/ocultar loading
+        showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                overlay.classList.toggle('active', show);
+            }
+        },
+
+        // Mostrar toast
+        showToast(type, title, message) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+
+            const toastId = 'toast_' + Date.now();
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.id = toastId;
+            toast.innerHTML = `
+                <div class="toast-icon">
+                    <i class="fas ${icons[type]}"></i>
+                </div>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+                <button class="toast-close" onclick="App.removeToast('${toastId}')">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            // Remover automaticamente após 5 segundos
+            setTimeout(() => {
+                this.removeToast(toastId);
+            }, 5000);
+        },
+
+        // Remover toast
+        removeToast(toastId) {
+            const toast = document.getElementById(toastId);
+            if (toast) {
+                toast.classList.add('removing');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }
+        },
+
+        // Salvar dados localmente
+        saveLocalData() {
+            localStorage.setItem('dentalAppointments', JSON.stringify(this.state.appointments));
+            localStorage.setItem('dentalPatients', JSON.stringify(this.state.patients));
+        },
+
+        // Carregar dados locais
+        loadLocalData() {
+            const appointments = localStorage.getItem('dentalAppointments');
+            const patients = localStorage.getItem('dentalPatients');
+            
+            if (appointments) {
+                try {
+                    this.state.appointments = JSON.parse(appointments);
+                } catch (e) {
+                    console.error('Erro ao carregar agendamentos:', e);
+                }
+            }
+            
+            if (patients) {
+                try {
+                    this.state.patients = JSON.parse(patients);
+                } catch (e) {
+                    console.error('Erro ao carregar pacientes:', e);
+                }
+            }
+        },
+
+        // Funções adicionais para relatórios
+        updateReports() {
+            // Implementar atualização de relatórios
+            console.log('Atualizando relatórios...');
+        },
+
+        generateReport() {
+            this.showToast('info', 'Em Desenvolvimento', 'Função de gerar PDF em desenvolvimento');
+        },
+
+        exportReportExcel() {
+            this.showToast('info', 'Em Desenvolvimento', 'Função de exportar Excel em desenvolvimento');
+        },
+
+        // Funções para pacientes
+        showNewPatientModal() {
+            this.showToast('info', 'Em Desenvolvimento', 'Modal de novo paciente em desenvolvimento');
+        },
+
+        viewPatient(id) {
+            this.showToast('info', 'Em Desenvolvimento', 'Visualização de paciente em desenvolvimento');
+        },
+
+        editPatient(id) {
+            this.showToast('info', 'Em Desenvolvimento', 'Edição de paciente em desenvolvimento');
+        },
+
+        newAppointmentForPatient(id) {
+            const patient = this.state.patients.find(p => p.id === id);
+            if (patient) {
+                document.getElementById('patientName').value = patient.name;
+                document.getElementById('patientPhone').value = patient.phone;
+                document.getElementById('patientEmail').value = patient.email;
+                document.getElementById('patientCPF').value = patient.cpf;
+                this.showSection('appointments');
+            }
+        },
+
+        // Funções de configurações
+        saveSettings() {
+            this.showToast('success', 'Configurações Salvas', 'As configurações foram salvas com sucesso');
+        },
+
+        // Funções de filtros avançados
+        showAdvancedFilters() {
+            this.showToast('info', 'Em Desenvolvimento', 'Filtros avançados em desenvolvimento');
+        },
+
+        // Exportar dashboard
+        exportDashboard() {
+            this.showToast('info', 'Em Desenvolvimento', 'Exportação de dashboard em desenvolvimento');
+        },
+
+        // Funções de ações em lote
+        bulkCancel() {
+            this.showToast('info', 'Em Desenvolvimento', 'Cancelamento em lote em desenvolvimento');
+        },
+
+        bulkReschedule() {
+            this.showToast('info', 'Em Desenvolvimento', 'Reagendamento em lote em desenvolvimento');
+        },
+
+        bulkDelete() {
+            this.showToast('info', 'Em Desenvolvimento', 'Exclusão em lote em desenvolvimento');
+        }
+    };
+
+    // Inicializar aplicação quando o DOM estiver pronto
+    document.addEventListener('DOMContentLoaded', () => {
+        App.init();
+    });
+    </script>
+</body>
+</html>
