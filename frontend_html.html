@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Agendamento Dental Premium v3.0</title>
+    
+    <!-- Meta Tags para PWA e SEO -->
+    <meta name="description" content="Sistema completo de agendamento para clínicas dentais com gestão de pacientes, relatórios e notificações">
+    <meta name="keywords" content="agendamento, dental, clínica, sistema, gestão, pacientes">
+    <meta name="author" content="Sistema Dental Pro">
+    <meta name="theme-color" content="#14b8a6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Dental Premium">
+    <meta name="msapplication-TileColor" content="#14b8a6">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦷</text></svg>">
+    
+    <!-- Recursos Externos Otimizados -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    
+    <!-- Scripts Externos -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.1/dist/sweetalert2.all.min.js" integrity="sha512-4ReQg4MVm4vn0D/xXkW0IRnOWlPVIpDdGqNdcJsGJm+Kh5aKM6jEjPJHg7GHqZgqsEfRZRIRN0t3k8nPT7hLsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pt-br.min.js" integrity="sha512-0IFLKUbK31jh8w+Z5+AY6hEUdZpb7sEu+Gzf/fRCcIgHu+qiL+GX6YrqfY/mMFmNPrr8+YCBArvOm3Y2dHEIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js" integrity="sha512-7U4rRB2asjyddd2/zYIj8DAynlJin1dSEGkdFB0jA1twggmuNDblCdVMxuLLEQl0bqKp5GJZYzIjvRhSj7Og==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<style>
+/* ==========================================
+   VARIÁVEIS CSS EXPANDIDAS
+   ========================================== */
+:root {
+    /* Cores Principais */
+    --primary-50: #f0fdfa;
+    --primary-100: #ccfbf1;
+    --primary-200: #99f6e4;
+    --primary-300: #5eead4;
+    --primary-400: #2dd4bf;
+    --primary-500: #14b8a6;
+    --primary-600: #0d9488;
+    --primary-700: #0f766e;
+    --primary-800: #115e59;
+    --primary-900: #134e4a;
+    
+    /* Cores Secundárias */
+    --secondary-50: #f0f9ff;
+    --secondary-100: #e0f2fe;
+    --secondary-200: #bae6fd;
+    --secondary-300: #7dd3fc;
+    --secondary-400: #38bdf8;
+    --secondary-500: #0ea5e9;
+    --secondary-600: #0284c7;
+    --secondary-700: #0369a1;
+    --secondary-800: #075985;
+    --secondary-900: #0c4a6e;
+    
+    /* Cores de Estado */
+    --success-50: #f0fdf4;
+    --success-500: #22c55e;
+    --success-600: #16a34a;
+    --warning-50: #fffbeb;
+    --warning-500: #f59e0b;
+    --warning-600: #d97706;
+    --danger-50: #fef2f2;
+    --danger-500: #ef4444;
+    --danger-600: #dc2626;
+    --info-50: #eff6ff;
+    --info-500: #3b82f6;
+    --info-600: #2563eb;
+    
+    /* WhatsApp */
+    --whatsapp: #25d366;
+    --whatsapp-dark: #1da851;
+    --whatsapp-light: #dcf8c6;
+    
+    /* Cores de Texto */
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-tertiary: #9ca3af;
+    --text-disabled: #d1d5db;
+    --text-white: #ffffff;
+    --text-inverse: #f9fafb;
+    
+    /* Cores de Fundo */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f9fafb;
+    --bg-tertiary: #f3f4f6;
+    --bg-dark: #111827;
+    --bg-overlay: rgba(0, 0, 0, 0.5);
+    --bg-glass: rgba(255, 255, 255, 0.8);
+    
+    /* Bordas */
+    --border-light: #e5e7eb;
+    --border-medium: #d1d5db;
+    --border-dark: #9ca3af;
+    
+    /* Sombras */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Raios de Borda */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Transições */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+    --transition-slow: 500ms ease;
+    --transition-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    
+    /* Espaçamentos */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    
+    /* Z-Index */
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-fixed: 30;
+    --z-modal-backdrop: 40;
+    --z-modal: 50;
+    --z-popover: 60;
+    --z-tooltip: 70;
+    --z-notification: 80;
+    --z-maximum: 9999;
+}
+
+/* ==========================================
+   RESET CSS MODERNO E OTIMIZADO
+   ========================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   COMPONENTES BASE EXPANDIDOS
+   ========================================== */
+
+/* Container Principal */
+.app-container {
+    flex: 1;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: var(--space-5);
+    background: var(--bg-primary);
+    min-height: 100vh;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-lg);
+    position: relative;
+}
+
+/* Header Modernizado */
+.app-header {
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 50%, var(--primary-900) 100%);
+    color: var(--text-white);
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-8);
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    position: relative;
+    z-index: 1;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.logo-icon {
+    font-size: 3rem;
+    background: linear-gradient(45deg, #ffffff, #e0f2fe);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: logoFloat 6s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    25% { transform: translateY(-5px) rotate(2deg) scale(1.05); }
+    50% { transform: translateY(0) rotate(0deg) scale(1); }
+    75% { transform: translateY(-3px) rotate(-1deg) scale(1.02); }
+}
+
+.logo-text h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+    margin: 0;
+    background: linear-gradient(45deg, #ffffff, #e0f2fe);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.logo-text .subtitle {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    font-weight: 500;
+    margin-top: var(--space-1);
+    letter-spacing: 0.5px;
+}
+
+/* Status de Conexão Aprimorado */
+.connection-status {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all var(--transition-normal);
+    cursor: pointer;
+}
+
+.connection-status:hover {
+    transform: scale(1.05);
+    backdrop-filter: blur(15px);
+}
+
+.connection-status.online {
+    background: rgba(34, 197, 94, 0.2);
+    color: var(--success-500);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.connection-status.offline {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--danger-500);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.connection-status.testing {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--warning-500);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.connection-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* Navegação Modernizada */
+.nav-menu {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+}
+
+.nav-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-white);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.nav-button:hover::before {
+    left: 100%;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.nav-button.active {
+    background: var(--text-white);
+    color: var(--primary-700);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--text-white);
+    font-weight: 700;
+    transform: translateY(-2px);
+}
+
+.nav-button i {
+    font-size: 1.125rem;
+}
+
+/* ==========================================
+   ÁREA DE CONTEÚDO PRINCIPAL
+   ========================================== */
+.content-area {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10);
+    min-height: 600px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-light);
+    position: relative;
+}
+
+.content-section {
+    display: none;
+    animation: fadeInUp 0.6s var(--transition-spring);
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px) scale(0.98);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================
+   CARDS DE ESTATÍSTICAS AVANÇADOS
+   ========================================== */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+}
+
+.stat-card {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, var(--primary-50) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-200);
+}
+
+.stat-card:hover::before {
+    opacity: 1;
+}
+
+.stat-card.success {
+    border-left: 6px solid var(--success-500);
+}
+
+.stat-card.success::before {
+    background: linear-gradient(135deg, transparent 0%, var(--success-50) 100%);
+}
+
+.stat-card.warning {
+    border-left: 6px solid var(--warning-500);
+}
+
+.stat-card.warning::before {
+    background: linear-gradient(135deg, transparent 0%, var(--warning-50) 100%);
+}
+
+.stat-card.danger {
+    border-left: 6px solid var(--danger-500);
+}
+
+.stat-card.danger::before {
+    background: linear-gradient(135deg, transparent 0%, var(--danger-50) 100%);
+}
+
+.stat-card.info {
+    border-left: 6px solid var(--info-500);
+}
+
+.stat-card.info::before {
+    background: linear-gradient(135deg, transparent 0%, var(--info-50) 100%);
+}
+
+.stat-content {
+    position: relative;
+    z-index: 2;
+}
+
+.stat-icon {
+    position: absolute;
+    right: var(--space-6);
+    top: var(--space-6);
+    font-size: 4rem;
+    opacity: 0.1;
+    z-index: 1;
+    transition: all var(--transition-normal);
+}
+
+.stat-card:hover .stat-icon {
+    opacity: 0.2;
+    transform: scale(1.1) rotate(5deg);
+}
+
+.stat-value {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    line-height: 1;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: countUp 1s ease-out;
+}
+
+@keyframes countUp {
+    from { 
+        opacity: 0; 
+        transform: scale(0.5);
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+}
+
+.stat-trend {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: var(--space-2);
+}
+
+.stat-trend.up {
+    color: var(--success-600);
+}
+
+.stat-trend.down {
+    color: var(--danger-600);
+}
+
+.stat-trend.neutral {
+    color: var(--text-tertiary);
+}
+
+/* ==========================================
+   FORMULÁRIOS MODERNIZADOS
+   ========================================== */
+.form-container {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+}
+
+.form-header {
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-5);
+    border-bottom: 3px solid var(--border-light);
+    position: relative;
+}
+
+.form-header::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-500), var(--primary-300));
+    border-radius: var(--radius-full);
+}
+
+.form-title {
+    font-size: 1.875rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-weight: 700;
+    margin: 0 0 var(--space-2) 0;
+}
+
+.form-title i {
+    color: var(--primary-500);
+    font-size: 1.75rem;
+}
+
+.form-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.form-label {
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    transition: color var(--transition-fast);
+}
+
+.form-label.required::after {
+    content: '*';
+    color: var(--danger-500);
+    font-weight: 700;
+    font-size: 1.125rem;
+    margin-left: var(--space-1);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    padding: var(--space-4);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    background: var(--bg-primary);
+    font-family: inherit;
+    position: relative;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 4px var(--primary-100);
+    background: var(--primary-50);
+    transform: translateY(-1px);
+}
+
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+    border-color: var(--danger-500);
+    background: var(--danger-50);
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+.form-hint {
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
+    margin-top: var(--space-1);
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.form-hint::before {
+    content: '💡';
+    font-size: 0.875rem;
+}
+
+.error-message {
+    color: var(--danger-600);
+    font-size: 0.75rem;
+    margin-top: var(--space-1);
+    display: none;
+    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    background: var(--danger-50);
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--danger-500);
+}
+
+.error-message.show {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   SISTEMA DE BOTÕES AVANÇADO
+   ========================================== */
+.btn {
+    padding: var(--space-3) var(--space-6);
+    border: none;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    transition: all var(--transition-normal);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    min-height: 48px;
+    font-family: inherit;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+    z-index: 0;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn > * {
+    position: relative;
+    z-index: 1;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-700) 100%);
+    color: var(--text-white);
+    box-shadow: var(--shadow-md);
+    border: 2px solid transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+    background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-medium);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--border-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-300);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-500) 0%, var(--success-600) 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-success:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-600) 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-warning:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-500) 0%, var(--danger-600) 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-danger:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--info-500) 0%, var(--info-600) 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-info:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* BOTÃO WHATSAPP PREMIUM */
+.btn-whatsapp {
+    background: linear-gradient(135deg, var(--whatsapp) 0%, var(--whatsapp-dark) 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+    position: relative;
+}
+
+.btn-whatsapp:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-whatsapp::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--whatsapp), #128c7e, var(--whatsapp));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.btn-whatsapp:hover::after {
+    opacity: 1;
+}
+
+.btn-icon {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.875rem;
+    min-height: 40px;
+    min-width: 40px;
+}
+
+/* Botão de Teste Especial */
+.btn-test {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: var(--text-white);
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-test:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ==========================================
+   SISTEMA DE TABELAS AVANÇADO
+   ========================================== */
+.table-container {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    margin-bottom: var(--space-6);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.table-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.table-actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+.data-table thead {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
+
+.data-table th {
+    padding: var(--space-4);
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    white-space: nowrap;
+}
+
+.data-table th:first-child {
+    border-top-left-radius: var(--radius-lg);
+}
+
+.data-table th:last-child {
+    border-top-right-radius: var(--radius-lg);
+}
+
+.data-table td {
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.data-table tbody tr:hover {
+    background: linear-gradient(135deg, var(--primary-50) 0%, rgba(20, 184, 166, 0.03) 100%);
+    transform: scale(1.01);
+    box-shadow: var(--shadow-sm);
+}
+
+.data-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-lg);
+}
+
+.data-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-lg);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--space-1);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   SISTEMA DE BADGES AVANÇADO
+   ========================================== */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 100px;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.status-badge:hover::before {
+    left: 100%;
+}
+
+.status-badge.confirmado {
+    background: linear-gradient(135deg, var(--success-100) 0%, var(--success-50) 100%);
+    color: var(--success-700);
+    border-color: var(--success-200);
+}
+
+.status-badge.pendente {
+    background: linear-gradient(135deg, var(--warning-100) 0%, var(--warning-50) 100%);
+    color: var(--warning-700);
+    border-color: var(--warning-200);
+}
+
+.status-badge.cancelado {
+    background: linear-gradient(135deg, var(--danger-100) 0%, var(--danger-50) 100%);
+    color: var(--danger-700);
+    border-color: var(--danger-200);
+}
+
+.status-badge.concluido {
+    background: linear-gradient(135deg, var(--info-100) 0%, var(--info-50) 100%);
+    color: var(--info-700);
+    border-color: var(--info-200);
+}
+
+.status-badge i {
+    font-size: 0.875rem;
+}
+
+/* ==========================================
+   SISTEMA DE MODALS AVANÇADO
+   ========================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: var(--z-modal);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.modal-content {
+    background: var(--bg-primary);
+    border-radius: var(--radius-2xl);
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: slideUp 0.4s var(--transition-spring);
+    box-shadow: var(--shadow-2xl);
+    border: 1px solid var(--border-light);
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(50px) scale(0.95); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0) scale(1); 
+        opacity: 1; 
+    }
+}
+
+.modal-header {
+    padding: var(--space-6);
+    border-bottom: 2px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.modal-body {
+    padding: var(--space-6);
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: var(--space-6);
+    border-top: 2px solid var(--border-light);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all var(--transition-normal);
+    padding: var(--space-2);
+    border-radius: var(--radius-md);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: var(--danger-500);
+    background: var(--danger-50);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* ==========================================
+   SISTEMA DE LOADING AVANÇADO
+   ========================================== */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-maximum);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-content {
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.spinner {
+    width: 80px;
+    height: 80px;
+    border: 6px solid var(--border-light);
+    border-top-color: var(--primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: relative;
+    margin: 0 auto var(--space-4);
+}
+
+.spinner::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: var(--primary-500);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: innerSpin 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes innerSpin {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.8); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.loading-text {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+}
+
+.loading-subtext {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+}
+
+/* ==========================================
+   SISTEMA DE FILTROS AVANÇADO
+   ========================================== */
+.search-filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+    padding: var(--space-5);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+
+.filters-row {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    align-items: end;
+}
+
+.filter-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+.search-input {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all var(--transition-normal);
+    background: var(--bg-primary);
+}
+
+.search-input:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 4px var(--primary-100);
+    outline: none;
+    background: var(--primary-50);
+}
+
+.filter-select {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;
+    font-weight: 500;
+    background: var(--bg-primary);
+    transition: all var(--transition-normal);
+}
+
+.filter-select:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 4px var(--primary-100);
+    outline: none;
+    background: var(--primary-50);
+}
+
+.filters-actions {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   SISTEMA DE NOTIFICAÇÕES (TOAST)
+   ========================================== */
+.toast-container {
+    position: fixed;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: var(--z-notification);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: 400px;
+}
+
+.toast {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    animation: slideInRight 0.3s ease;
+    transform: translateX(0);
+    transition: transform 0.3s ease;
+}
+
+.toast.removing {
+    transform: translateX(100%);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.toast.success .toast-icon {
+    color: var(--success-500);
+}
+
+.toast.error .toast-icon {
+    color: var(--danger-500);
+}
+
+.toast.warning .toast-icon {
+    color: var(--warning-500);
+}
+
+.toast.info .toast-icon {
+    color: var(--info-500);
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.toast-message {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: var(--space-1);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.toast-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   ESTADO VAZIO APRIMORADO
+   ========================================== */
+.empty-state {
+    text-align: center;
+    padding: var(--space-20) var(--space-5);
+    color: var(--text-secondary);
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border-radius: var(--radius-xl);
+    border: 2px dashed var(--border-medium);
+}
+
+.empty-state-icon {
+    font-size: 6rem;
+    opacity: 0.3;
+    margin-bottom: var(--space-6);
+    color: var(--primary-400);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-state h3 {
+    font-size: 1.875rem;
+    margin-bottom: var(--space-3);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.empty-state p {
+    margin-bottom: var(--space-6);
+    font-size: 1.125rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   CHARTS E GRÁFICOS
+   ========================================== */
+.chart-container {
+    background: var(--bg-primary);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-light);
+    margin-bottom: var(--space-6);
+}
+
+.chart-header {
+    margin-bottom: var(--space-4);
+}
+
+.chart-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.chart-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.chart-wrapper {
+    position: relative;
+    height: 300px;
+}
+
+/* ==========================================
+   RESPONSIVIDADE AVANÇADA
+   ========================================== */
+@media (max-width: 1200px) {
+    .app-container {
+        padding: var(--space-4);
+    }
+    
+    .stats-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-5);
+    }
+    
+    .form-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-5);
+    }
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        padding: var(--space-3);
+        border-radius: 0;
+    }
+    
+    .app-header {
+        padding: var(--space-5);
+        border-radius: var(--radius-lg);
+    }
+    
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-4);
+    }
+    
+    .logo-text h1 {
+        font-size: 1.875rem;
+    }
+    
+    .nav-menu {
+        justify-content: center;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: var(--space-2);
+    }
+    
+    .nav-button {
+        padding: var(--space-3) var(--space-2);
+        font-size: 0.75rem;
+    }
+    
+    .content-area {
+        padding: var(--space-5);
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-filters {
+        padding: var(--space-4);
+    }
+    
+    .filters-row {
+        flex-direction: column;
+        gap: var(--space-3);
+    }
+    
+    .table-wrapper {
+        overflow-x: scroll;
+    }
+    
+    .data-table {
+        font-size: 0.75rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: var(--space-2);
+    }
+    
+    .hide-mobile {
+        display: none;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: var(--space-1);
+    }
+    
+    .btn-icon {
+        padding: var(--space-2);
+        font-size: 0.75rem;
+        min-width: 36px;
+        min-height: 36px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: var(--space-2);
+        border-radius: var(--radius-lg);
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: var(--space-4);
+    }
+    
+    .toast-container {
+        left: var(--space-2);
+        right: var(--space-2);
+        max-width: none;
+    }
+    
+    .connection-status {
+        position: relative;
+        top: auto;
+        right: auto;
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-icon {
+        font-size: 2.5rem;
+    }
+    
+    .logo-text h1 {
+        font-size: 1.5rem;
+    }
+    
+    .nav-menu {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .nav-button {
+        padding: var(--space-2);
+        font-size: 0.7rem;
+    }
+    
+    .content-area {
+        padding: var(--space-3);
+    }
+    
+    .stat-value {
+        font-size: 2.25rem;
+    }
+    
+    .stat-icon {
+        font-size: 3rem;
+        right: var(--space-3);
+        top: var(--space-3);
+    }
+    
+    .btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: 0.75rem;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .table-container {
+        padding: var(--space-3);
+    }
+    
+    .empty-state {
+        padding: var(--space-12) var(--space-3);
+    }
+    
+    .empty-state-icon {
+        font-size: 4rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* ==========================================
+   MODO ESCURO (OPCIONAL)
+   ========================================== */
+@media (prefers-color-scheme: dark) {
+    .dark-theme {
+        --text-primary: #f9fafb;
+        --text-secondary: #d1d5db;
+        --text-tertiary: #9ca3af;
+        --bg-primary: #1f2937;
+        --bg-secondary: #111827;
+        --bg-tertiary: #374151;
+        --border-light: #374151;
+        --border-medium: #4b5563;
+    }
+}
+
+/* ==========================================
+   ANIMAÇÕES PERSONALIZADAS
+   ========================================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.bounce-in {
+    animation: bounceIn 0.6s ease-out;
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.3); opacity: 0; }
+    50% { transform: scale(1.05); }
+    70% { transform: scale(0.9); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================
+   UTILITÁRIOS DE LAYOUT
+   ========================================== */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.gap-5 { gap: var(--space-5); }
+.gap-6 { gap: var(--space-6); }
+
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+
+.p-0 { padding: 0; }
+.p-1 { padding: var(--space-1); }
+.p-2 { padding: var(--space-2); }
+.p-3 { padding: var(--space-3); }
+.p-4 { padding: var(--space-4); }
+.p-5 { padding: var(--space-5); }
+.p-6 { padding: var(--space-6); }
+
+.m-0 { margin: 0; }
+.m-1 { margin: var(--space-1); }
+.m-2 { margin: var(--space-2); }
+.m-3 { margin: var(--space-3); }
+.m-4 { margin: var(--space-4); }
+.m-5 { margin: var(--space-5); }
+.m-6 { margin: var(--space-6); }
+
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mt-6 { margin-top: var(--space-6); }
+
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.mb-6 { margin-bottom: var(--space-6); }
+
+.hidden { display: none !important; }
+.invisible { visibility: hidden; }
+.visible { visibility: visible; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+.z-30 { z-index: 30; }
+.z-40 { z-index: 40; }
+.z-50 { z-index: 50; }
+
+.rounded { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+.shadow { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+.transition { transition: all var(--transition-normal); }
+.transition-colors { transition: color var(--transition-normal), background-color var(--transition-normal), border-color var(--transition-normal); }
+.transition-transform { transition: transform var(--transition-normal); }
+
+.hover\:scale-105:hover { transform: scale(1.05); }
+.hover\:scale-110:hover { transform: scale(1.1); }
+.hover\:-translate-y-1:hover { transform: translateY(-4px); }
+.hover\:-translate-y-2:hover { transform: translateY(-8px); }
+
+.cursor-pointer { cursor: pointer; }
+.cursor-not-allowed { cursor: not-allowed; }
+.select-none { user-select: none; }
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-x-auto { overflow-x: auto; }
+.overflow-y-auto { overflow-y: auto; }
+</style>
+</head>
+<body>
+    <!-- Toast Container para Notificações -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Loading Overlay Aprimorado -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">Processando...</div>
+            <div class="loading-subtext">Aguarde enquanto carregamos os dados</div>
+        </div>
+    </div>
+
+    <!-- Container Principal da Aplicação -->
+    <div class="app-container">
+        <!-- Header Principal -->
+        <header class="app-header">
+            <div class="connection-status" id="connectionStatus">
+                <div class="connection-indicator"></div>
+                <span>Verificando...</span>
+            </div>
+            
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">🦷</div>
+                    <div class="logo-text">
+                        <h1>Clínica Dental Premium</h1>
+                        <div class="subtitle">Sistema de Agendamento v3.0</div>
+                    </div>
+                </div>
+                
+                <nav class="nav-menu">
+                    <button class="nav-button active" onclick="App.showSection('dashboard')" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </button>
+                    <button class="nav-button" onclick="App.showSection('appointments')" data-section="appointments">
+                        <i class="fas fa-calendar-plus"></i>
+                        Agendar
+                    </button>
+                    <button class="nav-button" onclick="App.showSection('list')" data-section="list">
+                        <i class="fas fa-list-ul"></i>
+                        Agendamentos
+                    </button>
+                    <button class="nav-button" onclick="App.showSection('patients')" data-section="patients">
+                        <i class="fas fa-users"></i>
+                        Pacientes
+                    </button>
+                    <button class="nav-button" onclick="App.showSection('reports')" data-section="reports">
+                        <i class="fas fa-chart-pie"></i>
+                        Relatórios
+                    </button>
+                    <button class="nav-button" onclick="App.showSection('settings')" data-section="settings">
+                        <i class="fas fa-cogs"></i>
+                        Configurações
+                    </button>
+                    <button class="nav-button btn-test" onclick="App.testConnection()" title="Testar Conexão">
+                        <i class="fas fa-satellite-dish"></i>
+                        Conexão
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Área de Conteúdo Principal -->
+        <main class="content-area">
+            
+            <!-- Dashboard -->
+            <section id="dashboard" class="content-section active">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="form-title m-0">
+                            <i class="fas fa-chart-line"></i>
+                            Visão Geral do Sistema
+                        </h2>
+                        <p class="form-subtitle">Dashboard executivo com métricas em tempo real</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-test btn-icon" onclick="App.testConnection()" title="Testar Conexão">
+                            <i class="fas fa-satellite-dish"></i>
+                        </button>
+                        <button class="btn btn-primary btn-icon" onclick="App.loadData()" title="Recarregar Dados">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-icon" onclick="App.exportDashboard()" title="Exportar Dashboard">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-container" id="statsContainer">
+                    <!-- Cards de estatísticas serão carregados dinamicamente -->
+                </div>
+
+                <!-- Gráficos do Dashboard -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Agendamentos por Período</h3>
+                            <p class="chart-subtitle">Últimos 30 dias</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="appointmentsChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Status dos Agendamentos</h3>
+                            <p class="chart-subtitle">Distribuição atual</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            Próximos Agendamentos
+                        </h3>
+                        <div class="table-actions">
+                            <span class="text-sm text-secondary">Próximos 7 dias</span>
+                        </div>
+                    </div>
+                    
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-hashtag"></i> ID</th>
+                                    <th><i class="fas fa-user"></i> Paciente</th>
+                                    <th><i class="fas fa-calendar"></i> Data</th>
+                                    <th><i class="fas fa-clock"></i> Horário</th>
+                                    <th class="hide-mobile"><i class="fas fa-stethoscope"></i> Tipo</th>
+                                    <th><i class="fas fa-info-circle"></i> Status</th>
+                                    <th><i class="fas fa-cogs"></i> Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="upcomingAppointments">
+                                <!-- Dados carregados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="dashboardEmpty" class="empty-state hidden">
+                        <div class="empty-state-icon">📅</div>
+                        <h3>Nenhum agendamento próximo</h3>
+                        <p>Não há agendamentos programados para os próximos dias. Que tal criar um novo agendamento?</p>
+                        <button class="btn btn-primary mt-4" onclick="App.showSection('appointments')">
+                            <i class="fas fa-plus"></i>
+                            Criar Agendamento
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Novo Agendamento -->
+            <section id="appointments" class="content-section">
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2 class="form-title">
+                            <i class="fas fa-calendar-plus"></i>
+                            Novo Agendamento
+                        </h2>
+                        <p class="form-subtitle">Preencha os dados abaixo para criar um novo agendamento na agenda</p>
+                    </div>
+                    
+                    <form id="appointmentForm" onsubmit="return false;">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label required">
+                                    <i class="fas fa-user"></i>
+                                    Nome do Paciente
+                                </label>
+                                <input type="text" class="form-input" id="patientName" required 
+                                       placeholder="Digite o nome completo do paciente"
+                                       autocomplete="name">
+                                <div class="form-hint">Nome completo como no documento de identidade</div>
+                                <div class="error-message">Nome é obrigatório e deve ter pelo menos 2 caracteres</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">
+                                    <i class="fas fa-phone"></i>
+                                    Telefone/WhatsApp
+                                </label>
+                                <input type="tel" class="form-input" id="patientPhone" required 
+                                       placeholder="(11) 98765-4321"
+                                       autocomplete="tel">
+                                <div class="form-hint">Telefone com DDD para contato via WhatsApp</div>
+                                <div class="error-message">Telefone inválido. Digite com DDD (11 dígitos)</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-envelope"></i>
+                                    Email
+                                </label>
+                                <input type="email" class="form-input" id="patientEmail" 
+                                       placeholder="email@exemplo.com"
+                                       autocomplete="email">
+                                <div class="form-hint">Para envio de confirmações e lembretes</div>
+                                <div class="error-message">Email inválido</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-id-card"></i>
+                                    CPF
+                                </label>
+                                <input type="text" class="form-input" id="patientCPF" 
+                                       placeholder="000.000.000-00"
+                                       autocomplete="off">
+                                <div class="form-hint">Documento de identificação (opcional)</div>
+                                <div class="error-message">CPF inválido</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">
+                                    <i class="fas fa-calendar-day"></i>
+                                    Data do Agendamento
+                                </label>
+                                <input type="date" class="form-input" id="appointmentDate" required>
+                                <div class="form-hint">Data da consulta (não pode ser no passado)</div>
+                                <div class="error-message">Selecione uma data válida</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">
+                                    <i class="fas fa-clock"></i>
+                                    Horário
+                                </label>
+                                <select class="form-select" id="appointmentTime" required>
+                                    <option value="">Selecione um horário...</option>
+                                </select>
+                                <div class="form-hint">Horários disponíveis para a data selecionada</div>
+                                <div class="error-message">Selecione um horário disponível</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label required">
+                                    <i class="fas fa-stethoscope"></i>
+                                    Tipo de Consulta
+                                </label>
+                                <select class="form-select" id="appointmentType" required>
+                                    <option value="">Selecione o tipo...</option>
+                                    <option value="Primeira Consulta">🔍 Primeira Consulta</option>
+                                    <option value="Retorno">🔄 Retorno</option>
+                                    <option value="Limpeza">🧹 Limpeza</option>
+                                    <option value="Tratamento">💊 Tratamento</option>
+                                    <option value="Emergência">🚨 Emergência</option>
+                                    <option value="Ortodontia">🦷 Ortodontia</option>
+                                    <option value="Implante">⚙️ Implante</option>
+                                    <option value="Cirurgia">🔬 Cirurgia</option>
+                                    <option value="Prótese">🦷 Prótese</option>
+                                    <option value="Extração">🦷 Extração</option>
+                                    <option value="Avaliação">📋 Avaliação</option>
+                                    <option value="Manutenção">🔧 Manutenção</option>
+                                </select>
+                                <div class="form-hint">Escolha o tipo de procedimento</div>
+                                <div class="error-message">Selecione o tipo de consulta</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    Duração Estimada
+                                </label>
+                                <select class="form-select" id="appointmentDuration">
+                                    <option value="15">⏱️ 15 minutos</option>
+                                    <option value="30">⏱️ 30 minutos</option>
+                                    <option value="45">⏰ 45 minutos</option>
+                                    <option value="60" selected>⏰ 1 hora</option>
+                                    <option value="90">⏳ 1h30min</option>
+                                    <option value="120">⌛ 2 horas</option>
+                                    <option value="180">🕐 3 horas</option>
+                                </select>
+                                <div class="form-hint">Tempo estimado do procedimento</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    Prioridade
+                                </label>
+                                <select class="form-select" id="appointmentPriority">
+                                    <option value="normal" selected>🟢 Normal</option>
+                                    <option value="high">🟡 Alta</option>
+                                    <option value="urgent">🔴 Urgente</option>
+                                </select>
+                                <div class="form-hint">Nível de prioridade do agendamento</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-bell"></i>
+                                    Lembrete
+                                </label>
+                                <select class="form-select" id="appointmentReminder">
+                                    <option value="none">🔕 Sem lembrete</option>
+                                    <option value="1hour">⏰ 1 hora antes</option>
+                                    <option value="24hours" selected>📅 1 dia antes</option>
+                                    <option value="48hours">📅 2 dias antes</option>
+                                    <option value="1week">📅 1 semana antes</option>
+                                </select>
+                                <div class="form-hint">Quando enviar lembrete via WhatsApp</div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <i class="fas fa-tag"></i>
+                                    Origem do Agendamento
+                                </label>
+                                <select class="form-select" id="appointmentSource">
+                                    <option value="phone" selected>📞 Telefone</option>
+                                    <option value="whatsapp">💬 WhatsApp</option>
+                                    <option value="website">🌐 Site</option>
+                                    <option value="walk-in">🚶 Presencial</option>
+                                    <option value="referral">👥 Indicação</option>
+                                    <option value="return">🔄 Retorno</option>
+                                </select>
+                                <div class="form-hint">Como o paciente entrou em contato</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-comment-medical"></i>
+                                Observações e Histórico
+                            </label>
+                            <textarea class="form-textarea" id="appointmentNotes" rows="4" 
+                                      placeholder="Informações adicionais, histórico médico, alergias, medicamentos em uso, etc..."></textarea>
+                            <div class="form-hint">Detalhes importantes sobre o paciente ou procedimento (máx. 1000 caracteres)</div>
+                        </div>
+                        
+                        <div class="flex gap-3 mt-6">
+                            <button type="button" class="btn btn-secondary" onclick="App.clearForm()">
+                                <i class="fas fa-eraser"></i>
+                                Limpar Formulário
+                            </button>
+                            <button type="button" class="btn btn-info" onclick="App.previewAppointment()">
+                                <i class="fas fa-eye"></i>
+                                Visualizar
+                            </button>
+                            <button type="submit" class="btn btn-primary" onclick="App.handleSubmit(event)">
+                                <i class="fas fa-save"></i>
+                                Salvar Agendamento
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Lista de Agendamentos -->
+            <section id="list" class="content-section">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h2 class="form-title m-0">
+                            <i class="fas fa-list-ul"></i>
+                            Gestão de Agendamentos
+                        </h2>
+                        <p class="form-subtitle">Visualize, edite e gerencie todos os agendamentos</p>
+                    </div>
+                </div>
+                
+                <!-- Sistema de Filtros Avançado -->
+                <div class="search-filters">
+                    <div class="filters-row">
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-search"></i>
+                                Buscar Agendamentos
+                            </label>
+                            <input type="text" class="search-input" id="searchInput" 
+                                   placeholder="Nome, telefone, CPF ou email...">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-filter"></i>
+                                Status
+                            </label>
+                            <select class="filter-select" id="statusFilter">
+                                <option value="">Todos os Status</option>
+                                <option value="Pendente">⏳ Pendente</option>
+                                <option value="Confirmado">✅ Confirmado</option>
+                                <option value="Concluído">✔️ Concluído</option>
+                                <option value="Cancelado">❌ Cancelado</option>
+                                <option value="Reagendado">📅 Reagendado</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-calendar"></i>
+                                Data
+                            </label>
+                            <input type="date" class="filter-select" id="dateFilter">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-stethoscope"></i>
+                                Tipo
+                            </label>
+                            <select class="filter-select" id="typeFilter">
+                                <option value="">Todos os Tipos</option>
+                                <option value="Primeira Consulta">Primeira Consulta</option>
+                                <option value="Retorno">Retorno</option>
+                                <option value="Limpeza">Limpeza</option>
+                                <option value="Tratamento">Tratamento</option>
+                                <option value="Emergência">Emergência</option>
+                                <option value="Ortodontia">Ortodontia</option>
+                                <option value="Implante">Implante</option>
+                                <option value="Cirurgia">Cirurgia</option>
+                                <option value="Prótese">Prótese</option>
+                                <option value="Extração">Extração</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="form-label">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Prioridade
+                            </label>
+                            <select class="filter-select" id="priorityFilter">
+                                <option value="">Todas</option>
+                                <option value="normal">🟢 Normal</option>
+                                <option value="high">🟡 Alta</option>
+                                <option value="urgent">🔴 Urgente</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="filters-actions">
+                        <button class="btn btn-secondary" onclick="App.clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Limpar Filtros
+                        </button>
+                        <button class="btn btn-info" onclick="App.showAdvancedFilters()">
+                            <i class="fas fa-sliders-h"></i>
+                            Filtros Avançados
+                        </button>
+                        <button class="btn btn-warning" onclick="App.exportToCSV()">
+                            <i class="fas fa-download"></i>
+                            Exportar CSV
+                        </button>
+                        <button class="btn btn-success" onclick="App.showSection('appointments')">
+                            <i class="fas fa-plus"></i>
+                            Novo Agendamento
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 class="table-title">
+                            <i class="fas fa-table"></i>
+                            Lista de Agendamentos
+                        </h3>
+                        <div class="table-actions">
+                            <span class="text-sm text-secondary">
+                                <span id="appointmentsCount">0</span> agendamento(s) encontrado(s)
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Ações em Lote -->
+                    <div class="flex gap-2 mb-4 flex-wrap">
+                        <button class="btn btn-success btn-icon" onclick="App.bulkConfirm()" title="Confirmar Selecionados">
+                            <i class="fas fa-check-double"></i>
+                            Confirmar Selecionados
+                        </button>
+                        <button class="btn btn-warning btn-icon" onclick="App.bulkCancel()" title="Cancelar Selecionados">
+                            <i class="fas fa-ban"></i>
+                            Cancelar Selecionados
+                        </button>
+                        <button class="btn btn-info btn-icon" onclick="App.bulkReschedule()" title="Reagendar Selecionados">
+                            <i class="fas fa-calendar-alt"></i>
+                            Reagendar
+                        </button>
+                        <button class="btn btn-danger btn-icon" onclick="App.bulkDelete()" title="Excluir Selecionados">
+                            <i class="fas fa-trash"></i>
+                            Excluir Selecionados
+                        </button>
+                        <button class="btn btn-secondary btn-icon" onclick="App.backupNow()" title="Criar Backup">
+                            <i class="fas fa-database"></i>
+                            Backup Agora
+                        </button>
+                    </div>
+                    
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:40px; text-align:center">
+                                        <input type="checkbox" id="selectAllAppointments" onchange="App.toggleSelectAll(this.checked)" />
+                                    </th>
+                                    <th><i class="fas fa-hashtag"></i> Código</th>
+                                    <th><i class="fas fa-user"></i> Paciente</th>
+                                    <th><i class="fas fa-phone"></i> Telefone</th>
+                                    <th><i class="fas fa-calendar"></i> Data</th>
+                                    <th><i class="fas fa-clock"></i> Horário</th>
+                                    <th class="hide-mobile"><i class="fas fa-stethoscope"></i> Tipo</th>
+                                    <th><i class="fas fa-info-circle"></i> Status</th>
+                                    <th class="hide-mobile"><i class="fas fa-exclamation-triangle"></i> Prioridade</th>
+                                    <th class="hide-mobile"><i class="fas fa-hourglass-half"></i> Duração</th>
+                                    <th><i class="fas fa-cogs"></i> Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsList">
+                                <!-- Dados carregados dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="listEmpty" class="empty-state hidden">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>Nenhum agen
