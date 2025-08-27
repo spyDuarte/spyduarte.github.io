@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎮 Jogo de Combo - Match 3</title>
+    <title>🎮 Jogo de Combo - Match 3 Evoluído</title>
     <style>
         * {
             margin: 0;
@@ -17,16 +17,17 @@
             min-height: 100vh;
             padding: 20px;
             color: white;
+            user-select: none;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .header h1 {
@@ -40,21 +41,144 @@
             opacity: 0.9;
         }
 
+        .game-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .level-progress {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .level-title {
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .level-objective {
+            font-size: 1em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .power-ups {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .power-ups-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .power-up-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .power-up {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .power-up:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .power-up:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .power-up-icon {
+            font-size: 1.5em;
+        }
+
+        .power-up-name {
+            font-size: 0.8em;
+        }
+
+        .power-up-count {
+            font-size: 0.9em;
+            color: #ffd700;
+        }
+
         .status-panel {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
-        }
-
-        .score-container {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 15px;
         }
 
         .message {
@@ -64,6 +188,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .message.success {
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+        }
+
+        .message.error {
+            color: #f87171;
+            text-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+        }
+
+        .message.special {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .message.animate {
@@ -71,8 +211,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
         }
 
         .grid-container {
@@ -80,7 +220,7 @@
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .game-grid {
@@ -103,12 +243,30 @@
             cursor: pointer;
             transition: all 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cell::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
         }
 
         .cell:hover:not(.selected):not(:disabled) {
             background: rgba(255, 255, 255, 0.95);
             transform: scale(1.05);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .cell:hover:not(.selected):not(:disabled)::before {
+            transform: translateX(100%);
         }
 
         .cell.selected {
@@ -128,6 +286,28 @@
             cursor: not-allowed;
         }
 
+        .cell.combo-success {
+            animation: comboSuccess 1.5s ease-out;
+        }
+
+        .cell.special {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            animation: specialPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes comboSuccess {
+            0% { transform: scale(1.1); }
+            25% { transform: scale(1.3) rotate(10deg); }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            75% { transform: scale(1.25) rotate(3deg); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes specialPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 107, 107, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(78, 205, 196, 0.8); }
+        }
+
         .controls {
             text-align: center;
         }
@@ -141,58 +321,86 @@
             font-size: 1.1em;
         }
 
-        .reset-button {
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .game-button {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             border: none;
             color: white;
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: bold;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
-        .reset-button:hover {
+        .game-button:hover {
             background: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
 
-        .instructions {
+        .game-button:active {
+            transform: translateY(0);
+        }
+
+        .achievements {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 20px;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
-        .instructions h3 {
-            margin-bottom: 15px;
+        .achievements-title {
             font-size: 1.3em;
-        }
-
-        .instructions ul {
-            list-style: none;
-        }
-
-        .instructions li {
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .instructions li::before {
-            content: "•";
-            color: #ffd700;
             font-weight: bold;
-            position: absolute;
-            left: 0;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        @media (max-width: 600px) {
+        .achievement-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .achievement {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .achievement.unlocked {
+            background: rgba(76, 175, 80, 0.3);
+        }
+
+        .achievement-icon {
+            font-size: 1.5em;
+        }
+
+        .achievement-text {
+            font-size: 0.9em;
+        }
+
+        .game-disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 800px) {
             .container {
                 padding: 10px;
             }
@@ -208,25 +416,83 @@
             .game-grid {
                 gap: 6px;
             }
+            
+            .game-stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎮 Jogo de Combo</h1>
-            <p>Selecione 3 figuras iguais para fazer combo!</p>
+            <h1>🎮 Jogo de Combo Evoluído</h1>
+            <p>Evolua através dos níveis e desafios!</p>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">🏆 Pontos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="combos">0</div>
+                <div class="stat-label">⚡ Combos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="multiplier">1x</div>
+                <div class="stat-label">🔥 Multiplicador</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="level">1</div>
+                <div class="stat-label">🎯 Nível</div>
+            </div>
+        </div>
+
+        <div class="level-progress">
+            <div class="level-header">
+                <div class="level-title" id="level-title">Nível 1: Iniciante</div>
+                <div id="level-timer"></div>
+            </div>
+            <div class="level-objective" id="level-objective">Objetivo: Faça 5 combos para passar de nível!</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0 / 5 combos</div>
+        </div>
+
+        <div class="power-ups">
+            <div class="power-ups-title">⭐ Power-ups</div>
+            <div class="power-up-grid">
+                <button class="power-up" id="power-up-hint">
+                    <div class="power-up-icon">💡</div>
+                    <div class="power-up-name">Dica</div>
+                    <div class="power-up-count" id="hint-count">3</div>
+                </button>
+                <button class="power-up" id="power-up-shuffle">
+                    <div class="power-up-icon">🔀</div>
+                    <div class="power-up-name">Embaralhar</div>
+                    <div class="power-up-count" id="shuffle-count">2</div>
+                </button>
+                <button class="power-up" id="power-up-double">
+                    <div class="power-up-icon">✨</div>
+                    <div class="power-up-name">2x Pontos</div>
+                    <div class="power-up-count" id="double-count">1</div>
+                </button>
+                <button class="power-up" id="power-up-extra">
+                    <div class="power-up-icon">⏱️</div>
+                    <div class="power-up-name">+Tempo</div>
+                    <div class="power-up-count" id="extra-count">1</div>
+                </button>
+            </div>
         </div>
 
         <div class="status-panel">
-            <div class="score-container">
-                <div>
-                    <span>🏆</span> Pontos: <span id="score">0</span>
-                </div>
-                <div>
-                    <span>⚡</span> Combos: <span id="combos">0</span>
-                </div>
-            </div>
             <div id="message" class="message"></div>
         </div>
 
@@ -240,179 +506,851 @@
                 <span id="selected-figures"></span>
             </div>
             
-            <button id="reset-button" class="reset-button">
-                🔄 Novo Jogo
-            </button>
+            <div class="button-group">
+                <button id="reset-button" class="game-button">
+                    🔄 Novo Jogo
+                </button>
+                <button id="clear-selection-button" class="game-button">
+                    🧹 Limpar Seleção
+                </button>
+                <button id="pause-button" class="game-button">
+                    ⏸️ Pausar
+                </button>
+            </div>
         </div>
 
-        <div class="instructions">
-            <h3>📋 Como Jogar:</h3>
-            <ul>
-                <li>Clique em 3 células com a mesma figura</li>
-                <li>Se as 3 figuras forem iguais, você faz um combo!</li>
-                <li>Cada combo vale 100 pontos</li>
-                <li>Novas figuras aparecem após cada combo bem-sucedido</li>
-            </ul>
+        <div class="achievements">
+            <div class="achievements-title">🏅 Conquistas</div>
+            <div class="achievement-list" id="achievement-list">
+                <!-- Conquistas serão adicionadas dinamicamente -->
+            </div>
         </div>
     </div>
 
     <script>
-        class ComboGame {
-            constructor() {
-                this.figures = ['🍎', '🍌', '🍊', '🍇', '🍓', '🥝', '🍑', '🥭'];
-                this.gridSize = 36;
-                this.grid = [];
-                this.selected = [];
-                this.score = 0;
-                this.combos = 0;
-                
-                this.scoreElement = document.getElementById('score');
-                this.combosElement = document.getElementById('combos');
-                this.messageElement = document.getElementById('message');
-                this.gridElement = document.getElementById('game-grid');
-                this.selectedCountElement = document.getElementById('selected-count');
-                this.selectedFiguresElement = document.getElementById('selected-figures');
-                this.resetButton = document.getElementById('reset-button');
-                
-                this.init();
-            }
-            
-            init() {
-                this.initializeGrid();
-                this.renderGrid();
-                this.resetButton.addEventListener('click', () => {
-                    this.resetGame();
-                });
-            }
-            
-            initializeGrid() {
-                this.grid = [];
-                for (let i = 0; i < this.gridSize; i++) {
-                    this.grid.push({
-                        id: i,
-                        figure: this.figures[Math.floor(Math.random() * this.figures.length)],
-                        selected: false
-                    });
-                }
-            }
-            
-            renderGrid() {
-                this.gridElement.innerHTML = '';
-                this.grid.forEach((cell) => {
-                    const button = document.createElement('button');
-                    button.className = 'cell ' + (cell.selected ? 'selected' : '');
-                    button.textContent = cell.figure;
-                    button.onclick = () => {
-                        this.handleCellClick(cell.id);
-                    };
-                    button.disabled = this.selected.length >= 3 && !cell.selected;
-                    this.gridElement.appendChild(button);
-                });
-            }
-            
-            handleCellClick(id) {
-                var self = this;
-                var cell = this.grid.find(function(c) { return c.id === id; });
-                if (!cell || cell.selected) return;
-                
-                cell.selected = true;
-                this.selected.push(cell);
-                
-                this.updateSelectedInfo();
-                this.renderGrid();
-                
-                if (this.selected.length === 3) {
-                    setTimeout(function() {
-                        self.checkCombo();
-                    }, 100);
-                } else {
-                    this.showMessage('Selecionadas: ' + this.selected.length + '/3');
-                }
-            }
-            
-            checkCombo() {
-                var first = this.selected[0];
-                var second = this.selected[1]; 
-                var third = this.selected[2];
-                
-                if (first.figure === second.figure && second.figure === third.figure) {
-                    // Combo bem-sucedido!
-                    var points = 100;
-                    this.score += points;
-                    this.combos++;
-                    this.updateScore();
-                    this.showMessage('🎉 COMBO! +' + points + ' pontos!', true);
-                    
-                    var self = this;
-                    setTimeout(function() {
-                        self.selected.forEach(function(selectedCell) {
-                            var gridCell = self.grid.find(function(c) { return c.id === selectedCell.id; });
-                            gridCell.figure = self.figures[Math.floor(Math.random() * self.figures.length)];
-                            gridCell.selected = false;
-                        });
-                        self.selected = [];
-                        self.renderGrid();
-                        self.updateSelectedInfo();
-                        self.clearMessage();
-                    }, 1500);
-                } else {
-                    // Combo falhou
-                    this.showMessage('❌ Não combinou! Tente novamente.', true);
-                    var self = this;
-                    setTimeout(function() {
-                        self.grid.forEach(function(cell) { cell.selected = false; });
-                        self.selected = [];
-                        self.renderGrid();
-                        self.updateSelectedInfo();
-                        self.clearMessage();
-                    }, 1500);
-                }
-            }
-            
-            updateScore() {
-                this.scoreElement.textContent = this.score;
-                this.combosElement.textContent = this.combos;
-            }
-            
-            updateSelectedInfo() {
-                this.selectedCountElement.textContent = this.selected.length;
-                this.selectedFiguresElement.textContent = this.selected.length > 0 
-                    ? ' ' + this.selected.map(function(s) { return s.figure; }).join(' ') 
-                    : '';
-            }
-            
-            showMessage(text, animate) {
-                if (animate === undefined) animate = false;
-                this.messageElement.textContent = text;
-                if (animate) {
-                    this.messageElement.classList.add('animate');
-                    var self = this;
-                    setTimeout(function() {
-                        self.messageElement.classList.remove('animate');
-                    }, 1500);
-                }
-            }
-            
-            clearMessage() {
-                this.messageElement.textContent = '';
-            }
-            
-            resetGame() {
-                this.score = 0;
-                this.combos = 0;
-                this.selected = [];
-                this.updateScore();
-                this.updateSelectedInfo();
-                this.clearMessage();
-                this.initializeGrid();
-                this.renderGrid();
-            }
+        var FIGURES = ['🍎', '🍌', '🍊', '🍇', '🍓', '🥝', '🍑', '🥭', '🥥', '🍒'];
+        var GRID_SIZE = 36;
+        var BASE_POINTS = 100;
+        var MAX_SELECTIONS = 3;
+        var ANIMATION_DELAY = 1500;
+
+        var LEVELS = [
+            { id: 1, name: 'Iniciante', requirement: 5, type: 'combos', timeLimit: 0, bonus: 0 },
+            { id: 2, name: 'Aprendiz', requirement: 10, type: 'combos', timeLimit: 0, bonus: 50 },
+            { id: 3, name: 'Explorador', requirement: 800, type: 'points', timeLimit: 0, bonus: 100 },
+            { id: 4, name: 'Desafio Tempo', requirement: 8, type: 'combos', timeLimit: 60, bonus: 200 },
+            { id: 5, name: 'Mestre', requirement: 15, type: 'combos', timeLimit: 0, bonus: 300 },
+            { id: 6, name: 'Contra o Relógio', requirement: 2000, type: 'points', timeLimit: 90, bonus: 500 },
+            { id: 7, name: 'Especialista', requirement: 25, type: 'combos', timeLimit: 0, bonus: 750 },
+            { id: 8, name: 'Velocidade Extrema', requirement: 12, type: 'combos', timeLimit: 45, bonus: 1000 },
+            { id: 9, name: 'Lenda', requirement: 40, type: 'combos', timeLimit: 0, bonus: 1500 },
+            { id: 10, name: 'Imortal', requirement: 10000, type: 'points', timeLimit: 120, bonus: 2500 }
+        ];
+
+        var ACHIEVEMENTS = [
+            { id: 'first_combo', name: 'Primeiro Combo', desc: 'Faça seu primeiro combo', icon: '🎯', unlocked: false },
+            { id: 'combo_streak', name: 'Sequência', desc: 'Faça 5 combos seguidos', icon: '🔥', unlocked: false },
+            { id: 'speed_demon', name: 'Demônio da Velocidade', desc: 'Complete um nível em menos de 30s', icon: '⚡', unlocked: false },
+            { id: 'power_user', name: 'Usuário de Power', desc: 'Use todos os power-ups', icon: '⭐', unlocked: false },
+            { id: 'level_5', name: 'Meio Caminho', desc: 'Alcance o nível 5', icon: '🏔️', unlocked: false },
+            { id: 'perfectionist', name: 'Perfeccionista', desc: 'Complete um nível sem erros', icon: '💎', unlocked: false },
+            { id: 'high_score', name: 'Pontuador', desc: 'Alcance 5000 pontos', icon: '🏆', unlocked: false },
+            { id: 'endurance', name: 'Resistência', desc: 'Jogue por mais de 10 minutos', icon: '⏰', unlocked: false }
+        ];
+
+        function getRandomFigure() {
+            return FIGURES[Math.floor(Math.random() * FIGURES.length)];
         }
-        
-        // Iniciar o jogo quando a página carregar
-        document.addEventListener('DOMContentLoaded', function() {
+
+        function ComboGame() {
+            this.grid = [];
+            this.selected = [];
+            this.score = 0;
+            this.combos = 0;
+            this.level = 1;
+            this.multiplier = 1;
+            this.isProcessing = false;
+            this.isPaused = false;
+            this.elements = {};
+            this.powerUps = {
+                hint: 3,
+                shuffle: 2,
+                double: 1,
+                extra: 1
+            };
+            this.achievements = JSON.parse(localStorage.getItem('achievements') || JSON.stringify(ACHIEVEMENTS));
+            this.gameStartTime = Date.now();
+            this.levelStartTime = Date.now();
+            this.timeLimit = 0;
+            this.timerInterval = null;
+            this.doublePointsActive = false;
+            this.consecutiveSuccesses = 0;
+            this.levelErrors = 0;
+            this.powerUpsUsed = {
+                hint: false,
+                shuffle: false,
+                double: false,
+                extra: false
+            };
+            
+            this.init();
+        }
+
+        ComboGame.prototype.init = function() {
+            this.initElements();
+            this.initGrid();
+            this.renderGrid();
+            this.bindEvents();
+            this.updateUI();
+            this.renderAchievements();
+            this.updateLevel();
+        };
+
+        ComboGame.prototype.initElements = function() {
+            this.elements.score = document.getElementById('score');
+            this.elements.combos = document.getElementById('combos');
+            this.elements.multiplier = document.getElementById('multiplier');
+            this.elements.level = document.getElementById('level');
+            this.elements.levelTitle = document.getElementById('level-title');
+            this.elements.levelObjective = document.getElementById('level-objective');
+            this.elements.levelTimer = document.getElementById('level-timer');
+            this.elements.progressFill = document.getElementById('progress-fill');
+            this.elements.progressText = document.getElementById('progress-text');
+            this.elements.message = document.getElementById('message');
+            this.elements.gameGrid = document.getElementById('game-grid');
+            this.elements.selectedCount = document.getElementById('selected-count');
+            this.elements.selectedFigures = document.getElementById('selected-figures');
+            this.elements.resetButton = document.getElementById('reset-button');
+            this.elements.clearButton = document.getElementById('clear-selection-button');
+            this.elements.pauseButton = document.getElementById('pause-button');
+            this.elements.hintCount = document.getElementById('hint-count');
+            this.elements.shuffleCount = document.getElementById('shuffle-count');
+            this.elements.doubleCount = document.getElementById('double-count');
+            this.elements.extraCount = document.getElementById('extra-count');
+            this.elements.achievementList = document.getElementById('achievement-list');
+        };
+
+        ComboGame.prototype.initGrid = function() {
+            this.grid = [];
+            var figureCount = Math.min(6 + Math.floor(this.level / 2), FIGURES.length);
+            var availableFigures = FIGURES.slice(0, figureCount);
+            
+            for (var i = 0; i < GRID_SIZE; i++) {
+                this.grid.push({
+                    id: i,
+                    figure: availableFigures[Math.floor(Math.random() * availableFigures.length)],
+                    selected: false,
+                    element: null,
+                    special: false
+                });
+            }
+
+            // Adicionar algumas células especiais em níveis altos
+            if (this.level >= 3) {
+                var specialCount = Math.floor(this.level / 3);
+                for (var j = 0; j < specialCount; j++) {
+                    var randomIndex = Math.floor(Math.random() * GRID_SIZE);
+                    this.grid[randomIndex].special = true;
+                }
+            }
+        };
+
+        ComboGame.prototype.renderGrid = function() {
+            this.elements.gameGrid.innerHTML = '';
+            
+            for (var i = 0; i < this.grid.length; i++) {
+                var cell = this.grid[i];
+                var button = this.createButton(cell);
+                cell.element = button;
+                this.elements.gameGrid.appendChild(button);
+            }
+        };
+
+        ComboGame.prototype.createButton = function(cell) {
+            var button = document.createElement('button');
+            button.className = 'cell';
+            if (cell.selected) button.className += ' selected';
+            if (cell.special) button.className += ' special';
+            button.textContent = cell.figure;
+            button.disabled = this.isProcessing || this.isPaused || (this.selected.length >= MAX_SELECTIONS && !cell.selected);
+            
+            var self = this;
+            button.onclick = function() {
+                self.handleClick(cell.id);
+            };
+            
+            return button;
+        };
+
+        ComboGame.prototype.bindEvents = function() {
+            var self = this;
+            
+            this.elements.resetButton.onclick = function() {
+                self.resetGame();
+            };
+            
+            this.elements.clearButton.onclick = function() {
+                self.clearSelection();
+            };
+
+            this.elements.pauseButton.onclick = function() {
+                self.togglePause();
+            };
+
+            document.getElementById('power-up-hint').onclick = function() {
+                self.usePowerUp('hint');
+            };
+
+            document.getElementById('power-up-shuffle').onclick = function() {
+                self.usePowerUp('shuffle');
+            };
+
+            document.getElementById('power-up-double').onclick = function() {
+                self.usePowerUp('double');
+            };
+
+            document.getElementById('power-up-extra').onclick = function() {
+                self.usePowerUp('extra');
+            };
+        };
+
+        ComboGame.prototype.handleClick = function(id) {
+            if (this.isProcessing || this.isPaused) return;
+            
+            var cell = this.findCell(id);
+            if (!cell || cell.selected) return;
+            
+            this.selectCell(cell);
+            this.updateUI();
+            
+            if (this.selected.length === MAX_SELECTIONS) {
+                this.processCombo();
+            } else {
+                this.showMessage('Selecionadas: ' + this.selected.length + '/' + MAX_SELECTIONS);
+            }
+        };
+
+        ComboGame.prototype.findCell = function(id) {
+            for (var i = 0; i < this.grid.length; i++) {
+                if (this.grid[i].id === id) {
+                    return this.grid[i];
+                }
+            }
+            return null;
+        };
+
+        ComboGame.prototype.selectCell = function(cell) {
+            cell.selected = true;
+            this.selected.push(cell);
+            
+            if (cell.element) {
+                cell.element.className = 'cell selected';
+                if (cell.special) cell.element.className += ' special';
+            }
+            
+            this.updateCellStates();
+        };
+
+        ComboGame.prototype.updateCellStates = function() {
+            var shouldDisable = this.selected.length >= MAX_SELECTIONS;
+            
+            for (var i = 0; i < this.grid.length; i++) {
+                var cell = this.grid[i];
+                if (cell.element && !cell.selected) {
+                    cell.element.disabled = shouldDisable || this.isProcessing || this.isPaused;
+                }
+            }
+        };
+
+        ComboGame.prototype.processCombo = function() {
+            var self = this;
+            this.isProcessing = true;
+            this.disableGame();
+            
+            setTimeout(function() {
+                self.checkCombo();
+            }, 100);
+        };
+
+        ComboGame.prototype.checkCombo = function() {
+            var first = this.selected[0].figure;
+            var second = this.selected[1].figure;
+            var third = this.selected[2].figure;
+            
+            if (first === second && second === third) {
+                this.handleSuccess();
+            } else {
+                this.handleFailure();
+            }
+        };
+
+        ComboGame.prototype.handleSuccess = function() {
+            var self = this;
+            
+            // Calcular pontos
+            var basePoints = BASE_POINTS;
+            var specialBonus = 0;
+            var hasSpecial = false;
+
+            for (var i = 0; i < this.selected.length; i++) {
+                if (this.selected[i].special) {
+                    hasSpecial = true;
+                    specialBonus += 50;
+                }
+            }
+
+            var totalPoints = Math.floor((basePoints + specialBonus) * this.multiplier);
+            if (this.doublePointsActive) {
+                totalPoints *= 2;
+            }
+
+            this.score += totalPoints;
+            this.combos++;
+            this.consecutiveSuccesses++;
+            this.levelErrors = 0; // Reset de erros para conquista de perfeccionista
+
+            // Atualizar multiplicador
+            if (this.consecutiveSuccesses >= 3) {
+                this.multiplier = Math.min(this.multiplier + 0.5, 5);
+            }
+
+            this.updateScore();
+            
+            // Adicionar animação às células do combo
+            for (var j = 0; j < this.selected.length; j++) {
+                var cell = this.selected[j];
+                if (cell.element && cell.element.classList) {
+                    cell.element.classList.add('combo-success');
+                }
+            }
+
+            var message = '🎉 COMBO! +' + totalPoints + ' pontos!';
+            if (hasSpecial) message += ' ⭐ ESPECIAL!';
+            if (this.doublePointsActive) message += ' 🔥 DOBRADO!';
+            
+            this.showMessage(message, 'success', true);
+            this.checkAchievements();
+            
+            setTimeout(function() {
+                self.replaceCells();
+                self.clearSelection();
+                self.checkLevelProgress();
+                self.enableGame();
+                self.clearMessage();
+            }, ANIMATION_DELAY);
+        };
+
+        ComboGame.prototype.handleFailure = function() {
+            var self = this;
+            
+            this.consecutiveSuccesses = 0;
+            this.multiplier = 1;
+            this.levelErrors++;
+            
+            this.showMessage('❌ Não combinou! Tente novamente.', 'error', true);
+            
+            setTimeout(function() {
+                self.clearSelection();
+                self.enableGame();
+                self.clearMessage();
+            }, ANIMATION_DELAY);
+        };
+
+        ComboGame.prototype.replaceCells = function() {
+            var figureCount = Math.min(6 + Math.floor(this.level / 2), FIGURES.length);
+            var availableFigures = FIGURES.slice(0, figureCount);
+
+            for (var i = 0; i < this.selected.length; i++) {
+                var selectedCell = this.selected[i];
+                var gridCell = this.findCell(selectedCell.id);
+                
+                if (gridCell) {
+                    gridCell.figure = availableFigures[Math.floor(Math.random() * availableFigures.length)];
+                    gridCell.selected = false;
+                    gridCell.special = false;
+
+                    // Chance de célula especial
+                    if (this.level >= 3 && Math.random() < 0.1) {
+                        gridCell.special = true;
+                    }
+                    
+                    if (gridCell.element) {
+                        gridCell.element.textContent = gridCell.figure;
+                        gridCell.element.className = 'cell';
+                        if (gridCell.special) gridCell.element.className += ' special';
+                        if (gridCell.element.classList) {
+                            gridCell.element.classList.remove('combo-success');
+                        }
+                    }
+                }
+            }
+        };
+
+        ComboGame.prototype.clearSelection = function() {
+            for (var i = 0; i < this.selected.length; i++) {
+                var cell = this.selected[i];
+                cell.selected = false;
+                
+                if (cell.element) {
+                    cell.element.className = 'cell';
+                    if (cell.special) cell.element.className += ' special';
+                    cell.element.disabled = this.isProcessing || this.isPaused;
+                }
+            }
+            
+            this.selected = [];
+            this.updateUI();
+            this.clearMessage();
+        };
+
+        ComboGame.prototype.updateUI = function() {
+            this.updateSelectedInfo();
+            this.updateScore();
+            this.updatePowerUps();
+        };
+
+        ComboGame.prototype.updateScore = function() {
+            this.elements.score.textContent = this.score;
+            this.elements.combos.textContent = this.combos;
+            this.elements.multiplier.textContent = this.multiplier.toFixed(1) + 'x';
+            this.elements.level.textContent = this.level;
+        };
+
+        ComboGame.prototype.updateSelectedInfo = function() {
+            this.elements.selectedCount.textContent = this.selected.length;
+            
+            var figures = '';
+            if (this.selected.length > 0) {
+                figures = ' ';
+                for (var i = 0; i < this.selected.length; i++) {
+                    figures += this.selected[i].figure + ' ';
+                }
+            }
+            this.elements.selectedFigures.textContent = figures;
+        };
+
+        ComboGame.prototype.updatePowerUps = function() {
+            this.elements.hintCount.textContent = this.powerUps.hint;
+            this.elements.shuffleCount.textContent = this.powerUps.shuffle;
+            this.elements.doubleCount.textContent = this.powerUps.double;
+            this.elements.extraCount.textContent = this.powerUps.extra;
+
+            document.getElementById('power-up-hint').disabled = this.powerUps.hint <= 0 || this.isProcessing || this.isPaused;
+            document.getElementById('power-up-shuffle').disabled = this.powerUps.shuffle <= 0 || this.isProcessing || this.isPaused;
+            document.getElementById('power-up-double').disabled = this.powerUps.double <= 0 || this.isProcessing || this.isPaused || this.doublePointsActive;
+            document.getElementById('power-up-extra').disabled = this.powerUps.extra <= 0 || this.isProcessing || this.isPaused || this.timeLimit <= 0;
+        };
+
+        ComboGame.prototype.usePowerUp = function(type) {
+            if (this.powerUps[type] <= 0 || this.isProcessing || this.isPaused) return;
+
+            this.powerUps[type]--;
+            this.powerUpsUsed[type] = true;
+
+            switch (type) {
+                case 'hint':
+                    this.showHint();
+                    break;
+                case 'shuffle':
+                    this.shuffleGrid();
+                    break;
+                case 'double':
+                    this.activateDoublePoints();
+                    break;
+                case 'extra':
+                    this.addExtraTime();
+                    break;
+            }
+
+            this.updatePowerUps();
+            this.checkAchievements();
+        };
+
+        ComboGame.prototype.showHint = function() {
+            var possibleCombos = this.findPossibleCombos();
+            if (possibleCombos.length > 0) {
+                var combo = possibleCombos[0];
+                for (var i = 0; i < combo.length; i++) {
+                    var cell = combo[i];
+                    if (cell.element) {
+                        cell.element.style.border = '3px solid #ffd700';
+                        setTimeout(function(element) {
+                            return function() {
+                                element.style.border = 'none';
+                            };
+                        }(cell.element), 3000);
+                    }
+                }
+                this.showMessage('💡 Dica: Células destacadas formam um combo!', 'special', true);
+            } else {
+                this.showMessage('💡 Nenhum combo possível encontrado!', 'special', true);
+            }
+        };
+
+        ComboGame.prototype.findPossibleCombos = function() {
+            var combos = [];
+            var figures = {};
+            
+            // Agrupar células por figura
+            for (var i = 0; i < this.grid.length; i++) {
+                var cell = this.grid[i];
+                if (!figures[cell.figure]) {
+                    figures[cell.figure] = [];
+                }
+                figures[cell.figure].push(cell);
+            }
+
+            // Encontrar grupos de 3 ou mais
+            for (var figure in figures) {
+                if (figures[figure].length >= 3) {
+                    combos.push(figures[figure].slice(0, 3));
+                }
+            }
+
+            return combos;
+        };
+
+        ComboGame.prototype.shuffleGrid = function() {
+            this.clearSelection();
+            
+            var figureCount = Math.min(6 + Math.floor(this.level / 2), FIGURES.length);
+            var availableFigures = FIGURES.slice(0, figureCount);
+            
+            for (var i = 0; i < this.grid.length; i++) {
+                this.grid[i].figure = availableFigures[Math.floor(Math.random() * availableFigures.length)];
+                if (this.grid[i].element) {
+                    this.grid[i].element.textContent = this.grid[i].figure;
+                }
+            }
+
+            this.showMessage('🔀 Grid embaralhado!', 'special', true);
+        };
+
+        ComboGame.prototype.activateDoublePoints = function() {
+            this.doublePointsActive = true;
+            this.showMessage('✨ Próximos combos valem 2x pontos!', 'special', true);
+            
+            var self = this;
+            setTimeout(function() {
+                self.doublePointsActive = false;
+            }, 30000); // 30 segundos
+        };
+
+        ComboGame.prototype.addExtraTime = function() {
+            if (this.timeLimit > 0) {
+                this.timeLimit += 30;
+                this.showMessage('⏱️ +30 segundos adicionados!', 'special', true);
+            }
+        };
+
+        ComboGame.prototype.checkLevelProgress = function() {
+            var currentLevel = LEVELS[this.level - 1];
+            var progress = 0;
+            var completed = false;
+
+            if (currentLevel.type === 'combos') {
+                progress = this.combos;
+                completed = this.combos >= currentLevel.requirement;
+            } else if (currentLevel.type === 'points') {
+                progress = this.score;
+                completed = this.score >= currentLevel.requirement;
+            }
+
+            this.updateProgress(progress, currentLevel.requirement);
+
+            if (completed) {
+                this.levelUp();
+            }
+        };
+
+        ComboGame.prototype.updateProgress = function(current, target) {
+            var percentage = Math.min((current / target) * 100, 100);
+            this.elements.progressFill.style.width = percentage + '%';
+            this.elements.progressText.textContent = current + ' / ' + target;
+        };
+
+        ComboGame.prototype.levelUp = function() {
+            if (this.level < LEVELS.length) {
+                var currentLevel = LEVELS[this.level - 1];
+                this.score += currentLevel.bonus;
+                
+                // Verificar conquista de perfeccionista
+                if (this.levelErrors === 0 && this.level > 1) {
+                    this.unlockAchievement('perfectionist');
+                }
+
+                this.level++;
+                this.levelStartTime = Date.now();
+                this.levelErrors = 0;
+                
+                // Reset power-ups bonus
+                this.powerUps.hint += 1;
+                if (this.level % 2 === 0) this.powerUps.shuffle += 1;
+                if (this.level % 3 === 0) this.powerUps.double += 1;
+                if (this.level % 4 === 0) this.powerUps.extra += 1;
+
+                this.updateLevel();
+                this.initGrid();
+                this.renderGrid();
+                
+                this.showMessage('🎉 NÍVEL ' + this.level + ' DESBLOQUEADO! +' + currentLevel.bonus + ' pontos bonus!', 'special', true);
+                this.checkAchievements();
+            } else {
+                this.showMessage('🏆 PARABÉNS! VOCÊ COMPLETOU TODOS OS NÍVEIS!', 'special', true);
+                this.unlockAchievement('endurance');
+            }
+        };
+
+        ComboGame.prototype.updateLevel = function() {
+            var currentLevel = LEVELS[this.level - 1];
+            this.elements.levelTitle.textContent = 'Nível ' + this.level + ': ' + currentLevel.name;
+            
+            var objective = 'Objetivo: ';
+            if (currentLevel.type === 'combos') {
+                objective += 'Faça ' + currentLevel.requirement + ' combos';
+            } else {
+                objective += 'Alcance ' + currentLevel.requirement + ' pontos';
+            }
+            if (currentLevel.timeLimit > 0) {
+                objective += ' em ' + currentLevel.timeLimit + ' segundos';
+            }
+            objective += '!';
+            
+            this.elements.levelObjective.textContent = objective;
+            
+            // Configurar timer se necessário
+            if (currentLevel.timeLimit > 0) {
+                this.timeLimit = currentLevel.timeLimit;
+                this.startTimer();
+            } else {
+                this.timeLimit = 0;
+                this.stopTimer();
+                this.elements.levelTimer.textContent = '';
+            }
+
+            this.updateProgress(0, currentLevel.requirement);
+        };
+
+        ComboGame.prototype.startTimer = function() {
+            var self = this;
+            this.stopTimer(); // Limpar timer anterior
+            
+            this.timerInterval = setInterval(function() {
+                self.timeLimit--;
+                self.elements.levelTimer.textContent = '⏰ ' + self.timeLimit + 's';
+                
+                if (self.timeLimit <= 0) {
+                    self.stopTimer();
+                    self.showMessage('⏰ Tempo esgotado! Tente novamente.', 'error', true);
+                    setTimeout(function() {
+                        self.resetLevel();
+                    }, 2000);
+                }
+            }, 1000);
+        };
+
+        ComboGame.prototype.stopTimer = function() {
+            if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+                this.timerInterval = null;
+            }
+        };
+
+        ComboGame.prototype.resetLevel = function() {
+            var currentLevel = LEVELS[this.level - 1];
+            if (currentLevel.type === 'combos') {
+                this.combos = Math.max(0, this.combos - currentLevel.requirement);
+            }
+            this.levelErrors = 0;
+            this.updateLevel();
+        };
+
+        ComboGame.prototype.togglePause = function() {
+            this.isPaused = !this.isPaused;
+            this.elements.pauseButton.textContent = this.isPaused ? '▶️ Continuar' : '⏸️ Pausar';
+            
+            if (this.isPaused) {
+                this.stopTimer();
+                this.showMessage('⏸️ Jogo pausado', 'special');
+            } else {
+                if (this.timeLimit > 0) {
+                    this.startTimer();
+                }
+                this.clearMessage();
+            }
+            
+            this.updateCellStates();
+            this.updatePowerUps();
+        };
+
+        ComboGame.prototype.checkAchievements = function() {
+            // Primeiro combo
+            if (this.combos >= 1) {
+                this.unlockAchievement('first_combo');
+            }
+
+            // Sequência de combos
+            if (this.consecutiveSuccesses >= 5) {
+                this.unlockAchievement('combo_streak');
+            }
+
+            // Velocidade
+            if (this.level > 1) {
+                var levelTime = (Date.now() - this.levelStartTime) / 1000;
+                if (levelTime < 30) {
+                    this.unlockAchievement('speed_demon');
+                }
+            }
+
+            // Todos os power-ups
+            var allUsed = true;
+            for (var powerUp in this.powerUpsUsed) {
+                if (!this.powerUpsUsed[powerUp]) {
+                    allUsed = false;
+                    break;
+                }
+            }
+            if (allUsed) {
+                this.unlockAchievement('power_user');
+            }
+
+            // Nível 5
+            if (this.level >= 5) {
+                this.unlockAchievement('level_5');
+            }
+
+            // Pontuação alta
+            if (this.score >= 5000) {
+                this.unlockAchievement('high_score');
+            }
+
+            // Resistência - jogar por 10 minutos
+            var totalTime = (Date.now() - this.gameStartTime) / 1000 / 60;
+            if (totalTime >= 10) {
+                this.unlockAchievement('endurance');
+            }
+        };
+
+        ComboGame.prototype.unlockAchievement = function(id) {
+            for (var i = 0; i < this.achievements.length; i++) {
+                if (this.achievements[i].id === id && !this.achievements[i].unlocked) {
+                    this.achievements[i].unlocked = true;
+                    this.showMessage('🏅 CONQUISTA DESBLOQUEADA: ' + this.achievements[i].name + '!', 'special', true);
+                    this.renderAchievements();
+                    localStorage.setItem('achievements', JSON.stringify(this.achievements));
+                    break;
+                }
+            }
+        };
+
+        ComboGame.prototype.renderAchievements = function() {
+            this.elements.achievementList.innerHTML = '';
+            
+            for (var i = 0; i < this.achievements.length; i++) {
+                var achievement = this.achievements[i];
+                var div = document.createElement('div');
+                div.className = 'achievement' + (achievement.unlocked ? ' unlocked' : '');
+                
+                div.innerHTML = 
+                    '<div class="achievement-icon">' + achievement.icon + '</div>' +
+                    '<div class="achievement-text">' +
+                        '<strong>' + achievement.name + '</strong><br>' +
+                        '<small>' + achievement.desc + '</small>' +
+                    '</div>';
+                
+                this.elements.achievementList.appendChild(div);
+            }
+        };
+
+        ComboGame.prototype.showMessage = function(text, type, animate) {
+            this.elements.message.textContent = text;
+            this.elements.message.className = 'message';
+            
+            if (type && this.elements.message.classList) {
+                this.elements.message.classList.add(type);
+            }
+            
+            if (animate && this.elements.message.classList) {
+                this.elements.message.classList.add('animate');
+                var self = this;
+                setTimeout(function() {
+                    if (self.elements.message.classList) {
+                        self.elements.message.classList.remove('animate');
+                    }
+                }, ANIMATION_DELAY);
+            }
+        };
+
+        ComboGame.prototype.clearMessage = function() {
+            this.elements.message.textContent = '';
+            this.elements.message.className = 'message';
+        };
+
+        ComboGame.prototype.disableGame = function() {
+            var container = document.querySelector('.container');
+            if (container && container.classList) {
+                container.classList.add('game-disabled');
+            }
+        };
+
+        ComboGame.prototype.enableGame = function() {
+            this.isProcessing = false;
+            var container = document.querySelector('.container');
+            if (container && container.classList) {
+                container.classList.remove('game-disabled');
+            }
+            this.updateCellStates();
+        };
+
+        ComboGame.prototype.resetGame = function() {
+            if (this.isProcessing) return;
+            
+            this.stopTimer();
+            this.score = 0;
+            this.combos = 0;
+            this.level = 1;
+            this.multiplier = 1;
+            this.selected = [];
+            this.isProcessing = false;
+            this.isPaused = false;
+            this.doublePointsActive = false;
+            this.consecutiveSuccesses = 0;
+            this.levelErrors = 0;
+            this.gameStartTime = Date.now();
+            this.levelStartTime = Date.now();
+            
+            this.powerUps = {
+                hint: 3,
+                shuffle: 2,
+                double: 1,
+                extra: 1
+            };
+            
+            this.powerUpsUsed = {
+                hint: false,
+                shuffle: false,
+                double: false,
+                extra: false
+            };
+            
+            this.elements.pauseButton.textContent = '⏸️ Pausar';
+            
+            this.updateLevel();
+            this.initGrid();
+            this.renderGrid();
+            this.updateUI();
+            this.clearMessage();
+        };
+
+        function startGame() {
             new ComboGame();
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startGame);
+        } else {
+            startGame();
+        }
     </script>
 </body>
 </html>
