@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Jogo de Combo - Match 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .status-panel {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 1.4em;
+            font-weight: bold;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message.animate {
+            animation: pulse 1.5s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .grid-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .cell:hover:not(.selected):not(:disabled) {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .cell.selected {
+            background: #ffd700;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            animation: selectedPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes selectedPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); }
+        }
+
+        .cell:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .controls {
+            text-align: center;
+        }
+
+        .selected-info {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .reset-button {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .reset-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .instructions ul {
+            list-style: none;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .instructions li::before {
+            content: "•";
+            color: #ffd700;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .cell {
+                font-size: 1.5em;
+            }
+            
+            .game-grid {
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 Jogo de Combo</h1>
+            <p>Selecione 3 figuras iguais para fazer combo!</p>
+        </div>
+
+        <div class="status-panel">
+            <div class="score-container">
+                <div>
+                    <span>🏆</span> Pontos: <span id="score">0</span>
+                </div>
+                <div>
+                    <span>⚡</span> Combos: <span id="combos">0</span>
+                </div>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+
+        <div class="grid-container">
+            <div id="game-grid" class="game-grid"></div>
+        </div>
+
+        <div class="controls">
+            <div class="selected-info">
+                Selecionadas: <span id="selected-count">0</span>/3
+                <span id="selected-figures"></span>
+            </div>
+            
+            <button id="reset-button" class="reset-button">
+                🔄 Novo Jogo
+            </button>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Como Jogar:</h3>
+            <ul>
+                <li>Clique em 3 células com a mesma figura</li>
+                <li>Se as 3 figuras forem iguais, você faz um combo!</li>
+                <li>Cada combo vale 100 pontos</li>
+                <li>Novas figuras aparecem após cada combo bem-sucedido</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class ComboGame {
+            constructor() {
+                this.figures = ['🍎', '🍌', '🍊', '🍇', '🍓', '🥝', '🍑', '🥭'];
+                this.gridSize = 36;
+                this.grid = [];
+                this.selected = [];
+                this.score = 0;
+                this.combos = 0;
+                
+                this.scoreElement = document.getElementById('score');
+                this.combosElement = document.getElementById('combos');
+                this.messageElement = document.getElementById('message');
+                this.gridElement = document.getElementById('game-grid');
+                this.selectedCountElement = document.getElementById('selected-count');
+                this.selectedFiguresElement = document.getElementById('selected-figures');
+                this.resetButton = document.getElementById('reset-button');
+                
+                this.init();
+            }
+            
+            init() {
+                this.initializeGrid();
+                this.renderGrid();
+                this.resetButton.addEventListener('click', () => {
+                    this.resetGame();
+                });
+            }
+            
+            initializeGrid() {
+                this.grid = [];
+                for (let i = 0; i < this.gridSize; i++) {
+                    this.grid.push({
+                        id: i,
+                        figure: this.figures[Math.floor(Math.random() * this.figures.length)],
+                        selected: false
+                    });
+                }
+            }
+            
+            renderGrid() {
+                this.gridElement.innerHTML = '';
+                this.grid.forEach((cell) => {
+                    const button = document.createElement('button');
+                    button.className = 'cell ' + (cell.selected ? 'selected' : '');
+                    button.textContent = cell.figure;
+                    button.onclick = () => {
+                        this.handleCellClick(cell.id);
+                    };
+                    button.disabled = this.selected.length >= 3 && !cell.selected;
+                    this.gridElement.appendChild(button);
+                });
+            }
+            
+            handleCellClick(id) {
+                var self = this;
+                var cell = this.grid.find(function(c) { return c.id === id; });
+                if (!cell || cell.selected) return;
+                
+                cell.selected = true;
+                this.selected.push(cell);
+                
+                this.updateSelectedInfo();
+                this.renderGrid();
+                
+                if (this.selected.length === 3) {
+                    setTimeout(function() {
+                        self.checkCombo();
+                    }, 100);
+                } else {
+                    this.showMessage('Selecionadas: ' + this.selected.length + '/3');
+                }
+            }
+            
+            checkCombo() {
+                var first = this.selected[0];
+                var second = this.selected[1]; 
+                var third = this.selected[2];
+                
+                if (first.figure === second.figure && second.figure === third.figure) {
+                    // Combo bem-sucedido!
+                    var points = 100;
+                    this.score += points;
+                    this.combos++;
+                    this.updateScore();
+                    this.showMessage('🎉 COMBO! +' + points + ' pontos!', true);
+                    
+                    var self = this;
+                    setTimeout(function() {
+                        self.selected.forEach(function(selectedCell) {
+                            var gridCell = self.grid.find(function(c) { return c.id === selectedCell.id; });
+                            gridCell.figure = self.figures[Math.floor(Math.random() * self.figures.length)];
+                            gridCell.selected = false;
+                        });
+                        self.selected = [];
+                        self.renderGrid();
+                        self.updateSelectedInfo();
+                        self.clearMessage();
+                    }, 1500);
+                } else {
+                    // Combo falhou
+                    this.showMessage('❌ Não combinou! Tente novamente.', true);
+                    var self = this;
+                    setTimeout(function() {
+                        self.grid.forEach(function(cell) { cell.selected = false; });
+                        self.selected = [];
+                        self.renderGrid();
+                        self.updateSelectedInfo();
+                        self.clearMessage();
+                    }, 1500);
+                }
+            }
+            
+            updateScore() {
+                this.scoreElement.textContent = this.score;
+                this.combosElement.textContent = this.combos;
+            }
+            
+            updateSelectedInfo() {
+                this.selectedCountElement.textContent = this.selected.length;
+                this.selectedFiguresElement.textContent = this.selected.length > 0 
+                    ? ' ' + this.selected.map(function(s) { return s.figure; }).join(' ') 
+                    : '';
+            }
+            
+            showMessage(text, animate) {
+                if (animate === undefined) animate = false;
+                this.messageElement.textContent = text;
+                if (animate) {
+                    this.messageElement.classList.add('animate');
+                    var self = this;
+                    setTimeout(function() {
+                        self.messageElement.classList.remove('animate');
+                    }, 1500);
+                }
+            }
+            
+            clearMessage() {
+                this.messageElement.textContent = '';
+            }
+            
+            resetGame() {
+                this.score = 0;
+                this.combos = 0;
+                this.selected = [];
+                this.updateScore();
+                this.updateSelectedInfo();
+                this.clearMessage();
+                this.initializeGrid();
+                this.renderGrid();
+            }
+        }
+        
+        // Iniciar o jogo quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            new ComboGame();
+        });
+    </script>
+</body>
+</html>
