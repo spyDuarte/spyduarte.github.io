@@ -1311,6 +1311,14 @@
                     if (value <= this.balance) {
                         this.elements.betInput.value = value;
                         this.playSound('chip');
+                        
+                        // Animate chip selection
+                        if (this.settings.animationsEnabled) {
+                            e.target.style.transform = 'scale(1.3) rotate(360deg)';
+                            setTimeout(() => {
+                                e.target.style.transform = '';
+                            }, 300);
+                        }
                     }
                 }
 
