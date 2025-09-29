@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Curso! - OpenEvidence Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: var(--dark);
+        }
+
+        /* CONFETTI ANIMATION */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            position: absolute;
+            animation: confetti-fall 3s linear infinite;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* SUCCESS SECTION */
+        .success-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .success-card {
+            max-width: 800px;
+            background: var(--white);
+            border-radius: 32px;
+            padding: 4rem;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-card h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .success-card .subtitle {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #dbeafe 0%, #d1fae5 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .highlight-box p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .email-sent {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            background: #fef3c7;
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .email-sent-icon {
+            font-size: 2rem;
+        }
+
+        .email-sent-text {
+            text-align: left;
+        }
+
+        .email-sent-text strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: #92400e;
+        }
+
+        .email-sent-text span {
+            color: #92400e;
+            font-size: 0.95rem;
+        }
+
+        /* NEXT STEPS */
+        .next-steps {
+            margin: 3rem 0;
+        }
+
+        .next-steps h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            gap: 1.5rem;
+            text-align: left;
+            margin-bottom: 3rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* CTA BUTTONS */
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* RESOURCES */
+        .resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .resource-card {
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .resource-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .resource-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resource-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        /* SUPPORT */
+        .support-box {
+            background: #f0fdf4;
+            border: 2px solid var(--secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        .support-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #065f46;
+        }
+
+        .support-box p {
+            color: #065f46;
+            margin-bottom: 1.5rem;
+        }
+
+        .support-contacts {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .support-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        /* SOCIAL PROOF */
+        .social-proof {
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .social-proof h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-proof p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .success-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .success-card h1 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .resources {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-card">
+            <!-- SUCCESS ICON -->
+            <div class="success-icon">🎉</div>
+
+            <!-- MAIN MESSAGE -->
+            <h1>Parabéns! Bem-vindo ao Curso! 🚀</h1>
+            <p class="subtitle">Sua inscrição foi confirmada com sucesso. Você agora faz parte de uma comunidade exclusiva de profissionais de saúde que estão revolucionando sua prática médica com IA.</p>
+
+            <!-- EMAIL CONFIRMATION -->
+            <div class="email-sent">
+                <span class="email-sent-icon">📧</span>
+                <div class="email-sent-text">
+                    <strong>Enviamos um email de confirmação!</strong>
+                    <span>Verifique sua caixa de entrada e spam</span>
+                </div>
+            </div>
+
+            <!-- HIGHLIGHT BOX -->
+            <div class="highlight-box">
+                <h3>🎁 Você Ganhou Acesso Imediato a:</h3>
+                <p>
+                    ✅ 10 módulos completos (25 horas)<br>
+                    ✅ 500+ perguntas clínicas prontas<br>
+                    ✅ Grupo VIP exclusivo<br>
+                    ✅ Webinars mensais<br>
+                    ✅ Certificado reconhecido<br>
+                    ✅ Suporte prioritário
+                </p>
+            </div>
+
+            <!-- NEXT STEPS -->
+            <div class="next-steps">
+                <h2>📋 Seus Próximos Passos</h2>
+                
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Acesse Agora a Área do Aluno</h3>
+                            <p>Suas credenciais foram enviadas por email. Faça login e comece imediatamente!</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Assista à Aula de Boas-Vindas</h3>
+                            <p>Uma introdução rápida sobre como aproveitar 100% do curso e evitar erros comuns.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Entre no Grupo VIP</h3>
+                            <p>Junte-se à comunidade exclusiva de alunos para networking e suporte.</p>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Baixe os Materiais Extras</h3>
+                            <p>PDFs, cheat sheets e biblioteca de perguntas prontas para usar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA BUTTONS -->
+            <div class="cta-buttons">
+                <a href="area-aluno.html" class="btn btn-primary">
+                    🚀 Acessar Área do Aluno
+                </a>
+                <a href="#" class="btn btn-secondary">
+                    👥 Entrar no Grupo VIP
+                </a>
+            </div>
+
+            <!-- QUICK ACCESS RESOURCES -->
+            <h3 style="margin: 3rem 0 1.5rem;">⚡ Acesso Rápido</h3>
+            <div class="resources">
+                <div class="resource-card">
+                    <div class="resource-icon">📚</div>
+                    <h4>Módulos</h4>
+                    <p>10 módulos completos</p>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">📄</div>
+                    <h4>Downloads</h4>
+                    <p>PDFs e materiais</p>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">🎓</div>
+                    <h4>Certificado</h4>
+                    <p>Após conclusão</p>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">💬</div>
+                    <h4>Suporte</h4>
+                    <p>Ajuda 24/7</p>
+                </div>
+            </div>
+
+            <!-- SUPPORT BOX -->
+            <div class="support-box">
+                <h3>💚 Precisa de Ajuda?</h3>
+                <p>Nossa equipe está pronta para ajudar você a começar!</p>
+                <div class="support-contacts">
+                    <div class="support-contact">
+                        <span>✉️</span>
+                        <span>contato@openevidencepro.com</span>
+                    </div>
+                    <div class="support-contact">
+                        <span>💬</span>
+                        <span>(11) 99999-9999</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOCIAL PROOF -->
+            <div class="social-proof">
+                <h3>Compartilhe sua Conquista! 🎊</h3>
+                <p>Mostre para seus colegas que você está investindo em educação de qualidade</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📷</a>
+                    <a href="#" class="social-link">💼</a>
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Confetti animation
+        function createConfetti() {
+            const colors = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+            const confettiCount = 50;
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+
+                // Remove after animation
+                setTimeout(() => confetti.remove(), 6000);
+            }
+        }
+
+        // Trigger confetti on load
+        window.addEventListener('load', () => {
+            createConfetti();
+            setTimeout(createConfetti, 3000);
+        });
+
+        // Analytics tracking (add your code here)
+        // Example: gtag('event', 'purchase', { value: 497, currency: 'BRL' });
+
+        // Social share functionality
+        document.querySelectorAll('.social-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('Função de compartilhamento em desenvolvimento!');
+            });
+        });
+    </script>
+</body>
+</html>

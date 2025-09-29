@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - OpenEvidence Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --white: #ffffff;
+            --gradient: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: var(--dark);
+        }
+
+        /* HEADER */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1.2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        /* HERO */
+        .contact-hero {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 100px 2rem 80px;
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* CONTENT */
+        .contact-content {
+            max-width: 1200px;
+            margin: -50px auto 0;
+            padding: 0 2rem 5rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+        }
+
+        /* INFO CARDS */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .info-card-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .info-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .info-card a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .info-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* FORM */
+        .contact-form-container {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .contact-form-container h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-form-container > p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .submit-btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
+        }
+
+        /* FAQ SECTION */
+        .faq-section {
+            max-width: 900px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s;
+            padding: 0 1.5rem;
+            color: var(--gray);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            padding: 3rem 2rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .contact-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form-container {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="curso-openevidence-premium.html" class="logo">
+                <div class="logo-icon">🩺</div>
+                <span>OpenEvidence Pro</span>
+            </a>
+            <a href="curso-openevidence-premium.html" class="btn btn-primary">Voltar ao Site</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="contact-hero">
+        <h1>Entre em Contato</h1>
+        <p>Estamos aqui para ajudar! Envie sua mensagem e responderemos em até 24 horas.</p>
+    </section>
+
+    <!-- CONTENT -->
+    <div class="contact-content">
+        <div class="contact-grid">
+            <!-- INFO -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-card-icon">✉️</div>
+                    <h3>Email</h3>
+                    <p>Responderemos em até 24 horas úteis</p>
+                    <a href="mailto:contato@openevidencepro.com">contato@openevidencepro.com</a>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">💬</div>
+                    <h3>WhatsApp</h3>
+                    <p>Atendimento de segunda a sexta, 9h às 18h</p>
+                    <a href="https://wa.me/5511999999999">+55 (11) 99999-9999</a>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">⏰</div>
+                    <h3>Horário de Atendimento</h3>
+                    <p><strong>Segunda a Sexta:</strong> 9h às 18h<br>
+                    <strong>Sábado:</strong> 9h às 13h<br>
+                    <strong>Domingo:</strong> Fechado</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">❓</div>
+                    <h3>Central de Ajuda</h3>
+                    <p>Consulte nossa base de conhecimento com respostas rápidas</p>
+                    <a href="#faq">Ver perguntas frequentes →</a>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <div class="contact-form-container">
+                <h2>Envie sua Mensagem</h2>
+                <p>Preencha o formulário abaixo e entraremos em contato</p>
+
+                <form id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nome Completo *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Telefone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Assunto *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Selecione...</option>
+                                <option value="duvida-curso">Dúvida sobre o curso</option>
+                                <option value="suporte-tecnico">Suporte técnico</option>
+                                <option value="pagamento">Pagamento e reembolso</option>
+                                <option value="certificado">Certificado</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Mensagem *</label>
+                        <textarea id="message" name="message" required placeholder="Descreva sua dúvida ou solicitação..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">📧 Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+        <h2>Perguntas Frequentes</h2>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Como faço para acessar o curso após a compra?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Após a confirmação do pagamento, você receberá um email com seus dados de acesso (login e senha). O acesso é imediato para pagamentos via PIX e cartão de crédito. Para boleto, aguarde a compensação (até 3 dias úteis).</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Qual o prazo para solicitar reembolso?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Você tem 30 dias corridos a partir da data da compra para solicitar o reembolso. Basta enviar um email para contato@openevidencepro.com e processaremos em até 7 dias úteis.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Posso assistir as aulas pelo celular?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Sim! O curso é 100% responsivo e pode ser acessado de qualquer dispositivo: computador, tablet ou smartphone.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Como funciona o suporte aos alunos?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Oferecemos suporte por email (respondemos em até 24h), grupo VIP exclusivo no WhatsApp e webinars mensais ao vivo para tira-dúvidas.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>Recebo certificado ao concluir o curso?</span>
+                <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+                <p>Sim! Após completar todos os módulos e o projeto final, você receberá um certificado digital com 25 horas de carga horária, válido para educação continuada.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 OpenEvidence Pro. Todos os direitos reservados.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="termos.html" style="color: white;">Termos de Uso</a> | <a href="privacidade.html" style="color: white;">Política de Privacidade</a></p>
+    </footer>
+
+    <script>
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const btn = this.querySelector('.submit-btn');
+            btn.innerHTML = '⏳ Enviando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '✅ Mensagem Enviada!';
+                btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                
+                setTimeout(() => {
+                    this.reset();
+                    btn.innerHTML = '📧 Enviar Mensagem';
+                    btn.style.background = 'linear-gradient(135deg, #2563eb 0%, #10b981 100%)';
+                    btn.disabled = false;
+                    alert('Mensagem enviada com sucesso! Responderemos em breve.');
+                }, 2000);
+            }, 1500);
+        });
+
+        // FAQ accordion
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
