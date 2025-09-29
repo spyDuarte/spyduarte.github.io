@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Domine a OpenEvidence e revolucione sua prática médica com decisões baseadas em evidências científicas. Curso completo para médicos, estudantes e profissionais de saúde.">
-    <title>Curso OpenEvidence - Medicina Baseada em Evidências com IA</title>
+    <title>OpenEvidence Pro - Medicina Baseada em Evidências com IA</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -14,101 +19,190 @@
         }
 
         :root {
-            --primary-color: #0066cc;
-            --secondary-color: #00a86b;
-            --dark-blue: #003d82;
-            --light-blue: #e6f2ff;
-            --text-dark: #1a1a1a;
-            --text-light: #666666;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --dark-light: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
             --white: #ffffff;
-            --gradient: linear-gradient(135deg, #0066cc 0%, #00a86b 100%);
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #2563eb 0%, #10b981 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 50px rgba(0,0,0,0.2);
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
             overflow-x: hidden;
+            background: var(--white);
+        }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .display-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+        }
+
+        /* UTILITIES */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .text-gradient {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         /* HEADER */
         header {
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             position: fixed;
-            width: 100%;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         header.scrolled {
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.98);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 5%;
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 1.2rem 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.75rem;
             font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .logo-icon {
-            font-size: 2rem;
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-md);
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
             align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-dark);
+            color: var(--dark);
             font-weight: 500;
+            font-size: 0.95rem;
             transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-2);
+            transition: width 0.3s;
         }
 
         .nav-links a:hover {
-            color: var(--primary-color);
+            color: var(--primary);
         }
 
-        .cta-button {
-            background: var(--gradient);
-            color: var(--white);
-            padding: 0.8rem 2rem;
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
             border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
             text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
         }
 
-        .cta-button:hover {
+        .btn-primary {
+            background: var(--gradient-2);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 102, 204, 0.3);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .btn-secondary:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .btn-lg {
+            padding: 1.25rem 3rem;
+            font-size: 1.1rem;
         }
 
         /* HERO SECTION */
         .hero {
-            background: var(--gradient);
+            background: var(--dark);
             color: var(--white);
-            padding: 150px 5% 100px;
-            text-align: center;
+            padding: 180px 0 120px;
             position: relative;
             overflow: hidden;
         }
@@ -120,288 +214,556 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(37, 99, 235, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
         }
 
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 4rem;
+            align-items: center;
             position: relative;
             z-index: 1;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
+        .hero-content h1 {
+            font-size: 4rem;
+            line-height: 1.1;
             margin-bottom: 1.5rem;
-            line-height: 1.2;
-            animation: fadeInUp 1s ease;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            animation: fadeInUp 0.8s ease;
         }
 
-        .hero-subtitle {
-            font-size: 1.4rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
-            animation: fadeInUp 1s ease 0.2s backwards;
+        .hero-content .subtitle {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
         }
 
-        .hero-stats {
+        .hero-buttons {
             display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 3rem;
+            gap: 1rem;
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: fadeIn 1s ease 0.6s backwards;
+        }
+
+        .floating-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            margin-top: 5rem;
+            animation: fadeInUp 0.8s ease 0.8s backwards;
         }
 
         .stat-item {
-            animation: fadeInUp 1s ease 0.4s backwards;
+            text-align: center;
         }
 
         .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
+            font-size: 3.5rem;
+            font-weight: 900;
             display: block;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
         }
 
         .stat-label {
             font-size: 1rem;
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* TRUST BADGES */
+        .trust-section {
+            background: var(--white);
+            padding: 3rem 0;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .trust-badge-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--secondary);
+        }
+
+        /* SECTION STYLES */
+        section {
+            padding: 120px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 5rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: var(--white);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            color: var(--dark);
+        }
+
+        .section-description {
+            font-size: 1.25rem;
+            color: var(--gray);
+            line-height: 1.8;
         }
 
         /* PROBLEMA/SOLUÇÃO */
         .problem-solution {
-            padding: 80px 5%;
-            background: var(--white);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            color: var(--dark-blue);
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--text-light);
-            margin-bottom: 4rem;
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
         }
 
         .problem-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
 
         .problem-card {
-            background: #fff5f5;
-            padding: 2rem;
-            border-radius: 15px;
-            border-left: 4px solid #ff4444;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 2px solid #fee2e2;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .problem-card h3 {
-            color: #cc0000;
-            margin-bottom: 1rem;
+        .problem-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .problem-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-radius: 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .solution-card {
-            background: var(--light-blue);
-            padding: 3rem;
-            border-radius: 20px;
-            border-left: 6px solid var(--primary-color);
-            margin-top: 2rem;
-        }
-
-        .solution-card h3 {
-            color: var(--primary-color);
+            justify-content: center;
             font-size: 2rem;
             margin-bottom: 1.5rem;
         }
 
-        .solution-features {
+        .problem-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #991b1b;
+        }
+
+        .problem-card p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .solution-box {
+            background: var(--gradient-2);
+            border-radius: 32px;
+            padding: 5rem 4rem;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .solution-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .solution-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .solution-box h3 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .solution-box p {
+            font-size: 1.25rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+            line-height: 1.8;
+        }
+
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            gap: 2rem;
         }
 
         .feature-item {
             display: flex;
-            align-items: start;
+            align-items: flex-start;
             gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .feature-icon {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
+            width: 28px;
+            height: 28px;
             flex-shrink: 0;
+            font-size: 1.5rem;
         }
 
-        /* MÓDULOS DO CURSO */
+        /* MÓDULOS */
         .modules {
-            padding: 80px 5%;
-            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
+            background: var(--white);
         }
 
         .modules-grid {
             display: grid;
             gap: 2rem;
-            margin-top: 3rem;
         }
 
         .module-card {
             background: var(--white);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
+            border-radius: 24px;
+            padding: 3rem;
+            border: 1px solid var(--gray-light);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.4s;
         }
 
         .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.2);
-            border-color: var(--primary-color);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+
+        .module-card:hover::before {
+            opacity: 0.03;
         }
 
         .module-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         .module-number {
-            background: var(--gradient);
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
             color: var(--white);
-            width: 50px;
-            height: 50px;
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-duration {
+            display: inline-block;
+            background: var(--gray-light);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--dark);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-title {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .module-description {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .module-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-topics {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .module-topics li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+
+        .module-topics li::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-2);
+            color: var(--white);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .module-duration {
-            background: var(--light-blue);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .module-title {
-            font-size: 1.8rem;
-            color: var(--dark-blue);
-            margin-bottom: 1rem;
-        }
-
-        .module-topics {
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .module-topics li {
-            padding: 0.5rem 0;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .module-topics li::before {
-            content: '✓';
-            color: var(--secondary-color);
-            font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 0.875rem;
+            flex-shrink: 0;
         }
 
         /* BENEFÍCIOS */
         .benefits {
-            padding: 80px 5%;
-            background: var(--dark-blue);
+            background: var(--dark);
             color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -10%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
         .benefits-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            position: relative;
+            z-index: 1;
         }
 
         .benefit-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.3s, background 0.3s;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 3rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: var(--gradient-2);
+            opacity: 0.1;
+            border-radius: 50%;
+            transition: all 0.4s;
         }
 
         .benefit-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .benefit-card:hover::before {
+            top: -20%;
+            right: -20%;
+            opacity: 0.15;
         }
 
         .benefit-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 1;
         }
 
         .benefit-card h3 {
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .benefit-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
         }
 
         /* DEPOIMENTOS */
         .testimonials {
-            padding: 80px 5%;
-            background: var(--white);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
         }
 
         .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2.5rem;
         }
 
         .testimonial-card {
-            background: var(--light-blue);
-            padding: 2.5rem;
-            border-radius: 20px;
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--gray-light);
             position: relative;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
         }
 
         .testimonial-card::before {
             content: '"';
-            font-size: 5rem;
-            color: var(--primary-color);
-            opacity: 0.3;
             position: absolute;
-            top: 10px;
-            left: 20px;
+            top: 2rem;
+            left: 2rem;
+            font-size: 6rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            opacity: 0.1;
+            line-height: 1;
         }
 
         .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--dark);
+            margin-bottom: 2rem;
             position: relative;
             z-index: 1;
         }
@@ -409,200 +771,341 @@
         .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
         }
 
         .author-avatar {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: var(--gradient);
+            background: var(--gradient-2);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--white);
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.75rem;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+            flex-shrink: 0;
         }
 
         .author-info h4 {
-            color: var(--dark-blue);
-            margin-bottom: 0.2rem;
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
         }
 
         .author-info p {
-            color: var(--text-light);
-            font-size: 0.9rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        .rating {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .star {
+            color: #fbbf24;
+            font-size: 1.1rem;
         }
 
         /* PREÇOS */
         .pricing {
-            padding: 80px 5%;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e6f2ff 100%);
+            background: var(--gradient-2);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 1000px;
+            height: 1000px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
 
         .pricing-container {
-            max-width: 900px;
-            margin: 3rem auto 0;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .pricing-card {
             background: var(--white);
-            border-radius: 30px;
-            padding: 3rem;
-            box-shadow: 0 20px 60px rgba(0, 102, 204, 0.2);
+            border-radius: 32px;
+            padding: 4rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
         }
 
         .pricing-badge {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: var(--gradient);
+            top: 2rem;
+            right: 2rem;
+            background: var(--gradient-3);
             color: var(--white);
-            padding: 0.5rem 1.5rem;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9rem;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-lg);
+            animation: pulse-scale 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-scale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .pricing-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 2px solid var(--gray-light);
         }
 
         .pricing-title {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .price-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 2rem 0;
+        }
+
+        .price-currency {
             font-size: 2rem;
-            color: var(--dark-blue);
-            margin-bottom: 1rem;
+            color: var(--gray);
+            font-weight: 600;
         }
 
         .price-amount {
-            font-size: 4rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin: 1rem 0;
-        }
-
-        .price-amount span {
-            font-size: 2rem;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
         }
 
         .price-installment {
-            color: var(--text-light);
-            font-size: 1.1rem;
+            font-size: 1.25rem;
+            color: var(--gray);
+            margin-top: 1rem;
         }
 
         .pricing-features {
             list-style: none;
-            margin: 2rem 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
         }
 
         .pricing-features li {
-            padding: 1rem;
             display: flex;
             align-items: center;
             gap: 1rem;
-            border-bottom: 1px solid #f0f0f0;
+            color: var(--dark);
+            font-size: 1.05rem;
         }
 
         .pricing-features li::before {
             content: '✓';
-            color: var(--secondary-color);
-            font-size: 1.5rem;
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-2);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
-        .guarantee-badge {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 1.5rem;
-            border-radius: 15px;
+        .pricing-cta {
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
-        .guarantee-badge strong {
-            color: #856404;
-            font-size: 1.2rem;
+        .guarantee-box {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .guarantee-box strong {
+            font-size: 1.5rem;
+            color: #92400e;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+
+        .guarantee-box p {
+            color: #92400e;
+            font-size: 1.05rem;
         }
 
         /* BÔNUS */
         .bonus {
-            padding: 80px 5%;
             background: var(--white);
         }
 
         .bonus-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
         }
 
         .bonus-card {
-            background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 2px solid #ff9900;
+            background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%);
+            border-radius: 24px;
+            padding: 3rem;
+            border: 2px solid #fb923c;
             position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .bonus-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
         }
 
         .bonus-badge {
             position: absolute;
-            top: -15px;
-            right: 20px;
-            background: #ff9900;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--gradient-3);
             color: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.9rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-transform: uppercase;
         }
 
         .bonus-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .bonus-card h3 {
+            font-size: 1.75rem;
+            color: #7c2d12;
             margin-bottom: 1rem;
+        }
+
+        .bonus-card p {
+            color: #92400e;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .bonus-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ea580c;
+        }
+
+        .total-bonus {
+            background: var(--gradient-2);
+            color: var(--white);
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .total-bonus h3 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .total-bonus p {
+            font-size: 1.5rem;
+            opacity: 0.95;
         }
 
         /* FAQ */
         .faq {
-            padding: 80px 5%;
-            background: var(--light-blue);
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
         }
 
         .faq-container {
             max-width: 900px;
-            margin: 3rem auto 0;
+            margin: 0 auto;
         }
 
         .faq-item {
             background: var(--white);
-            margin-bottom: 1rem;
-            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--gray-light);
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            box-shadow: var(--shadow-md);
         }
 
         .faq-question {
-            padding: 1.5rem;
+            padding: 2rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 600;
-            color: var(--dark-blue);
-            transition: background 0.3s;
+            font-size: 1.1rem;
+            color: var(--dark);
+            transition: all 0.3s;
         }
 
         .faq-question:hover {
-            background: var(--light-blue);
+            color: var(--primary);
         }
 
         .faq-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-2);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
+            font-weight: 400;
             transition: transform 0.3s;
+            flex-shrink: 0;
         }
 
         .faq-item.active .faq-icon {
@@ -612,132 +1115,211 @@
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            padding: 0 1.5rem;
-            color: var(--text-light);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s;
+            padding: 0 2rem;
+            color: var(--gray);
+            font-size: 1.05rem;
+            line-height: 1.8;
         }
 
         .faq-item.active .faq-answer {
-            max-height: 500px;
-            padding: 0 1.5rem 1.5rem;
+            max-height: 600px;
+            padding: 0 2rem 2rem;
         }
 
         /* CTA FINAL */
         .final-cta {
-            padding: 100px 5%;
-            background: var(--gradient);
+            background: var(--dark);
             color: var(--white);
+            padding: 120px 0;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .final-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(16, 185, 129, 0.2) 0%, transparent 50%);
+        }
+
+        .final-cta-content {
+            position: relative;
+            z-index: 1;
         }
 
         .final-cta h2 {
-            font-size: 3rem;
+            font-size: 4rem;
             margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
         }
 
         .final-cta p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-buttons {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 3rem;
         }
 
-        .cta-primary {
-            background: var(--white);
-            color: var(--primary-color);
-            padding: 1.2rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: inline-block;
+        .trust-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            opacity: 0.9;
         }
 
-        .cta-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255,255,255,0.3);
-        }
-
-        .cta-secondary {
-            background: transparent;
-            color: var(--white);
-            padding: 1.2rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border: 2px solid var(--white);
-            transition: all 0.3s;
-            display: inline-block;
-        }
-
-        .cta-secondary:hover {
-            background: var(--white);
-            color: var(--primary-color);
+        .trust-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.05rem;
         }
 
         /* FOOTER */
         footer {
-            background: var(--dark-blue);
-            color: var(--white);
-            padding: 3rem 5%;
-            text-align: center;
+            background: var(--dark-light);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 4rem 0 2rem;
         }
 
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand {
+            max-width: 350px;
+        }
+
+        .footer-brand .logo {
+            margin-bottom: 1.5rem;
+            color: var(--white);
+        }
+
+        .footer-brand p {
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h4 {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
         }
 
         .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
         }
 
         .footer-links a {
-            color: var(--white);
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .footer-links a:hover {
-            color: var(--secondary-color);
+            color: var(--white);
         }
 
         .social-links {
             display: flex;
+            gap: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .social-links a {
             color: var(--white);
-            font-size: 1.5rem;
-            transition: transform 0.3s, color 0.3s;
-            display: inline-block;
+            text-decoration: none;
+            transition: all 0.3s;
         }
 
-        .social-links a:hover {
+        .social-link:hover {
+            background: var(--primary);
             transform: translateY(-3px);
-            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--white);
+        }
+
+        /* FLOATING CTA */
+        .floating-cta {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            animation: float-cta 3s ease-in-out infinite;
+        }
+
+        @keyframes float-cta {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-cta .btn {
+            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
         }
 
         /* ANIMAÇÕES */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -745,83 +1327,117 @@
             }
         }
 
+        /* SCROLL PROGRESS */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: var(--gradient-2);
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
         /* RESPONSIVO */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-visual {
+                display: none;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-
-            .hero-stats {
-                gap: 1.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
             .nav-links {
                 display: none;
             }
 
-            .module-title {
-                font-size: 1.4rem;
+            .hero {
+                padding: 140px 0 80px;
             }
 
-            .price-amount {
-                font-size: 3rem;
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            section {
+                padding: 80px 0;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .module-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .module-title {
+                font-size: 1.5rem;
             }
 
             .final-cta h2 {
-                font-size: 2rem;
+                font-size: 2.5rem;
+            }
+
+            .final-cta p {
+                font-size: 1.2rem;
             }
 
             .cta-buttons {
                 flex-direction: column;
             }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .floating-cta {
+                bottom: 1rem;
+                right: 1rem;
+            }
         }
 
-        /* SCROLL SUAVE */
         html {
             scroll-behavior: smooth;
-        }
-
-        /* FLOATING CTA BUTTON */
-        .floating-cta {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
-        .floating-cta .cta-button {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.4);
         }
     </style>
 </head>
 <body>
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- HEADER -->
     <header id="header">
-        <nav>
-            <div class="logo">
-                <span class="logo-icon">🩺</span>
+        <nav class="container">
+            <a href="#" class="logo">
+                <div class="logo-icon">🩺</div>
                 <span>OpenEvidence Pro</span>
-            </div>
+            </a>
             <ul class="nav-links">
                 <li><a href="#modulos">Módulos</a></li>
                 <li><a href="#beneficios">Benefícios</a></li>
@@ -829,18 +1445,38 @@
                 <li><a href="#preco">Investimento</a></li>
                 <li><a href="#faq">FAQ</a></li>
             </ul>
-            <a href="#inscricao" class="cta-button">Inscreva-se Agora</a>
+            <a href="#inscricao" class="btn btn-primary">Inscreva-se Agora</a>
         </nav>
     </header>
 
     <!-- HERO SECTION -->
     <section class="hero">
-        <div class="hero-content">
-            <h1>Domine a OpenEvidence e Revolucione Sua Prática Médica</h1>
-            <p class="hero-subtitle">O curso completo para médicos, estudantes e profissionais de saúde que querem tomar decisões clínicas baseadas em evidências científicas sólidas, usando Inteligência Artificial</p>
-            <a href="#inscricao" class="cta-button" style="font-size: 1.2rem; padding: 1rem 3rem;">Quero Transformar Minha Prática Médica</a>
-            
-            <div class="hero-stats">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <h1 class="display-title">Domine a OpenEvidence e Transforme Sua Prática Médica</h1>
+                    <p class="subtitle">O curso completo para médicos, estudantes e profissionais de saúde que querem tomar decisões clínicas baseadas em evidências científicas sólidas, usando o poder da Inteligência Artificial</p>
+                    <div class="hero-buttons">
+                        <a href="#inscricao" class="btn btn-primary btn-lg">🚀 Começar Agora</a>
+                        <a href="#modulos" class="btn btn-secondary btn-lg">📚 Ver Conteúdo</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-card">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.5rem;">⚡ Acesso Instantâneo</h3>
+                        <p style="opacity: 0.9; margin-bottom: 1.5rem;">Mais de 50 milhões de artigos científicos na ponta dos dedos</p>
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <div style="flex: 1; height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden;">
+                                <div style="width: 95%; height: 100%; background: linear-gradient(90deg, #10b981 0%, #34d399 100%);"></div>
+                            </div>
+                            <span style="font-weight: 600;">95%</span>
+                        </div>
+                        <p style="font-size: 0.875rem; opacity: 0.8; margin-top: 0.5rem;">Taxa de precisão</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
                 <div class="stat-item">
                     <span class="stat-number">25h</span>
                     <span class="stat-label">de conteúdo prático</span>
@@ -861,71 +1497,110 @@
         </div>
     </section>
 
+    <!-- TRUST BADGES -->
+    <section class="trust-section">
+        <div class="container">
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">✓</span>
+                    <span>Acesso Vitalício</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">✓</span>
+                    <span>Certificado Reconhecido</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">✓</span>
+                    <span>Garantia de 30 Dias</span>
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-badge-icon">✓</span>
+                    <span>Suporte Completo</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- PROBLEMA/SOLUÇÃO -->
     <section class="problem-solution">
         <div class="container">
-            <h2 class="section-title">Você Enfrenta Esses Desafios?</h2>
-            <p class="section-subtitle">A realidade da prática médica moderna</p>
-            
+            <div class="section-header">
+                <span class="section-label">O Desafio</span>
+                <h2 class="section-title">Você Reconhece Esses Problemas?</h2>
+                <p class="section-description">A realidade da prática médica moderna apresenta desafios diários</p>
+            </div>
+
             <div class="problem-grid">
                 <div class="problem-card">
-                    <h3>⏰ Falta de Tempo</h3>
+                    <div class="problem-icon">⏰</div>
+                    <h3>Falta de Tempo</h3>
                     <p>Milhares de artigos publicados diariamente. Impossível acompanhar tudo enquanto atende pacientes, faz plantões e cuida da vida pessoal.</p>
                 </div>
                 <div class="problem-card">
-                    <h3>❓ Dúvidas Clínicas</h3>
-                    <p>Aquele momento de incerteza: "Qual o melhor tratamento baseado em evidências atuais?" Buscar no Google ou UpToDate leva tempo e nem sempre é preciso.</p>
+                    <div class="problem-icon">❓</div>
+                    <h3>Dúvidas Clínicas</h3>
+                    <p>Aquele momento de incerteza: "Qual o melhor tratamento baseado em evidências atuais?" Buscar informação confiável leva tempo precioso.</p>
                 </div>
                 <div class="problem-card">
-                    <h3>💸 Custos Altos</h3>
-                    <p>Assinaturas caras de UpToDate, DynaMed, BMJ Best Practice... Centenas de reais por mês que pesam no orçamento.</p>
+                    <div class="problem-icon">💸</div>
+                    <h3>Custos Elevados</h3>
+                    <p>Assinaturas caras de UpToDate, DynaMed, BMJ Best Practice... Centenas de reais mensais que pesam no orçamento.</p>
                 </div>
                 <div class="problem-card">
-                    <h3>🤖 IA Não Confiável</h3>
+                    <div class="problem-icon">🤖</div>
+                    <h3>IA Não Confiável</h3>
                     <p>ChatGPT dá respostas genéricas sem citações. Como confiar em IA para decisões que afetam vidas humanas?</p>
                 </div>
                 <div class="problem-card">
-                    <h3>📚 Informação Fragmentada</h3>
+                    <div class="problem-icon">📚</div>
+                    <h3>Informação Fragmentada</h3>
                     <p>Guidelines de várias sociedades, artigos conflitantes, opiniões divergentes. Difícil sintetizar tudo rapidamente.</p>
                 </div>
                 <div class="problem-card">
-                    <h3>⚖️ Responsabilidade Legal</h3>
+                    <div class="problem-icon">⚖️</div>
+                    <h3>Responsabilidade Legal</h3>
                     <p>Medo de errar, processos, conselho de medicina. Precisa de fontes sólidas para embasar cada decisão.</p>
                 </div>
             </div>
 
-            <div class="solution-card">
-                <h3>✨ A Solução: OpenEvidence + Este Curso</h3>
-                <p>Imagine ter acesso instantâneo a mais de 50 milhões de artigos científicos, com respostas precisas, citações verificáveis e recomendações práticas em segundos. Isso não é futuro, é AGORA.</p>
-                
-                <div class="solution-features">
-                    <div class="feature-item">
-                        <span class="feature-icon">✅</span>
-                        <div>
-                            <strong>Respostas em Segundos</strong>
-                            <p>Pergunte e receba resposta baseada em evidências instantaneamente</p>
+            <div class="solution-box">
+                <div class="solution-content">
+                    <h3>✨ A Solução: OpenEvidence + Este Curso</h3>
+                    <p>Imagine ter acesso instantâneo a mais de 50 milhões de artigos científicos, com respostas precisas, citações verificáveis e recomendações práticas em segundos. Isso não é futuro, é AGORA.</p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <span class="feature-icon">⚡</span>
+                            <div>
+                                <strong>Respostas em Segundos</strong>
+                                <p style="opacity: 0.9; margin-top: 0.25rem;">Pergunte e receba evidências instantaneamente</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📖</span>
+                            <div>
+                                <strong>Sempre com Citações</strong>
+                                <p style="opacity: 0.9; margin-top: 0.25rem;">Link direto para o artigo original</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎯</span>
+                            <div>
+                                <strong>Prioriza Qualidade</strong>
+                                <p style="opacity: 0.9; margin-top: 0.25rem;">Metanálises e RCTs no topo</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🛡️</span>
+                            <div>
+                                <strong>Confiável</strong>
+                                <p style="opacity: 0.9; margin-top: 0.25rem;">Literatura peer-reviewed verificada</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">✅</span>
-                        <div>
-                            <strong>Sempre com Citações</strong>
-                            <p>Cada afirmação vem com link direto para o artigo original</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">✅</span>
-                        <div>
-                            <strong>Prioriza Qualidade</strong>
-                            <p>Metanálises, RCTs e guidelines no topo das respostas</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">✅</span>
-                        <div>
-                            <strong>Confiável para Decisões</strong>
-                            <p>Baseado em literatura peer-reviewed, não em "internet geral"</p>
-                        </div>
+
+                    <div style="margin-top: 2.5rem;">
+                        <a href="#inscricao" class="btn btn-primary btn-lg" style="background: white; color: var(--primary);">Quero Acesso Agora</a>
                     </div>
                 </div>
             </div>
@@ -935,168 +1610,214 @@
     <!-- MÓDULOS -->
     <section class="modules" id="modulos">
         <div class="container">
-            <h2 class="section-title">Conteúdo do Curso</h2>
-            <p class="section-subtitle">10 módulos completos para dominar a OpenEvidence</p>
-            
+            <div class="section-header">
+                <span class="section-label">Conteúdo Completo</span>
+                <h2 class="section-title">10 Módulos Para Dominar a OpenEvidence</h2>
+                <p class="section-description">Do básico ao avançado, tudo que você precisa para usar IA médica com excelência</p>
+            </div>
+
             <div class="modules-grid">
+                <!-- Módulo 1 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">01</div>
-                        <div class="module-duration">⏱️ 3 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 3 horas</span>
+                            <h3 class="module-title">Introdução à OpenEvidence</h3>
+                            <p class="module-description">Fundamentos da plataforma e medicina baseada em evidências</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Introdução à OpenEvidence</h3>
-                    <p>Fundamentos da plataforma e medicina baseada em evidências</p>
-                    <ul class="module-topics">
-                        <li>O que é OpenEvidence e como funciona</li>
-                        <li>Diferenças entre IA médica e IA genérica</li>
-                        <li>Criando conta e configurando perfil</li>
-                        <li>Princípios da Medicina Baseada em Evidências</li>
-                        <li>Hierarquia de evidências científicas</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>O que é OpenEvidence e como funciona</li>
+                            <li>IA médica vs IA genérica</li>
+                            <li>Criando e configurando sua conta</li>
+                            <li>Princípios da MBE</li>
+                            <li>Hierarquia de evidências</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 2 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">02</div>
-                        <div class="module-duration">⏱️ 4 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 4 horas</span>
+                            <h3 class="module-title">Dominando Perguntas Clínicas</h3>
+                            <p class="module-description">Faça as perguntas certas para obter as melhores respostas</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Dominando Perguntas Clínicas</h3>
-                    <p>Como fazer as perguntas certas para obter as melhores respostas</p>
-                    <ul class="module-topics">
-                        <li>Estrutura PICO para perguntas eficazes</li>
-                        <li>Tipos de perguntas clínicas</li>
-                        <li>Engenharia de prompts médicos avançada</li>
-                        <li>Refinamento e aprofundamento de respostas</li>
-                        <li>500+ exemplos práticos por especialidade</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Estrutura PICO eficaz</li>
+                            <li>Tipos de perguntas clínicas</li>
+                            <li>Engenharia de prompts médicos</li>
+                            <li>Refinamento de respostas</li>
+                            <li>500+ exemplos práticos</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 3 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">03</div>
-                        <div class="module-duration">⏱️ 6 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 6 horas</span>
+                            <h3 class="module-title">Aplicações Clínicas</h3>
+                            <p class="module-description">Use no consultório, emergência, enfermaria e pesquisa</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Aplicações Clínicas por Cenário</h3>
-                    <p>Use OpenEvidence no consultório, emergência, enfermaria e pesquisa</p>
-                    <ul class="module-topics">
-                        <li>No consultório/ambulatório</li>
-                        <li>Na emergência e pronto-socorro</li>
-                        <li>Em enfermarias e UTI</li>
-                        <li>Em pesquisa e docência</li>
-                        <li>20+ casos práticos reais resolvidos</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Consultório e ambulatório</li>
+                            <li>Emergência e pronto-socorro</li>
+                            <li>Enfermarias e UTI</li>
+                            <li>Pesquisa e docência</li>
+                            <li>20+ casos práticos reais</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 4 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">04</div>
-                        <div class="module-duration">⏱️ 3 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 3 horas</span>
+                            <h3 class="module-title">Para Estudantes</h3>
+                            <p class="module-description">Aprenda melhor e prepare-se para residência</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Para Estudantes - Turbinando os Estudos</h3>
-                    <p>Aprenda melhor, mais rápido e prepare-se para residência</p>
-                    <ul class="module-topics">
-                        <li>Preparação eficiente para provas</li>
-                        <li>Estudando casos clínicos com IA</li>
-                        <li>Preparação para residência médica</li>
-                        <li>TCC e trabalhos acadêmicos</li>
-                        <li>Simulados práticos</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Preparação eficiente para provas</li>
+                            <li>Casos clínicos com IA</li>
+                            <li>Preparação para residência</li>
+                            <li>TCC e trabalhos acadêmicos</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 5 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">05</div>
-                        <div class="module-duration">⏱️ 3 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 3 horas</span>
+                            <h3 class="module-title">Farmacologia e Prescrição</h3>
+                            <p class="module-description">Escolha medicamentos baseado em evidências</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Farmacologia e Prescrição</h3>
-                    <p>Escolha medicamentos baseado em evidências sólidas</p>
-                    <ul class="module-topics">
-                        <li>Escolha de medicamentos first-line</li>
-                        <li>Dosagens e ajustes baseados em evidências</li>
-                        <li>Medicamentos off-label</li>
-                        <li>Desprescrição segura</li>
-                        <li>Interações e efeitos adversos</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Escolha de medicamentos first-line</li>
+                            <li>Dosagens baseadas em evidências</li>
+                            <li>Medicamentos off-label</li>
+                            <li>Desprescrição segura</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 6 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">06</div>
-                        <div class="module-duration">⏱️ 3 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 3 horas</span>
+                            <h3 class="module-title">Casos Especiais</h3>
+                            <p class="module-description">Pediatria, geriatria, gestação e mais</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Casos Especiais e Populações</h3>
-                    <p>Pediatria, geriatria, gestação e outras situações específicas</p>
-                    <ul class="module-topics">
-                        <li>Pediatria e dosagens pediátricas</li>
-                        <li>Geriatria e medicamentos inadequados</li>
-                        <li>Gestação e lactação seguras</li>
-                        <li>Insuficiência renal e hepática</li>
-                        <li>Doenças raras</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Pediatria e dosagens</li>
+                            <li>Geriatria e critérios de Beers</li>
+                            <li>Gestação e lactação</li>
+                            <li>Insuficiência renal/hepática</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 7 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">07</div>
-                        <div class="module-duration">⏱️ 3 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 3 horas</span>
+                            <h3 class="module-title">Análise Crítica</h3>
+                            <p class="module-description">Avalie evidências como especialista</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Análise Crítica de Evidências</h3>
-                    <p>Avalie a qualidade das evidências como um especialista</p>
-                    <ul class="module-topics">
-                        <li>Interpretando citações e referências</li>
-                        <li>Níveis de evidência na prática</li>
-                        <li>Estatística clínica aplicada (NNT, RR, IC)</li>
-                        <li>Identificando vieses e limitações</li>
-                        <li>Aplicabilidade ao contexto brasileiro</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Interpretando citações</li>
+                            <li>Níveis de evidência</li>
+                            <li>Estatística clínica (NNT, RR, IC)</li>
+                            <li>Identificando vieses</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 8 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">08</div>
-                        <div class="module-duration">⏱️ 2 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 2 horas</span>
+                            <h3 class="module-title">Ética e Responsabilidade</h3>
+                            <p class="module-description">Use IA de forma ética e legal</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Ética e Responsabilidade</h3>
-                    <p>Use IA de forma ética, legal e responsável</p>
-                    <ul class="module-topics">
-                        <li>Responsabilidade profissional com IA</li>
-                        <li>Quando NÃO usar IA</li>
-                        <li>Limitações da OpenEvidence</li>
-                        <li>LGPD e privacidade de dados</li>
-                        <li>Aspectos médico-legais</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Responsabilidade profissional</li>
+                            <li>Quando NÃO usar IA</li>
+                            <li>Limitações da ferramenta</li>
+                            <li>LGPD e privacidade</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 9 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">09</div>
-                        <div class="module-duration">⏱️ 2 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 2 horas</span>
+                            <h3 class="module-title">Integração no Trabalho</h3>
+                            <p class="module-description">Torne parte natural da sua rotina</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Integrando no Fluxo de Trabalho</h3>
-                    <p>Torne OpenEvidence parte natural da sua rotina</p>
-                    <ul class="module-topics">
-                        <li>Rotina diária otimizada</li>
-                        <li>Trabalho em equipe multidisciplinar</li>
-                        <li>Atualização contínua</li>
-                        <li>Combinando com outras ferramentas</li>
-                        <li>Criando protocolos institucionais</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>Rotina diária otimizada</li>
+                            <li>Trabalho em equipe</li>
+                            <li>Atualização contínua</li>
+                            <li>Protocolos institucionais</li>
+                        </ul>
+                    </div>
                 </div>
 
+                <!-- Módulo 10 -->
                 <div class="module-card">
                     <div class="module-header">
                         <div class="module-number">10</div>
-                        <div class="module-duration">⏱️ 4 horas</div>
+                        <div class="module-info">
+                            <span class="module-duration">⏱️ 4 horas</span>
+                            <h3 class="module-title">Projeto Final</h3>
+                            <p class="module-description">Aplique tudo em um projeto real</p>
+                        </div>
                     </div>
-                    <h3 class="module-title">Projeto Final e Certificação</h3>
-                    <p>Aplique tudo que aprendeu em um projeto real</p>
-                    <ul class="module-topics">
-                        <li>4 opções de projeto final</li>
-                        <li>Protocolo clínico completo</li>
-                        <li>Caso clínico complexo resolvido</li>
-                        <li>Revisão de tema atual</li>
-                        <li>Certificado de conclusão</li>
-                    </ul>
+                    <div class="module-content">
+                        <ul class="module-topics">
+                            <li>4 opções de projeto final</li>
+                            <li>Protocolo clínico completo</li>
+                            <li>Caso clínico complexo</li>
+                            <li>Certificado de conclusão</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1105,35 +1826,43 @@
     <!-- BENEFÍCIOS -->
     <section class="benefits" id="beneficios">
         <div class="container">
-            <h2 class="section-title" style="color: white;">Por Que Este Curso é Diferente?</h2>
-            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Benefícios que transformarão sua prática médica</p>
-            
+            <div class="section-header">
+                <span class="section-label" style="background: rgba(255,255,255,0.2); color: white;">Transformação Real</span>
+                <h2 class="section-title" style="color: white;">Por Que Este Curso é Diferente?</h2>
+                <p class="section-description" style="color: rgba(255,255,255,0.8);">Benefícios que vão além do conhecimento técnico</p>
+            </div>
+
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">⚡</div>
                     <h3>Decisões Mais Rápidas</h3>
                     <p>Reduza de 30 minutos para 30 segundos o tempo de busca por evidências. Mais tempo para o que importa: seus pacientes.</p>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">🎯</div>
-                    <h3>Maior Confiança Clínica</h3>
+                    <h3>Maior Confiança</h3>
                     <p>Tome decisões com segurança, sabendo que estão fundamentadas nas melhores evidências científicas disponíveis.</p>
                 </div>
+
                 <div class="benefit-card">
-                    <div-icon">🏆</div>
+                    <div class="benefit-icon">🏆</div>
                     <h3>Diferencial Competitivo</h3>
                     <p>Destaque-se entre colegas. Seja o médico que está sempre atualizado com as últimas evidências.</p>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">💰</div>
-                    <h3>Economia Significativa</h3>
+                    <h3>Economia Real</h3>
                     <p>Substitua assinaturas caras. OpenEvidence oferece acesso gratuito a conteúdo similar ao UpToDate.</p>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">📈</div>
                     <h3>Melhores Resultados</h3>
                     <p>Pacientes com desfechos melhores quando tratamentos são baseados em evidências de qualidade.</p>
                 </div>
+
                 <div class="benefit-card">
                     <div class="benefit-icon">🛡️</div>
                     <h3>Proteção Legal</h3>
@@ -1146,9 +1875,12 @@
     <!-- DEPOIMENTOS -->
     <section class="testimonials" id="depoimentos">
         <div class="container">
-            <h2 class="section-title">O Que Dizem Nossos Alunos</h2>
-            <p class="section-subtitle">Médicos e estudantes que transformaram sua prática</p>
-            
+            <div class="section-header">
+                <span class="section-label">Histórias de Sucesso</span>
+                <h2 class="section-title">O Que Dizem Nossos Alunos</h2>
+                <p class="section-description">Médicos e estudantes que transformaram sua prática</p>
+            </div>
+
             <div class="testimonials-grid">
                 <div class="testimonial-card">
                     <p class="testimonial-text">"Revolucionou minha prática clínica. Agora tomo decisões mais seguras e rápidas, sempre baseadas em evidências sólidas. Não consigo mais imaginar trabalhar sem a OpenEvidence."</p>
@@ -1156,62 +1888,104 @@
                         <div class="author-avatar">CS</div>
                         <div class="author-info">
                             <h4>Dr. Carlos Silva</h4>
-                            <p>Cardiologista - SP</p>
+                            <p>Cardiologista - São Paulo</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Como residente, a OpenEvidence me salvou inúmeras vezes no plantão. O curso me ensinou a usar a ferramenta de forma eficiente. Meu preceptor ficou impressionado com a qualidade das minhas discussões de caso."</p>
+                    <p class="testimonial-text">"Como residente, a OpenEvidence me salvou inúmeras vezes no plantão. O curso me ensinou a usar a ferramenta de forma eficiente. Meu preceptor ficou impressionado."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">AP</div>
                         <div class="author-info">
                             <h4>Dra. Ana Paula Costa</h4>
-                            <p>R3 Clínica Médica - RJ</p>
+                            <p>R3 Clínica Médica - Rio de Janeiro</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Implementamos na nossa UTI após o curso. A equipe toda está usando e a qualidade das decisões melhorou visivelmente. Os protocolos agora são atualizados constantemente com as melhores evidências."</p>
+                    <p class="testimonial-text">"Implementamos na nossa UTI após o curso. A equipe toda está usando e a qualidade das decisões melhorou visivelmente. Os protocolos são atualizados constantemente."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">RM</div>
                         <div class="author-info">
                             <h4>Dr. Roberto Mendes</h4>
-                            <p>Intensivista - MG</p>
+                            <p>Intensivista - Minas Gerais</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Cancelei minha assinatura do UpToDate após fazer o curso. A OpenEvidence oferece o mesmo nível de informação, com a vantagem de ser mais rápida e trazer múltiplas perspectivas de diferentes estudos."</p>
+                    <p class="testimonial-text">"Cancelei minha assinatura do UpToDate. A OpenEvidence oferece o mesmo nível de informação, com a vantagem de ser mais rápida e trazer múltiplas perspectivas."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">MF</div>
                         <div class="author-info">
                             <h4>Dra. Mariana Ferreira</h4>
-                            <p>Endocrinologista - RS</p>
+                            <p>Endocrinologista - Rio Grande do Sul</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Passei na residência de cirurgia no primeiro ano que tentei. O curso me ajudou não só a estudar melhor, mas a entender profundamente os conceitos, não apenas decorar. Recomendo muito!"</p>
+                    <p class="testimonial-text">"Passei na residência de cirurgia no primeiro ano. O curso me ajudou a entender profundamente os conceitos, não apenas decorar. Recomendo muito!"</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">LC</div>
                         <div class="author-info">
                             <h4>Lucas Carvalho</h4>
-                            <p>Estudante de Medicina - BA</p>
+                            <p>Estudante de Medicina - Bahia</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="testimonial-card">
-                    <p class="testimonial-text">"Como professora, uso a OpenEvidence para preparar aulas sempre atualizadas. Meus alunos adoram quando trago as evidências mais recentes. O curso me deu segurança para usar IA no ensino médico."</p>
+                    <p class="testimonial-text">"Como professora, uso para preparar aulas sempre atualizadas. Meus alunos adoram quando trago as evidências mais recentes. O curso me deu segurança total."</p>
                     <div class="testimonial-author">
                         <div class="author-avatar">JL</div>
                         <div class="author-info">
                             <h4>Dra. Juliana Lima</h4>
-                            <p>Professora de Medicina - PR</p>
+                            <p>Professora de Medicina - Paraná</p>
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1222,50 +1996,56 @@
     <!-- PREÇOS -->
     <section class="pricing" id="preco">
         <div class="container">
-            <h2 class="section-title">Investimento</h2>
-            <p class="section-subtitle">Acesso completo e vitalício ao curso</p>
-            
+            <div class="section-header">
+                <span class="section-label" style="background: rgba(255,255,255,0.2); color: white;">Oferta Especial</span>
+                <h2 class="section-title" style="color: white;">Investimento que Transforma Sua Carreira</h2>
+                <p class="section-description" style="color: rgba(255,255,255,0.9);">Acesso completo e vitalício com garantia total</p>
+            </div>
+
             <div class="pricing-container">
                 <div class="pricing-card">
                     <div class="pricing-badge">🔥 Oferta de Lançamento</div>
-                    
+
                     <div class="pricing-header">
                         <h3 class="pricing-title">Curso Completo OpenEvidence Pro</h3>
-                        <div class="price-amount">
-                            <span>R$</span> 497
+                        <div class="price-container">
+                            <span class="price-currency">R$</span>
+                            <span class="price-amount">497</span>
                         </div>
                         <p class="price-installment">ou 12x de R$ 49,70 sem juros</p>
                     </div>
 
                     <ul class="pricing-features">
-                        <li>✅ 25 horas de conteúdo em vídeo</li>
-                        <li>✅ 10 módulos completos e práticos</li>
-                        <li>✅ Acesso vitalício ao conteúdo</li>
-                        <li>✅ Atualizações gratuitas</li>
-                        <li>✅ Certificado digital reconhecido</li>
-                        <li>✅ Grupo VIP de discussão</li>
-                        <li>✅ 500+ perguntas clínicas prontas</li>
-                        <li>✅ Casos práticos reais</li>
-                        <li>✅ Suporte via email</li>
-                        <li>✅ Material em PDF para download</li>
-                        <li>✅ Webinars mensais exclusivos</li>
-                        <li>✅ Acesso mobile (estude em qualquer lugar)</li>
+                        <li>25 horas de conteúdo em vídeo</li>
+                        <li>10 módulos completos e práticos</li>
+                        <li>Acesso vitalício ao conteúdo</li>
+                        <li>Atualizações gratuitas para sempre</li>
+                        <li>Certificado digital reconhecido</li>
+                        <li>Grupo VIP de discussão</li>
+                        <li>500+ perguntas clínicas prontas</li>
+                        <li>Casos práticos reais</li>
+                        <li>Suporte completo via email</li>
+                        <li>Material em PDF para download</li>
+                        <li>Webinars mensais exclusivos</li>
+                        <li>Acesso mobile (estude em qualquer lugar)</li>
                     </ul>
 
-                    <a href="#inscricao" class="cta-button" style="width: 100%; text-align: center; padding: 1.2rem; font-size: 1.2rem; margin-top: 2rem;">
-                        Garantir Minha Vaga Agora
-                    </a>
+                    <div class="pricing-cta">
+                        <a href="#inscricao" class="btn btn-primary btn-lg" style="width: 100%; justify-content: center;">
+                            🚀 Garantir Minha Vaga Agora
+                        </a>
+                    </div>
 
-                    <div class="guarantee-badge">
+                    <div class="guarantee-box">
                         <strong>🛡️ Garantia Incondicional de 30 Dias</strong>
-                        <p style="margin-top: 0.5rem; color: #856404;">Se você não ficar satisfeito por qualquer motivo, devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.</p>
+                        <p>Se você não ficar satisfeito por qualquer motivo, devolvemos 100% do seu investimento. Sem perguntas, sem burocracia.</p>
                     </div>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem; color: var(--text-light);">
-                <p><strong>Pagamento 100% seguro</strong></p>
-                <p style="margin-top: 0.5rem;">🔒 Seus dados protegidos | 💳 Aceitamos PIX, Cartão e Boleto</p>
+            <div style="text-align: center; margin-top: 3rem; color: rgba(255,255,255,0.9);">
+                <p style="font-size: 1.1rem; font-weight: 600;">Pagamento 100% Seguro</p>
+                <p style="margin-top: 0.75rem; opacity: 0.9;">🔒 Seus dados protegidos | 💳 PIX, Cartão e Boleto</p>
             </div>
         </div>
     </section>
@@ -1273,16 +2053,19 @@
     <!-- BÔNUS -->
     <section class="bonus">
         <div class="container">
-            <h2 class="section-title">Bônus Exclusivos</h2>
-            <p class="section-subtitle">Conteúdo extra para acelerar seu aprendizado</p>
-            
+            <div class="section-header">
+                <span class="section-label">Valor Agregado</span>
+                <h2 class="section-title">Bônus Exclusivos Inclusos</h2>
+                <p class="section-description">Conteúdo extra para acelerar seu aprendizado</p>
+            </div>
+
             <div class="bonus-grid">
                 <div class="bonus-card">
                     <div class="bonus-badge">BÔNUS #1</div>
                     <div class="bonus-icon">📚</div>
                     <h3>Biblioteca de 500+ Perguntas</h3>
                     <p>Perguntas clínicas prontas organizadas por especialidade. Copie, cole e adapte para suas necessidades.</p>
-                    <strong style="color: #ff9900;">Valor: R$ 197</strong>
+                    <p class="bonus-value">Valor: R$ 197</p>
                 </div>
 
                 <div class="bonus-card">
@@ -1290,7 +2073,7 @@
                     <div class="bonus-icon">👥</div>
                     <h3>Grupo VIP Exclusivo</h3>
                     <p>Comunidade privada para discussão de casos, networking e suporte entre alunos e professores.</p>
-                    <strong style="color: #ff9900;">Valor: R$ 297</strong>
+                    <p class="bonus-value">Valor: R$ 297</p>
                 </div>
 
                 <div class="bonus-card">
@@ -1298,15 +2081,15 @@
                     <div class="bonus-icon">🎓</div>
                     <h3>Webinars Mensais</h3>
                     <p>Aulas ao vivo mensais com especialistas, novidades da OpenEvidence e tira-dúvidas em tempo real.</p>
-                    <strong style="color: #ff9900;">Valor: R$ 497/ano</strong>
+                    <p class="bonus-value">Valor: R$ 497/ano</p>
                 </div>
 
                 <div class="bonus-card">
                     <div class="bonus-badge">BÔNUS #4</div>
                     <div class="bonus-icon">📄</div>
-                    <h3>Cheat Sheets</h3>
+                    <h3>Cheat Sheets Profissionais</h3>
                     <p>Guias rápidos em PDF para impressão: perguntas-modelo, fluxogramas e checklists de consulta rápida.</p>
-                    <strong style="color: #ff9900;">Valor: R$ 97</strong>
+                    <p class="bonus-value">Valor: R$ 97</p>
                 </div>
 
                 <div class="bonus-card">
@@ -1314,7 +2097,7 @@
                     <div class="bonus-icon">🔄</div>
                     <h3>Atualizações Vitalícias</h3>
                     <p>Acesso gratuito a todas as atualizações futuras do curso, novos módulos e conteúdos adicionados.</p>
-                    <strong style="color: #ff9900;">Valor: Inestimável</strong>
+                    <p class="bonus-value">Valor: Inestimável</p>
                 </div>
 
                 <div class="bonus-card">
@@ -1322,13 +2105,13 @@
                     <div class="bonus-icon">🏆</div>
                     <h3>Certificado Internacional</h3>
                     <p>Certificado com carga horária válido para educação continuada e programas de especialização.</p>
-                    <strong style="color: #ff9900;">Valor: R$ 197</strong>
+                    <p class="bonus-value">Valor: R$ 197</p>
                 </div>
             </div>
 
-            <div style="text-align: center; margin-top: 3rem; padding: 2rem; background: #e6f2ff; border-radius: 20px;">
-                <h3 style="color: var(--primary-color); font-size: 2rem;">Valor Total dos Bônus: R$ 1.485</h3>
-                <p style="font-size: 1.2rem; margin-top: 1rem;">Você recebe TUDO isso por apenas R$ 497</p>
+            <div class="total-bonus">
+                <h3>Valor Total dos Bônus: R$ 1.485</h3>
+                <p>Você recebe TUDO isso por apenas R$ 497</p>
             </div>
         </div>
     </section>
@@ -1336,14 +2119,17 @@
     <!-- FAQ -->
     <section class="faq" id="faq">
         <div class="container">
-            <h2 class="section-title">Perguntas Frequentes</h2>
-            <p class="section-subtitle">Tire suas dúvidas antes de se inscrever</p>
-            
+            <div class="section-header">
+                <span class="section-label">Dúvidas</span>
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <p class="section-description">Tire suas dúvidas antes de se inscrever</p>
+            </div>
+
             <div class="faq-container">
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Preciso ter experiência com IA para fazer o curso?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Não! O curso começa do zero e é adequado para todos os níveis. Mesmo que você nunca tenha usado IA antes, vai aprender passo a passo como usar a OpenEvidence de forma profissional.</p>
@@ -1353,7 +2139,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>O curso é para qual especialidade médica?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Para TODAS as especialidades! O curso ensina a metodologia de uso da OpenEvidence que se aplica a qualquer área da medicina. Incluímos exemplos de cardiologia, pediatria, cirurgia, clínica médica, emergência e muito mais.</p>
@@ -1363,7 +2149,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Estudantes de medicina podem fazer?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Sim! Temos um módulo específico para estudantes sobre como usar OpenEvidence para estudar melhor, preparar para provas e residência médica. É uma vantagem competitiva enorme.</p>
@@ -1373,7 +2159,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Quanto tempo tenho para concluir o curso?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Você tem acesso VITALÍCIO! Estude no seu ritmo, pause quando precisar, volte quantas vezes quiser. O curso é seu para sempre, incluindo todas as atualizações futuras.</p>
@@ -1383,7 +2169,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Preciso pagar pela OpenEvidence separadamente?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>A OpenEvidence tem versão gratuita robusta que você pode usar enquanto faz o curso. Se quiser a versão premium (US$ 20/mês), explicamos as diferenças no curso para você decidir se vale a pena.</p>
@@ -1393,7 +2179,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Como funciona a garantia de 30 dias?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Simples: se dentro de 30 dias você sentir que o curso não atendeu suas expectativas, é só nos enviar um email. Devolvemos 100% do valor pago, sem perguntas e sem burocracia. O risco é todo nosso!</p>
@@ -1403,7 +2189,7 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Recebo certificado?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Sim! Após completar o curso e o projeto final, você recebe um certificado digital com carga horária de 25 horas, válido para educação médica continuada.</p>
@@ -1413,30 +2199,10 @@
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Posso parcelar o pagamento?</span>
-                        <span class="faq-icon">+</span>
+                        <div class="faq-icon">+</div>
                     </div>
                     <div class="faq-answer">
                         <p>Sim! Você pode parcelar em até 12x de R$ 49,70 no cartão de crédito. Também aceitamos PIX e boleto bancário para pagamento à vista.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Terei suporte se tiver dúvidas?</span>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sim! Oferecemos suporte por email, grupo VIP exclusivo para alunos e webinars mensais ao vivo onde você pode tirar dúvidas diretamente.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>O conteúdo fica atualizado?</span>
-                        <span class="faq-icon">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Sim! Atualizamos o curso regularmente conforme a OpenEvidence evolui e novas funcionalidades surgem. Você recebe todas as atualizações gratuitamente, para sempre.</p>
                     </div>
                 </div>
             </div>
@@ -1446,66 +2212,105 @@
     <!-- CTA FINAL -->
     <section class="final-cta" id="inscricao">
         <div class="container">
-            <h2>Pronto Para Revolucionar Sua Prática Médica?</h2>
-            <p>Junte-se a centenas de médicos e estudantes que já estão tomando decisões mais rápidas, seguras e baseadas em evidências</p>
-            
-            <div class="cta-buttons">
-                <a href="#" class="cta-primary">💳 Inscrever-se Agora - R$ 497</a>
-                <a href="#" class="cta-secondary">📧 Tenho Dúvidas - Falar com Suporte</a>
-            </div>
+            <div class="final-cta-content">
+                <h2 class="display-title">Pronto Para Transformar Sua Prática Médica?</h2>
+                <p>Junte-se a centenas de médicos e estudantes que já estão tomando decisões mais rápidas, seguras e baseadas em evidências</p>
+                
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary btn-lg">💳 Inscrever-se Agora - R$ 497</a>
+                    <a href="#" class="btn btn-secondary btn-lg">📧 Falar com Suporte</a>
+                </div>
 
-            <div style="margin-top: 3rem; opacity: 0.9;">
-                <p>✅ Garantia de 30 dias ou seu dinheiro de volta</p>
-                <p>✅ Acesso imediato após a confirmação do pagamento</p>
-                <p>✅ Suporte completo em português</p>
+                <div class="trust-indicators">
+                    <div class="trust-indicator">
+                        <span>✓</span>
+                        <span>Garantia de 30 dias</span>
+                    </div>
+                    <div class="trust-indicator">
+                        <span>✓</span>
+                        <span>Acesso imediato</span>
+                    </div>
+                    <div class="trust-indicator">
+                        <span>✓</span>
+                        <span>Suporte completo</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
     <footer>
-        <div class="footer-content">
-            <div class="logo" style="justify-content: center; margin-bottom: 2rem;">
-                <span class="logo-icon">🩺</span>
-                <span>OpenEvidence Pro</span>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <div class="logo-icon">🩺</div>
+                        <span>OpenEvidence Pro</span>
+                    </a>
+                    <p>O curso completo para dominar a medicina baseada em evidências com Inteligência Artificial.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">💼</a>
+                        <a href="#" class="social-link">📺</a>
+                        <a href="#" class="social-link">✉️</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Curso</h4>
+                    <ul class="footer-links">
+                        <li><a href="#modulos">Módulos</a></li>
+                        <li><a href="#beneficios">Benefícios</a></li>
+                        <li><a href="#depoimentos">Depoimentos</a></li>
+                        <li><a href="#preco">Investimento</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Suporte</h4>
+                    <ul class="footer-links">
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Área do Aluno</a></li>
+                        <li><a href="#">Certificado</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                        <li><a href="#">Garantia</a></li>
+                        <li><a href="#">Reembolso</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="footer-links">
-                <a href="#modulos">Módulos</a>
-                <a href="#beneficios">Benefícios</a>
-                <a href="#depoimentos">Depoimentos</a>
-                <a href="#preco">Investimento</a>
-                <a href="#faq">FAQ</a>
+            <div class="footer-bottom">
+                <p>© 2025 OpenEvidence Pro. Todos os direitos reservados.</p>
+                <p style="margin-top: 0.5rem; font-size: 0.875rem;">Este curso não é afiliado oficialmente à OpenEvidence.</p>
             </div>
-
-            <div class="social-links">
-                <a href="#" title="Instagram">📷</a>
-                <a href="#" title="LinkedIn">💼</a>
-                <a href="#" title="YouTube">📺</a>
-                <a href="#" title="Email">✉️</a>
-            </div>
-
-            <p style="margin-top: 2rem; opacity: 0.8;">
-                © 2025 OpenEvidence Pro. Todos os direitos reservados.<br>
-                <small>Este curso não é afiliado oficialmente à OpenEvidence.</small>
-            </p>
-
-            <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
-                <a href="#" style="color: white; text-decoration: underline;">Política de Privacidade</a> | 
-                <a href="#" style="color: white; text-decoration: underline;">Termos de Uso</a> | 
-                <a href="#" style="color: white; text-decoration: underline;">Contato</a>
-            </p>
         </div>
     </footer>
 
     <!-- FLOATING CTA -->
     <div class="floating-cta">
-        <a href="#inscricao" class="cta-button">🚀 Começar Agora</a>
+        <a href="#inscricao" class="btn btn-primary btn-lg">🚀 Começar Agora</a>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
-        // Header scroll effect
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollProgress').style.width = scrolled + '%';
+        });
+
+        // Header Scroll Effect
         window.addEventListener('scroll', () => {
             const header = document.getElementById('header');
             if (window.scrollY > 100) {
@@ -1515,24 +2320,22 @@
             }
         });
 
-        // FAQ accordion
+        // FAQ Accordion
         document.querySelectorAll('.faq-item').forEach(item => {
             item.querySelector('.faq-question').addEventListener('click', () => {
                 const isActive = item.classList.contains('active');
                 
-                // Close all items
                 document.querySelectorAll('.faq-item').forEach(i => {
                     i.classList.remove('active');
                 });
                 
-                // Open clicked item if it wasn't active
                 if (!isActive) {
                     item.classList.add('active');
                 }
             });
         });
 
-        // Smooth scroll for all anchor links
+        // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1546,10 +2349,10 @@
             });
         });
 
-        // Animation on scroll
+        // Scroll Animations
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -100px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -1561,11 +2364,30 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.module-card, .benefit-card, .testimonial-card, .bonus-card').forEach(el => {
+        document.querySelectorAll('.module-card, .benefit-card, .testimonial-card, .bonus-card, .problem-card').forEach(el => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.transform = 'translateY(40px)';
+            el.style.transition = 'opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
             observer.observe(el);
+        });
+
+        // Lazy Loading for Better Performance
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+        }
+
+        // Preload Critical Resources
+        window.addEventListener('load', () => {
+            document.body.classList.add('loaded');
         });
     </script>
 </body>
