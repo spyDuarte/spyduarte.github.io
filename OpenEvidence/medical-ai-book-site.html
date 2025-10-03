@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Médico com IA - O Futuro da Medicina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .nav-links a.active {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 18px 45px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #ff5252;
+        }
+
+        .secondary-button {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .secondary-button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 60px;
+            color: #667eea;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid #f0f0f0;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .feature-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 1.05em;
+        }
+
+        .book-showcase {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .book-cover-3d {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 600px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.3);
+            color: white;
+            padding: 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover-3d::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .book-cover-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .book-cover-3d h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .book-cover-3d h3 {
+            font-size: 1.8em;
+            opacity: 0.9;
+        }
+
+        .book-details {
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .book-details h2 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+        }
+
+        .book-details p {
+            font-size: 1.15em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .price-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .price {
+            font-size: 3em;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .old-price {
+            font-size: 1.3em;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .chapter-list {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .chapter {
+            padding: 25px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 25px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .chapter:hover {
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateX(10px);
+        }
+
+        .chapter h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .chapter p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .author-section {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .author-photo {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5em;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .author-bio h2 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 25px;
+        }
+
+        .author-bio p {
+            font-size: 1.15em;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .credentials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .credential-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .credential-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .testimonial:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .testimonial::before {
+            content: '"';
+            font-size: 5em;
+            color: #667eea;
+            opacity: 0.2;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .testimonial-role {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .purchase-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .purchase-section h2 {
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+
+        .purchase-section p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .guarantee-box {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px auto;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+        }
+
+        .guarantee-box h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 50px 20px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a:hover {
+            color: #667eea;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            font-size: 1.5em;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .book-showcase,
+            .author-section {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2.2em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">Treinamento Médico IA</div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="showPage('home')" class="active">Início</a></li>
+                <li><a onclick="showPage('book')">O Livro</a></li>
+                <li><a onclick="showPage('content')">Conteúdo</a></li>
+                <li><a onclick="showPage('author')">Autor</a></li>
+                <li><a onclick="showPage('testimonials')">Depoimentos</a></li>
+                <li><a onclick="showPage('buy')">Comprar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1>Treinamento Médico com Inteligência Artificial</h1>
+            <p>Revolucione a educação médica com tecnologia de ponta</p>
+            <a onclick="showPage('buy')" class="cta-button">Comprar Agora</a>
+            <a onclick="showPage('book')" class="cta-button secondary-button" style="margin-left: 20px;">Saiba Mais</a>
+        </div>
+
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Por que este livro é essencial?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Conteúdo Prático</h3>
+                        <p>Metodologias aplicáveis imediatamente em hospitais, universidades e centros de treinamento médico.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔬</div>
+                        <h3>Baseado em Evidências</h3>
+                        <p>Pesquisas científicas atualizadas e casos reais de implementação bem-sucedida de IA na medicina.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💡</div>
+                        <h3>Visão de Futuro</h3>
+                        <p>Prepare-se para as transformações que a IA trará para a medicina nos próximos anos.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <h3>Didático e Completo</h3>
+                        <p>Linguagem acessível para profissionais de todas as especialidades, do básico ao avançado.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Aplicação Multidisciplinar</h3>
+                        <p>Conteúdo valioso para médicos, enfermeiros, educadores e gestores de saúde.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Inovação Contínua</h3>
+                        <p>Ferramentas e técnicas de IA que estão moldando o presente e futuro da medicina.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOK PAGE -->
+    <div id="book" class="page">
+        <div class="section">
+            <div class="container">
+                <div class="book-showcase">
+                    <div class="book-cover-3d">
+                        <div class="book-cover-content">
+                            <h3>TREINAMENTO</h3>
+                            <h2>MÉDICO COM IA</h2>
+                            <p>O Futuro da Medicina</p>
+                        </div>
+                    </div>
+                    <div class="book-details">
+                        <h2>Sobre o Livro</h2>
+                        <p>Este livro revolucionário oferece uma visão abrangente e prática de como a inteligência artificial está transformando o treinamento e a educação médica em todo o mundo.</p>
+                        
+                        <p>Através de uma abordagem sistemática, você descobrirá como implementar ferramentas de IA para criar simulações médicas realistas, desenvolver sistemas de diagnóstico assistido, personalizar programas de aprendizado e muito mais.</p>
+                        
+                        <p><strong>Características principais:</strong></p>
+                        <p>✓ 400+ páginas de conteúdo exclusivo<br>
+                        ✓ 50+ estudos de caso reais<br>
+                        ✓ Exemplos de código e implementações práticas<br>
+                        ✓ Entrevistas com especialistas internacionais<br>
+                        ✓ Recursos online complementares<br>
+                        ✓ Guias passo a passo para implementação</p>
+
+                        <div class="price-box">
+                            <div class="old-price">De R$ 249,90</div>
+                            <div class="price">R$ 149,90</div>
+                            <p>Oferta por tempo limitado!</p>
+                            <a onclick="showPage('buy')" class="cta-button">Garantir Desconto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENT PAGE -->
+    <div id="content" class="page">
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Índice do Livro</h2>
+                <div class="chapter-list">
+                    <div class="chapter">
+                        <h3>Parte 1: Fundamentos da IA na Medicina</h3>
+                        <p>Introdução aos conceitos básicos de inteligência artificial, machine learning e deep learning aplicados ao contexto médico. Entenda a evolução histórica e o estado atual da tecnologia.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 2: Simuladores Médicos Baseados em IA</h3>
+                        <p>Aprenda a criar e utilizar simuladores avançados para treinamento cirúrgico, diagnóstico e atendimento de emergência. Casos práticos de implementação em hospitais universitários.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 3: Diagnóstico Assistido por IA</h3>
+                        <p>Sistemas de apoio à decisão clínica, análise de imagens médicas com deep learning, interpretação de exames laboratoriais e predição de riscos.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 4: Personalização do Aprendizado</h3>
+                        <p>Como criar programas de treinamento adaptativos que se ajustam ao nível de cada profissional, identificam lacunas de conhecimento e otimizam o processo de aprendizado.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 5: Análise de Grandes Dados Médicos</h3>
+                        <p>Processamento de registros eletrônicos de saúde, identificação de padrões epidemiológicos, pesquisa clínica acelerada por IA e medicina baseada em evidências.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 6: Ética e Regulamentação</h3>
+                        <p>Questões éticas fundamentais, regulamentações internacionais, privacidade de dados, vieses algorítmicos e responsabilidade profissional no uso de IA.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 7: Implementação Prática</h3>
+                        <p>Guia passo a passo para implementar soluções de IA em instituições médicas, desde a avaliação de necessidades até a medição de resultados.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Parte 8: O Futuro da Medicina com IA</h3>
+                        <p>Tendências emergentes, tecnologias em desenvolvimento e como preparar sua instituição para as próximas revoluções na medicina digital.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHOR PAGE -->
+    <div id="author" class="page">
+        <div class="section">
+            <div class="container">
+                <h2 class="section-title">Sobre o Autor</h2>
+                <div class="author-section">
+                    <div class="author-photo">👨‍⚕️</div>
+                    <div class="author-bio">
+                        <h2>Dr. [Seu Nome]</h2>
+                        <p>Médico especialista em educação médica e inteligência artificial com mais de 15 anos de experiência na intersecção entre tecnologia e saúde.</p>
+                        
+                        <p>Graduado em Medicina pela [Universidade], com especialização em [Especialidade] e mestrado em Tecnologia Aplicada à Saúde. Desenvolveu e implementou programas de treinamento baseados em IA em mais de 20 instituições médicas pelo mundo.</p>
+                        
+                        <p>Palestrante internacional, já apresentou em conferências médicas e tecnológicas nos cinco continentes. Consultor de hospitais universitários e empresas de tecnologia médica.</p>
+                        
+                        <p>Autor de diversos artigos científicos publicados em revistas internacionais sobre o uso de inteligência artificial na educação médica e no treinamento de profissionais de saúde.</p>
+
+                        <div class="credentials">
+                            <div class="credential-item">
+                                <strong>15+</strong>
+                                Anos de experiência
+                            </div>
+                            <div class="credential-item">
+                                <strong>50+</strong>
+                                Artigos publicados
+                            </div>
+                            <div class="credential-item">
+                                <strong>20+</strong>
+                                Instituições atendidas
+                            </div>
+                            <div class="credential-item">
+                                <strong>5000+</strong>
+                                Profissionais treinados
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TESTIMONIALS PAGE -->
+    <div id="testimonials" class="page">
+        <div class="section" style="background: #f8f9fa;">
+            <div class="container">
+                <h2 class="section-title">O que dizem os profissionais</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Este livro é absolutamente transformador! Implementamos várias técnicas descritas no livro em nosso hospital universitário e os resultados no treinamento dos residentes superaram todas as expectativas. A abordagem prática e os exemplos reais fazem toda a diferença."</p>
+                        <p class="testimonial-author">Dr. Carlos Silva</p>
+                        <p class="testimonial-role">Diretor de Ensino - Hospital das Clínicas</p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Como coordenadora de um programa de residência, estava procurando maneiras de modernizar nosso treinamento. Este livro foi a resposta! Conteúdo excepcional, muito bem estruturado e com aplicações práticas imediatas. Recomendo fortemente!"</p>
+                        <p class="testimonial-author">Dra. Ana Santos</p>
+                        <p class="testimonial-role">Coordenadora de Residência Médica</p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Finalmente um livro que une teoria e prática de forma magistral! As explicações sobre machine learning aplicado à medicina são claras e acessíveis. Os estudos de caso são inspiradores e mostram o potencial real da IA na educação médica."</p>
+                        <p class="testimonial-author">Dr. Pedro Oliveira</p>
+                        <p class="testimonial-role">Professor de Medicina - UNIFESP</p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Como gestor de uma instituição de ensino, este livro me abriu os olhos para as possibilidades da IA. Já estamos planejando a implementação de várias soluções descritas. O ROI tem se mostrado excepcional!"</p>
+                        <p class="testimonial-author">Ricardo Mendes</p>
+                        <p class="testimonial-role">Diretor Acadêmico - Escola Médica</p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Leitura obrigatória para qualquer profissional da saúde que quer se manter relevante no futuro. O autor consegue tornar tópicos complexos de IA acessíveis e aplicáveis ao dia a dia médico. Simplesmente brilhante!"</p>
+                        <p class="testimonial-author">Dra. Juliana Costa</p>
+                        <p class="testimonial-role">Cardiologista e Educadora Médica</p>
+                    </div>
+                    <div class="testimonial">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Comprei o livro com expectativas altas e fui surpreendido positivamente! A profundidade do conteúdo, combinada com a clareza da escrita, torna este livro uma referência indispensável. Já li duas vezes e continuo descobrindo insights novos."</p>
+                        <p class="testimonial-author">Dr. Fernando Rocha</p>
+                        <p class="testimonial-role">Cirurgião e Pesquisador</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUY PAGE -->
+    <div id="buy" class="page">
+        <div class="purchase-section">
+            <div class="container">
+                <h2>Adquira Agora seu Exemplar</h2>
+                <p>Invista no futuro da medicina e transforme sua prática profissional</p>
+                
+                <div class="price-box" style="max-width: 600px; margin: 40px auto;">
+                    <h3>Oferta Especial de Lançamento</h3>
+                    <div class="old-price">De R$ 249,90</div>
+                    <div class="price">R$ 149,90</div>
+                    <p style="color: #333; margin: 20px 0;">🎁 Bônus Exclusivos Inclusos:</p>
+                    <p style="color: #555; text-align: left; margin: 0 auto; max-width: 400px;">
+                        ✓ Acesso a webinários exclusivos<br>
+                        ✓ Templates e ferramentas prontas<br>
+                        ✓ Comunidade privada de profissionais<br>
+                        ✓ Atualizações gratuitas por 1 ano<br>
+                        ✓ Certificado de conclusão
+                    </p>
+                    <a href="#" class="cta-button" style="margin-top: 30px;">Comprar Agora</a>
+                </div>
+
+                <div class="guarantee-box">
+                    <h3>🛡️ Garantia de 30 Dias</h3>
+                    <p>Se você não ficar completamente satisfeito com o livro, devolvemos 100% do seu dinheiro. Sem perguntas, sem complicações.</p>
+                </div>
+
+                <div style="margin-top: 40px;">
+                    <p>💳 Formas de pagamento: Cartão de crédito, PIX, Boleto</p>
+                    <p>📦 Entrega: Digital (imediata) ou Física (5-10 dias úteis)</p>
+                    <p>🔒 Compra 100% segura e protegida</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="container" style="text-align: center;">
+                <h2 class="section-title">Perguntas Frequentes</h2>
+                <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                    <div class="chapter">
+                        <h3>Para quem é este livro?</h3>
+                        <p>Para médicos, enfermeiros, educadores médicos, gestores de saúde, estudantes de medicina e todos os profissionais interessados em como a IA está transformando a educação e prática médica.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Preciso ter conhecimento técnico em programação?</h3>
+                        <p>Não! O livro foi escrito para ser acessível a todos os profissionais de saúde, independente do conhecimento técnico. Explicamos os conceitos de forma clara e didática.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>O conteúdo está atualizado?</h3>
+                        <p>Sim! O livro foi publicado em 2025 e inclui as tecnologias e metodologias mais recentes em IA aplicada à medicina.</p>
+                    </div>
+                    <div class="chapter">
+                        <h3>Recebo atualizações do conteúdo?</h3>
+                        <p>Sim! Compradores têm acesso gratuito a atualizações durante 1 ano, garantindo que você sempre tenha as informações mais recentes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Sobre</h3>
+                <p>Livro pioneiro sobre treinamento médico com inteligência artificial, escrito por especialistas renomados na área.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <a onclick="showPage('home')">Início</a>
+                <a onclick="showPage('book')">O Livro</a>
+                <a onclick="showPage('author')">Autor</a>
+                <a onclick="showPage('buy')">Comprar</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contato</h3>
+                <p>Email: contato@treinamentomedico-ia.com</p>
+                <p>WhatsApp: (11) 99999-9999</p>
+                <div class="social-links" style="margin-top: 20px;">
+                    <a href="#">📘</a>
+                    <a href="#">📷</a>
+                    <a href="#">🐦</a>
+                    <a href="#">💼</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Treinamento Médico com IA. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav links
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
