@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenTime — Project Time Tracker</title>
+  <meta name="description" content="Rastreador de tempo por projeto — PWA, relatórios, Pomodoro, clientes/orçamentos, metas. Sem integrações." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#16a34a" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <style>
+    :root{
+      --g-50:#f0fdf4; --g-100:#dcfce7; --g-200:#bbf7d0; --g-300:#86efac; --g-600:#16a34a; --g-700:#15803d;
+      --text:#0f172a; --muted:#64748b; --white:#fff; --border:#d1fae5; --red:#b91c1c; --amber:#b45309;
+    }
+    html[data-theme="dark"]{
+      --g-50:#052e16; --g-100:#064e3b; --g-200:#065f46; --g-300:#047857; --g-600:#10b981; --g-700:#34d399;
+      --text:#e5e7eb; --muted:#9ca3af; --white:#0b1220; --border:#1f2937; --red:#ef4444; --amber:#f59e0b;
+      background:#0b1220; color:var(--text);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--g-50);color:var(--text)}
+    header{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--g-200)}
+    html[data-theme="dark"] header{background:rgba(11,18,32,.8)}
+    .wrap{max-width:1200px;margin:0 auto;padding:16px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .badge{font-size:12px;color:var(--g-700);background:var(--g-100);border:1px solid var(--g-300);padding:4px 8px;border-radius:999px}
+    .grid{display:grid;gap:16px}
+    @media(min-width:1200px){.grid{grid-template-columns:1fr 2fr}}
+    .card{background:var(--white);border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 0 rgba(16,24,40,.02)}
+    .card h3{margin:0;padding:16px;border-bottom:1px solid var(--border);color:var(--g-700)}
+    .card .content{padding:16px}
+    button{border:0;border-radius:10px;padding:8px 12px;background:var(--g-600);color:#fff;cursor:pointer}
+    button.ghost{background:transparent;color:var(--g-700);border:1px solid var(--g-300)}
+    html[data-theme="dark"] button.ghost{color:var(--g-700)}
+    button.small{padding:6px 10px;font-size:12px}
+    input,select{height:36px;padding:0 10px;border:1px solid var(--g-300);border-radius:10px;background:#fff}
+    html[data-theme="dark"] input, html[data-theme="dark"] select{background:#0b1220;color:var(--text);border-color:var(--border)}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}
+    tr:hover{background:#f8fff9}
+    html[data-theme="dark"] tr:hover{background:#0f1a2b}
+    .row{display:flex;gap:8px;align-items:center}
+    .row.wrap{flex-wrap:wrap}
+    .right{display:flex;gap:8px;justify-content:flex-end}
+    .muted{color:var(--muted)}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .dot{width:8px;height:8px;border-radius:999px;background:var(--g-300)}
+    .dot.active{background:var(--g-600)}
+    .bar{height:10px;background:var(--g-100);border:1px solid var(--g-300);border-radius:6px;overflow:hidden}
+    .bar>div{height:100%;background:var(--g-600)}
+    .pill{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--g-300);background:#fff;border-radius:999px;padding:6px 10px}
+    html[data-theme="dark"] .pill{background:#0b1220}
+    dialog{border:1px solid var(--border);border-radius:16px;max-width:560px;width:92%}
+    dialog::backdrop{background:rgba(0,0,0,.25)}
+    .footer{padding:18px 0;text-align:center;font-size:12px;color:var(--muted)}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    nav.tabs{border-bottom:1px solid var(--border);margin-top:8px}
+    nav.tabs button{background:transparent;color:var(--g-700);border:0;border-bottom:2px solid transparent;padding:10px 12px;border-radius:0}
+    nav.tabs button.active{border-color:var(--g-600);font-weight:600}
+    .hidden{display:none}
+    .tag{display:inline-block;margin:0 6px 6px 0;padding:2px 8px;border-radius:999px;border:1px solid var(--g-300);background:#fff;color:var(--g-700);font-size:12px}
+    .warn{color:var(--amber)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap row" style="justify-content:space-between">
+      <div class="brand">
+        <div style="width:36px;height:36px;border-radius:12px;background:var(--g-600);display:grid;place-items:center;color:#fff">⏱️</div>
+        <h2 style="margin:0;color:var(--g-700)">Project Time Tracker</h2>
+        <span id="netStatus" class="badge" style="margin-left:8px;display:none">Offline</span>
+      </div>
+      <div class="row">
+        <button id="themeToggle" class="ghost" aria-label="Alternar tema">🌙</button>
+        <span class="badge">PWA • Local • Rápido</span>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav class="tabs" id="tabs">
+        <button data-tab="timer" class="active">Timer</button>
+        <button data-tab="entries">Entradas</button>
+        <button data-tab="reports">Relatórios</button>
+        <button data-tab="pomodoro">Pomodoro</button>
+        <button data-tab="clients">Clientes</button>
+        <button data-tab="invoices">Faturas</button>
+        <button data-tab="settings">Configurações</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap grid">
+    <!-- Sidebar: Projetos + Resumo -->
+    <section>
+      <div class="card">
+        <h3>Projetos</h3>
+        <div class="content">
+          <div class="row wrap" style="margin-bottom:10px">
+            <input id="newProjectName" placeholder="Novo projeto" style="flex:1" />
+            <select id="newProjectClient" title="Cliente (opcional)"></select>
+            <input id="newProjectRate" type="number" step="0.01" placeholder="R$/h" style="width:110px" />
+            <input id="newProjectBudget" type="number" step="0.1" placeholder="Orçamento (h)" style="width:140px" />
+            <label class="row" style="gap:6px"><input type="checkbox" id="newProjectBillable" checked /> Billable</label>
+            <button id="addProjectBtn">Adicionar</button>
+          </div>
+          <div id="projectsList" style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto"></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>Resumo</h3>
+        <div class="content">
+          <div id="summary"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main area with tabbed content -->
+    <section id="tab-content" style="display:flex;flex-direction:column;gap:16px">
+      <!-- Timer -->
+      <div class="card" data-pane="timer">
+        <h3>Timer</h3>
+        <div class="content row wrap">
+          <div style="flex:1;min-width:220px">
+            <div class="muted" style="font-size:12px">Projeto ativo</div>
+            <select id="projectSelect" style="width:100%"></select>
+          </div>
+          <input id="noteInput" placeholder="Nota (use #tags)" style="flex:1;min-width:220px" />
+          <label class="row" style="gap:6px"><input type="checkbox" id="billableInput" checked /> Billable</label>
+          <div class="row">
+            <button id="startBtn">Iniciar</button>
+            <button class="ghost" id="stopBtn">Parar</button>
+            <div class="pill"><span class="muted" style="font-size:12px">Decorrido</span> <span id="elapsed" class="mono">0h 0m 0s</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Entradas -->
+      <div class="card hidden" data-pane="entries">
+        <h3>Lançamentos de tempo</h3>
+        <div class="content">
+          <div class="toolbar" style="margin-bottom:10px">
+            <input id="search" placeholder="Filtrar por projeto, nota ou #tag…" style="flex:1;min-width:220px" />
+            <button class="ghost small" id="exportJsonBtn">Exportar JSON</button>
+            <button class="ghost small" id="exportCsvBtn">Exportar CSV</button>
+            <button class="ghost small" id="exportIcsBtn">Exportar ICS</button>
+            <label class="ghost small" for="importFile" style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--g-300);cursor:pointer;background:#fff;color:var(--g-700)">Importar JSON</label>
+            <input id="importFile" type="file" accept="application/json" style="display:none" />
+          </div>
+          <div style="border:1px solid var(--border);border-radius:12px;overflow:hidden">
+            <table aria-label="Tabela de lançamentos">
+              <thead>
+                <tr>
+                  <th>Projeto</th>
+                  <th>Cliente</th>
+                  <th>Início</th>
+                  <th>Fim</th>
+                  <th>Duração</th>
+                  <th>Billable</th>
+                  <th>Valor</th>
+                  <th>Nota</th>
+                  <th style="text-align:right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="entriesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Relatórios -->
+      <div class="card hidden" data-pane="reports">
+        <h3>Relatórios</h3>
+        <div class="content">
+          <div class="row wrap" style="margin-bottom:12px">
+            <div class="pill">Hoje: <span id="todayTotal" class="mono" style="margin-left:6px"></span></div>
+            <div class="pill">Semana: <span id="weekRange" class="mono" style="margin-left:6px"></span> • <span id="weekTotal" class="mono"></span></div>
+            <div class="pill">Mês: <span id="monthLabel" class="mono" style="margin-left:6px"></span> • <span id="monthTotal" class="mono"></span></div>
+            <div class="pill">Meta semanal: <span id="goalWeekly" class="mono" style="margin-left:6px"></span> • <span id="goalStatus" class="mono"></span></div>
+            <div class="pill">Streak: <span id="streak" class="mono" style="margin-left:6px"></span></div>
+          </div>
+          <h4 style="margin:0 0 8px;color:var(--g-700)">Por dia (semana)</h4>
+          <div id="weekByDay" style="margin-bottom:16px"></div>
+          <h4 style="margin:0 0 8px;color:var(--g-700)">Por projeto (mês)</h4>
+          <div id="monthByProject" style="margin-bottom:16px"></div>
+          <h4 style="margin:0 0 8px;color:var(--g-700)">Tags mais usadas (mês)</h4>
+          <div id="topTags"></div>
+        </div>
+      </div>
+
+      <!-- Pomodoro -->
+      <div class="card hidden" data-pane="pomodoro">
+        <h3>Pomodoro</h3>
+        <div class="content row wrap">
+          <div class="pill">Foco: <span id="pomFocus" class="mono" style="margin-left:6px"></span> • Pausa: <span id="pomBreak" class="mono"></span> • Ciclos: <span id="pomCycles" class="mono"></span></div>
+          <div class="pill">Estado: <span id="pomState" class="mono" style="margin-left:6px">Pronto</span></div>
+          <div class="pill mono" style="font-size:22px" id="pomTime">00:00</div>
+          <label class="row" style="gap:6px"><input type="checkbox" id="pomLinkTimer" checked /> Vincular ao timer principal</label>
+          <div class="row">
+            <button id="pomStart">Iniciar</button>
+            <button class="ghost" id="pomPause">Pausar</button>
+            <button class="ghost" id="pomSkip">Pular</button>
+            <button class="ghost" id="pomReset">Resetar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clientes -->
+      <div class="card hidden" data-pane="clients">
+        <h3>Clientes</h3>
+        <div class="content">
+          <div class="row wrap" style="margin-bottom:10px">
+            <input id="newClientName" placeholder="Novo cliente" style="flex:1" />
+            <button id="addClientBtn">Adicionar</button>
+          </div>
+          <div id="clientsList" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </div>
+
+      <!-- Faturas -->
+      <div class="card hidden" data-pane="invoices">
+        <h3>Faturas (imprima em PDF)</h3>
+        <div class="content">
+          <div class="row wrap" style="margin-bottom:10px">
+            <label>Período: <input type="date" id="invStart"> a <input type="date" id="invEnd"></label>
+            <select id="invClientFilter"></select>
+            <select id="invProjectFilter"></select>
+            <input type="number" step="0.01" id="invTax" placeholder="Imposto %" style="width:120px" />
+            <button class="ghost" id="invGen">Gerar</button>
+            <button id="invPrint">Imprimir/Salvar PDF</button>
+          </div>
+          <div id="invoiceOut"></div>
+        </div>
+      </div>
+
+      <!-- Configurações -->
+      <div class="card hidden" data-pane="settings">
+        <h3>Configurações</h3>
+        <div class="content">
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Tema</label>
+            <button class="ghost" id="themeToggle2">Alternar tema</button>
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Arredondar ao parar o timer</label>
+            <select id="roundSelect">
+              <option value="0">Sem arredondamento</option>
+              <option value="5">5 minutos</option>
+              <option value="15">15 minutos</option>
+            </select>
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Meta diária (h)</label>
+            <input type="number" step="0.1" id="goalDailyInp" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Meta semanal (h)</label>
+            <input type="number" step="0.1" id="goalWeeklyInp" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Pomodoro — foco (min)</label>
+            <input type="number" id="setPomFocus" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Pomodoro — pausa (min)</label>
+            <input type="number" id="setPomBreak" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <label style="width:240px">Pomodoro — ciclos por sessão</label>
+            <input type="number" id="setPomCycles" style="width:120px" />
+          </div>
+          <div class="muted">Atalhos: <span class="mono">/</span> busca • <span class="mono">Espaço</span> iniciar/parar • <span class="mono">Esc</span> limpar.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">Feito com 💚. Dados no seu navegador (localStorage). Offline pronto (PWA). Sem integrações.</div>
+
+  <!-- Dialog de edição -->
+  <dialog id="editDialog">
+    <form method="dialog" id="editForm">
+      <div class="content">
+        <h3 style="margin:0 0 12px;color:var(--g-700)">Editar lançamento</h3>
+        <div class="row" style="margin-bottom:8px">
+          <label style="width:90px">Projeto</label>
+          <select id="editProject" style="flex:1"></select>
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <label style="width:90px">Início</label>
+          <input type="datetime-local" id="editStart" style="flex:1" />
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <label style="width:90px">Fim</label>
+          <input type="datetime-local" id="editEnd" style="flex:1" />
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <label style="width:90px">Billable</label>
+          <input type="checkbox" id="editBillable" />
+        </div>
+        <div class="row" style="margin-bottom:8px">
+          <label style="width:90px">Nota</label>
+          <input id="editNote" style="flex:1" />
+        </div>
+        <div id="editError" class="muted" style="color:var(--red)"></div>
+        <div class="right" style="margin-top:12px">
+          <button class="ghost" value="cancel">Cancelar</button>
+          <button value="default">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    // ===================== Utils =====================
+    const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4);
+    const fmtMs = (ms) => { const t=Math.max(0,Math.floor(ms/1000));const h=Math.floor(t/3600);const m=Math.floor((t%3600)/60);const s=t%60;return `${h}h ${m}m ${s}s` };
+    const toLocalInputValue = (iso) => { const d=new Date(iso); const pad=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}` };
+    const fromLocalInputValue = (val) => new Date(val).toISOString();
+    const clamp = (n,min,max)=> Math.max(min, Math.min(max,n));
+    const parseTags = (txt='')=> (txt.match(/#([\p{L}\p{N}_-]+)/gu)||[]).map(t=>t.toLowerCase());
+
+    // ===================== Estado =====================
+    const LS_KEY = 'gt_data_v3';
+    const LS_SETTINGS = 'gt_settings_v2';
+    const LS_THEME = 'gt_theme';
+    let state = { clients:[], projects:[{id:uid(), name:'Geral', clientId:null, rate:0, billableDefault:true, budgetHours:0}], entries:[] };
+    let settings = { roundMinutes: 0, goalDaily: 0, goalWeekly: 0, pomFocus: 25, pomBreak: 5, pomCycles: 4 };
+    let tickHandle = null;
+
+    // Carregar
+    try{ const raw = localStorage.getItem(LS_KEY); if(raw) state = JSON.parse(raw);}catch(_){}
+    try{ const rs = localStorage.getItem(LS_SETTINGS); if(rs) settings = {...settings, ...JSON.parse(rs)};}catch(_){}
+    try{ const th = localStorage.getItem(LS_THEME); if(th) document.documentElement.setAttribute('data-theme', th);}catch(_){}
+
+    const saveState = ()=> localStorage.setItem(LS_KEY, JSON.stringify(state));
+    const saveSettings = ()=> localStorage.setItem(LS_SETTINGS, JSON.stringify(settings));
+    const setTheme = (t)=>{ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(LS_THEME, t); };
+
+    // ===================== Lógica base =====================
+    const getRunning = ()=> state.entries.find(e=>e.end===null) || null;
+    const stopAll = ()=>{ const now=new Date().toISOString(); state.entries = state.entries.map(e=> e.end===null ? ({...e,end:now}) : e ); };
+
+    const roundDate = (iso, minutes)=>{ if (!minutes) return iso; const d = new Date(iso); const ms = minutes*60*1000; const rounded = Math.round(d.getTime()/ms)*ms; return new Date(rounded).toISOString(); };
+
+    const startTimer = (projectId, note='', billable=true)=>{ stopAll(); state.entries.push({id:uid(), projectId, start:new Date().toISOString(), end:null, note, billable}); saveState(); renderAll(); };
+    const stopTimer = ()=>{ const run = getRunning(); if (!run) return; const endIso = new Date().toISOString(); let finalEnd = settings.roundMinutes ? roundDate(endIso, settings.roundMinutes) : endIso; if (new Date(finalEnd).getTime() < new Date(run.start).getTime()) finalEnd = run.start; state.entries = state.entries.map(e=> e.end===null ? ({...e,end:finalEnd}) : e ); saveState(); renderAll(); };
+
+    const addProject = (input)=>{ const name=input.name.trim(); if(!name) return; state.projects.push({id:uid(), name, clientId:input.clientId||null, rate:Number(input.rate||0), billableDefault: !!input.billable, budgetHours:Number(input.budget||0)}); saveState(); renderAll(); };
+    const renameProject = (id, newName)=>{ newName=newName.trim(); if(!newName) return; state.projects = state.projects.map(p=> p.id===id ? {...p,name:newName} : p); saveState(); renderAll(); };
+    const setProject = (id, patch)=>{ state.projects = state.projects.map(p=> p.id===id ? {...p, ...patch} : p); saveState(); renderAll(); };
+    const deleteProject = (id)=>{ const has = state.entries.some(e=> e.projectId===id); if(has){ alert('Não é possível excluir: existem lançamentos neste projeto.'); return; } state.projects = state.projects.filter(p=>p.id!==id); saveState(); renderAll(); };
+
+    const addClient = (name)=>{ name=name.trim(); if(!name) return; state.clients.push({id:uid(), name}); saveState(); renderAll(); };
+    const renameClient = (id, newName)=>{ newName=newName.trim(); if(!newName) return; state.clients = state.clients.map(c=> c.id===id ? {...c,name:newName} : c); saveState(); renderAll(); };
+    const deleteClient = (id)=>{ const used = state.projects.some(p=> p.clientId===id); if(used){ alert('Não é possível excluir: existem projetos vinculados ao cliente.'); return; } state.clients = state.clients.filter(c=> c.id!==id); saveState(); renderAll(); };
+
+    const deleteEntry = (id)=>{ state.entries = state.entries.filter(e=>e.id!==id); saveState(); renderAll(); };
+    const saveEntry = (entry)=>{ state.entries = state.entries.map(e=> e.id===entry.id ? entry : e); saveState(); renderAll(); };
+
+    const totalsByProject = (entries=null)=>{ const map = new Map(); const list = entries || state.entries; const now = Date.now(); for (const e of list) { const s = new Date(e.start).getTime(); const en = e.end ? new Date(e.end).getTime() : now; const d = Math.max(0, en - s); map.set(e.projectId, (map.get(e.projectId)||0)+d); } return map; };
+
+    // ===================== Datas & Faixas =====================
+    function startOfWeek(d=new Date()){ const x=new Date(d); const day=(x.getDay()+6)%7; x.setHours(0,0,0,0); x.setDate(x.getDate()-day); return x; }
+    function endOfWeek(d=new Date()){ const s=startOfWeek(d); const e=new Date(s); e.setDate(e.getDate()+7); return e; }
+    function startOfMonth(d=new Date()){ const x=new Date(d.getFullYear(), d.getMonth(), 1); x.setHours(0,0,0,0); return x; }
+    function endOfMonth(d=new Date()){ const x=new Date(d.getFullYear(), d.getMonth()+1, 1); x.setHours(0,0,0,0); return x; }
+    function entriesInRange(start,end){ return state.entries.filter(e=> new Date(e.start) < end && new Date(e.end||new Date()) > start ); }
+
+    // ===================== Relatórios =====================
+    function renderReports(){
+      // Totais
+      const today = new Date(); today.setHours(0,0,0,0);
+      const todayEnd = new Date(today); todayEnd.setDate(today.getDate()+1);
+      const todays = entriesInRange(today, todayEnd);
+      const tms = todays.reduce((a,e)=> a + (new Date(e.end||new Date()) - new Date(e.start)), 0);
+      document.getElementById('todayTotal').textContent = (tms/3600000).toFixed(2)+' h';
+
+      const sW = startOfWeek(); const eW = endOfWeek();
+      document.getElementById('weekRange').textContent = sW.toLocaleDateString() + ' — ' + new Date(eW.getTime()-1).toLocaleDateString();
+      const listW = entriesInRange(sW,eW);
+      const wms = listW.reduce((a,e)=> a + (new Date(e.end||new Date()) - new Date(e.start)), 0);
+      document.getElementById('weekTotal').textContent = (wms/3600000).toFixed(2)+' h';
+
+      const sM = startOfMonth(); const eM = endOfMonth();
+      document.getElementById('monthLabel').textContent = sM.toLocaleDateString(undefined,{month:'long', year:'numeric'});
+      const listM = entriesInRange(sM,eM);
+      const mms = listM.reduce((a,e)=> a + (new Date(e.end||new Date()) - new Date(e.start)), 0);
+      document.getElementById('monthTotal').textContent = (mms/3600000).toFixed(2)+' h';
+
+      // Metas e streak
+      document.getElementById('goalWeekly').textContent = (settings.goalWeekly||0).toFixed(1)+' h';
+      const goalMet = (wms/3600000) >= (settings.goalWeekly||0);
+      document.getElementById('goalStatus').textContent = goalMet ? '✅ atingida' : '⏳ em progresso';
+      const streak = computeStreak(settings.goalDaily||0); document.getElementById('streak').textContent = streak + ' dias';
+
+      // Por dia (semana)
+      const byDay = Array(7).fill(0); const dayLabel = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+      for (const e of listW){
+        const st = new Date(Math.max(new Date(e.start).getTime(), sW.getTime()));
+        const en = new Date(Math.min(new Date(e.end||new Date()).getTime(), eW.getTime()));
+        let cur = new Date(st);
+        while (cur < en){
+          const idx = (cur.getDay()+6)%7;
+          const endOfCur = new Date(cur); endOfCur.setHours(23,59,59,999);
+          const sliceEnd = new Date(Math.min(endOfCur.getTime(), en.getTime()));
+          byDay[idx] += sliceEnd.getTime() - cur.getTime();
+          cur = new Date(sliceEnd.getTime()+1);
+        }
+      }
+      const contDay = document.getElementById('weekByDay'); contDay.innerHTML='';
+      const mx = Math.max(1, ...byDay);
+      for (let i=0;i<7;i++){
+        const row=document.createElement('div'); row.style.marginBottom='8px';
+        const top=document.createElement('div'); top.className='row'; top.style.justifyContent='space-between';
+        const lb=document.createElement('div'); lb.textContent=dayLabel[i]; lb.style.fontWeight='600';
+        const qty=document.createElement('div'); qty.className='mono muted'; qty.textContent=(byDay[i]/3600000).toFixed(2)+' h';
+        top.appendChild(lb); top.appendChild(qty); row.appendChild(top);
+        const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(byDay[i]/mx*100)+'%'; bar.appendChild(fill); row.appendChild(bar);
+        contDay.appendChild(row);
+      }
+
+      // Por projeto (mês)
+      const map = totalsByProject(listM);
+      const contProj=document.getElementById('monthByProject'); contProj.innerHTML='';
+      const maxp = Math.max(1, ...Array.from(map.values()));
+      for (const p of state.projects){
+        const ms = map.get(p.id)||0; if (!ms) continue;
+        const row=document.createElement('div'); row.style.marginBottom='8px';
+        const top=document.createElement('div'); top.className='row'; top.style.justifyContent='space-between';
+        const lb=document.createElement('div'); lb.textContent=p.name + (p.clientId? ` — ${clientName(p.clientId)}` : ''); lb.style.fontWeight='600';
+        const qty=document.createElement('div'); qty.className='mono muted'; qty.textContent=(ms/3600000).toFixed(2)+' h';
+        top.appendChild(lb); top.appendChild(qty); row.appendChild(top);
+        const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(ms/maxp*100)+'%'; bar.appendChild(fill); row.appendChild(bar);
+        contProj.appendChild(row);
+      }
+
+      // Tags (mês)
+      const tagCount = new Map();
+      for (const e of listM){ for (const t of parseTags(e.note)) tagCount.set(t, (tagCount.get(t)||0)+1); }
+      const contTags=document.getElementById('topTags'); contTags.innerHTML='';
+      const top = Array.from(tagCount.entries()).sort((a,b)=>b[1]-a[1]).slice(0,12);
+      if(top.length===0){ contTags.innerHTML = '<span class="muted">Sem tags neste mês.</span>'; }
+      else { for(const [t,c] of top){ const span=document.createElement('span'); span.className='tag'; span.textContent = `#${t} (${c})`; contTags.appendChild(span);} }
+    }
+
+    function computeStreak(goalDaily){ if(!goalDaily) return 0; let streak=0; let day=new Date(); day.setHours(0,0,0,0); for(;;){ const next=new Date(day); next.setDate(day.getDate()+1); const list=entriesInRange(day,next); const ms=list.reduce((a,e)=> a + (new Date(e.end||new Date()) - new Date(e.start)), 0); if (ms/3600000 >= goalDaily) { streak++; day.setDate(day.getDate()-1);} else break; } return streak; }
+
+    // ===================== Render básico =====================
+    function renderAll(){ renderClientsSelects(); renderProjects(); renderSummary(); renderTimerSelect(); renderEntries(); if(activeTab==='reports') renderReports(); renderPomodoroHUD(); }
+
+    function clientName(id){ const c=state.clients.find(x=>x.id===id); return c? c.name : ''; }
+
+    function renderClientsSelects(){
+      // new project client select
+      const sel = document.getElementById('newProjectClient'); sel.innerHTML = '<option value="">Cliente (opcional)</option>';
+      for(const c of state.clients){ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; sel.appendChild(o); }
+      // invoice filters
+      const csel=document.getElementById('invClientFilter'); if (csel){ csel.innerHTML='<option value="">Todos os clientes</option>'; for(const c of state.clients){ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; csel.appendChild(o);} }
+      const psel=document.getElementById('invProjectFilter'); if (psel){ psel.innerHTML='<option value="">Todos os projetos</option>'; for(const p of state.projects){ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; psel.appendChild(o);} }
+    }
+
+    function renderProjects(){
+      const list = document.getElementById('projectsList'); list.innerHTML = '';
+      const totals = totalsByProject();
+      const running = getRunning();
+      for (const p of state.projects) {
+        const row = document.createElement('div'); row.className='row'; row.style.justifyContent='space-between'; row.style.border='1px solid var(--border)'; row.style.borderRadius='12px'; row.style.padding='10px 12px';
+        const left = document.createElement('div'); left.className='row';
+        const dot = document.createElement('div'); dot.className='dot' + (running && running.projectId===p.id ? ' active' : ''); dot.dataset.pid=p.id; left.appendChild(dot);
+        const name = document.createElement('button'); name.textContent = p.name + (p.clientId? ` — ${clientName(p.clientId)}` : ''); name.style.fontWeight='600'; name.style.color='var(--text)'; name.className='ghost'; name.onclick = ()=>{ const nv=prompt('Renomear projeto', p.name); if(nv!=null) renameProject(p.id, nv); };
+        left.appendChild(name);
+        const budgetWarn = document.createElement('span');
+        if (p.budgetHours>0){ const usedH = (totals.get(p.id)||0)/3600000; const pct = usedH / p.budgetHours; if (pct>=0.8){ budgetWarn.className='badge warn'; budgetWarn.textContent = pct>=1? 'Orçamento estourado' : '≥80% do orçamento'; left.appendChild(budgetWarn);} }
+        row.appendChild(left);
+
+        const right = document.createElement('div'); right.className='row';
+        const rate = document.createElement('span'); rate.className='muted mono'; rate.textContent = p.rate? `R$ ${Number(p.rate).toFixed(2)}/h` : '';
+        if (p.rate) right.appendChild(rate);
+        const editBtn=document.createElement('button'); editBtn.className='ghost small'; editBtn.textContent='Config'; editBtn.onclick=()=> editProjectDialog(p);
+        const delBtn=document.createElement('button'); delBtn.className='ghost small'; delBtn.textContent='Excluir'; delBtn.onclick=()=> deleteProject(p.id);
+        const btn = document.createElement('button'); if (running && running.projectId===p.id) { btn.textContent='Parar'; btn.onclick=()=>stopTimer(); } else { btn.className='ghost'; btn.textContent='Iniciar'; btn.onclick=()=>{ const b = document.getElementById('billableInput').checked; startTimer(p.id, document.getElementById('noteInput').value, b); }; }
+        right.appendChild(btn); right.appendChild(editBtn); right.appendChild(delBtn);
+        const span = document.createElement('span'); span.className='muted mono'; span.textContent = fmtMs(totals.get(p.id)||0); right.appendChild(span);
+        row.appendChild(right);
+        list.appendChild(row);
+      }
+    }
+
+    function editProjectDialog(p){
+      const nvRate = prompt('Tarifa R$/h (atual: '+(p.rate||0)+')', p.rate||0);
+      if (nvRate==null) return;
+      const nvBudget = prompt('Orçamento em horas (0 para nenhum)', p.budgetHours||0);
+      if (nvBudget==null) return;
+      const bill = confirm('Marcar como billable por padrão? OK=Sim / Cancelar=Não');
+      setProject(p.id, { rate:Number(nvRate||0), budgetHours:Number(nvBudget||0), billableDefault:bill });
+    }
+
+    function updateRunningDots(){ const running = getRunning(); document.querySelectorAll('.dot').forEach(d=>{ d.classList.toggle('active', running && d.dataset.pid===running.projectId); }); }
+
+    function renderTimerSelect(){ const sel = document.getElementById('projectSelect'); sel.innerHTML = ''; for (const p of state.projects) { const o = document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); } if (state.projects[0]) sel.value = state.projects[0].id; const prj=state.projects.find(x=>x.id===sel.value); document.getElementById('billableInput').checked = prj? !!prj.billableDefault : true; sel.onchange=()=>{ const prj2=state.projects.find(x=>x.id===sel.value); document.getElementById('billableInput').checked = prj2? !!prj2.billableDefault : true; } }
+
+    function renderSummary(){
+      const box = document.getElementById('summary'); box.innerHTML = '';
+      const totals = totalsByProject();
+      const max = Math.max(1, ...Array.from(totals.values()));
+      for (const p of state.projects) {
+        const ms = totals.get(p.id)||0; const hr = (ms/3600000).toFixed(2);
+        const billableMs = state.entries.filter(e=> e.projectId===p.id && e.billable).reduce((a,e)=> a + (new Date(e.end||new Date()) - new Date(e.start)), 0);
+        const amount = (billableMs/3600000) * (p.rate||0);
+        const row = document.createElement('div'); row.style.marginBottom='10px';
+        const top = document.createElement('div'); top.className='row'; top.style.justifyContent='space-between';
+        const label = document.createElement('div'); label.textContent=p.name; label.style.fontWeight='600'; label.style.color='var(--text)';
+        const qty = document.createElement('div'); qty.innerHTML=`<span class="mono">${hr} h</span>${p.rate? ` • <span class='mono'>R$ ${amount.toFixed(2)}</span>`:''}`; qty.className='muted';
+        top.appendChild(label); top.appendChild(qty); row.appendChild(top);
+        const bar = document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(ms/max*100)+'%'; bar.appendChild(fill); row.appendChild(bar);
+        if (p.budgetHours>0){ const usedH = (ms/3600000); const pct = usedH / p.budgetHours; const b = document.createElement('div'); b.className='muted mono'; b.textContent = `Orçamento: ${usedH.toFixed(1)} / ${p.budgetHours.toFixed(1)} h (${Math.round(pct*100)}%)`; row.appendChild(b); }
+        box.appendChild(row);
+      }
+    }
+
+    function renderEntries(){
+      const body = document.getElementById('entriesBody'); if(!body) return;
+      const q = (document.getElementById('search').value || '').toLowerCase().trim();
+      const list = state.entries.slice().sort((a,b)=> new Date(b.start)-new Date(a.start)).filter(e=>{
+        const p = state.projects.find(p=>p.id===e.projectId); const pname=(p?.name||'').toLowerCase(); const cname=(p && p.clientId? clientName(p.clientId).toLowerCase(): ''); const note=(e.note||'').toLowerCase(); const tags=parseTags(e.note).join(' ');
+        return !q || pname.includes(q) || cname.includes(q) || note.includes(q) || tags.includes(q);
+      });
+      body.innerHTML='';
+      for (const e of list) {
+        const tr=document.createElement('tr');
+        const p = state.projects.find(p=>p.id===e.projectId);
+        const pname = p?.name || '—'; const cname = p?.clientId? clientName(p.clientId) : '';
+        const startMs = new Date(e.start).getTime(); const endMs = e.end ? new Date(e.end).getTime() : Date.now(); const dur = Math.max(0,endMs-startMs);
+        const amount = e.billable && p? (dur/3600000)*(p.rate||0) : 0;
+        tr.innerHTML = `
+          <td style="font-weight:600">${pname}</td>
+          <td>${cname}</td>
+          <td>${new Date(e.start).toLocaleString()}</td>
+          <td>${e.end ? new Date(e.end).toLocaleString() : '<span class="muted">Em andamento…</span>'}</td>
+          <td class="mono" data-start="${startMs}" ${e.end?'data-end="'+endMs+'"':''}></td>
+          <td>${e.billable? 'Sim':'Não'}</td>
+          <td class="mono">${amount? 'R$ '+amount.toFixed(2): '—'}</td>
+          <td title="${e.note||''}" style="max-width:340px">${(e.note||'')}</td>
+          <td style="text-align:right">
+            <button class="ghost small" data-edit>Editar</button>
+            <button class="ghost small" data-del>Excluir</button>
+          </td>
+        `;
+        tr.querySelector('[data-edit]').onclick = ()=> openEdit(e);
+        tr.querySelector('[data-del]').onclick = ()=> deleteEntry(e.id);
+        body.appendChild(tr);
+      }
+      updateDurations();
+    }
+
+    function updateDurations(){ document.querySelectorAll('td[data-start]').forEach(td=>{ const start = Number(td.dataset.start); const end = td.dataset.end ? Number(td.dataset.end) : Date.now(); td.textContent = fmtMs(end - start); }); renderSummary(); }
+
+    // ===================== Edição =====================
+    let editing = null;
+    function openEdit(entry){
+      editing = JSON.parse(JSON.stringify(entry));
+      const dlg = document.getElementById('editDialog');
+      const sel = document.getElementById('editProject'); sel.innerHTML=''; for (const p of state.projects){ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o); }
+      sel.value = editing.projectId;
+      document.getElementById('editStart').value = toLocalInputValue(editing.start);
+      document.getElementById('editEnd').value = editing.end ? toLocalInputValue(editing.end) : '';
+      document.getElementById('editBillable').checked = !!editing.billable;
+      document.getElementById('editNote').value = editing.note || '';
+      document.getElementById('editError').textContent = '';
+      dlg.showModal();
+      document.getElementById('editForm').onsubmit = (ev)=>{
+        ev.preventDefault();
+        editing.projectId = sel.value;
+        editing.start = fromLocalInputValue(document.getElementById('editStart').value);
+        const endVal = document.getElementById('editEnd').value; editing.end = endVal ? fromLocalInputValue(endVal) : null;
+        editing.billable = document.getElementById('editBillable').checked;
+        if (new Date(editing.end||new Date()).getTime() < new Date(editing.start).getTime()) { document.getElementById('editError').textContent = 'Fim não pode ser antes do início.'; return; }
+        saveEntry(editing); dlg.close();
+      };
+    }
+
+    // ===================== Export/Import =====================
+    function exportJSON(){ const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='greentime-data.json'; a.click(); URL.revokeObjectURL(url); }
+    function exportCSV(){ const rows = [['client','project','project_id','start_iso','end_iso','duration_ms','duration_hours','billable','rate_hr','amount','note']]; for(const e of state.entries){ const p = state.projects.find(x=>x.id===e.projectId); const start = new Date(e.start).getTime(); const end = e.end ? new Date(e.end).getTime() : Date.now(); const dur = Math.max(0, end - start); const amt = e.billable && p? (dur/3600000)*(p.rate||0) : 0; rows.push([p && p.clientId? clientName(p.clientId):'', p? p.name : '', e.projectId, e.start, e.end || '', String(dur), (dur/3600000).toFixed(4), e.billable? '1':'0', p? String(p.rate||0):'0', amt.toFixed(2), (e.note||'').replace(/\n/g,' ') ]);} const csv = rows.map(r=> r.map(v=> /[",\n]/.test(v) ? '"'+String(v).replace(/"/g,'""')+'"' : v).join(',')).join('\n'); const blob = new Blob([csv], {type:'text/csv'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='greentime-data.csv'; a.click(); URL.revokeObjectURL(url); }
+    function exportICS(){ const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//GreenTime//PT-BR']; for(const e of state.entries){ const p=state.projects.find(x=>x.id===e.projectId); if(!p) continue; const dt = (iso)=> iso.replace(/[-:]/g,'').split('.')[0] + 'Z'; const uid = e.id+'@greentime'; const title=(p.name + (p.clientId? ' — '+clientName(p.clientId):'')); if(!e.end) continue; lines.push('BEGIN:VEVENT'); lines.push('UID:'+uid); lines.push('DTSTAMP:'+dt(new Date().toISOString())); lines.push('DTSTART:'+dt(e.start)); lines.push('DTEND:'+dt(e.end)); lines.push('SUMMARY:'+title); if(e.note) lines.push('DESCRIPTION:'+e.note.replace(/\n/g,' ')); lines.push('END:VEVENT'); } lines.push('END:VCALENDAR'); const blob=new Blob([lines.join('\n')],{type:'text/calendar'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='greentime.ics'; a.click(); URL.revokeObjectURL(url); }
+
+    // ===================== Faturas =====================
+    function genInvoice(){
+      const s = document.getElementById('invStart').value; const e = document.getElementById('invEnd').value; if(!s||!e){ alert('Selecione o período.'); return; }
+      const start = new Date(s); const end = new Date(e); end.setHours(23,59,59,999);
+      const cFil = document.getElementById('invClientFilter').value || null;
+      const pFil = document.getElementById('invProjectFilter').value || null;
+      const tax = Number(document.getElementById('invTax').value || 0);
+      const list = entriesInRange(start,end).filter(en=>{ const p=state.projects.find(x=>x.id===en.projectId); if(!p) return false; if(!en.billable) return false; if (cFil && p.clientId!==cFil) return false; if (pFil && p.id!==pFil) return false; return true; });
+      let total=0; const rows=[];
+      for(const en of list){ const p=state.projects.find(x=>x.id===en.projectId); const dur=(new Date(en.end||new Date())-new Date(en.start)); const hrs=dur/3600000; const amt=hrs*(p.rate||0); total+=amt; rows.push({date:new Date(en.start).toLocaleString(), client:p.clientId?clientName(p.clientId):'', project:p.name, hours:hrs.toFixed(2), rate:(p.rate||0).toFixed(2), amount:amt.toFixed(2), note:en.note||''}); }
+      const taxAmt = total*tax/100; const grand = total+taxAmt;
+      const out = document.getElementById('invoiceOut');
+      out.innerHTML = '';
+      const h = document.createElement('div'); h.className='row wrap'; h.innerHTML = `<div style="font-weight:700;font-size:18px">Fatura</div><div style="margin-left:auto" class="mono">Período: ${start.toLocaleDateString()} — ${end.toLocaleDateString()}</div>`; out.appendChild(h);
+      const t = document.createElement('table'); t.innerHTML = '<thead><tr><th>Data</th><th>Cliente</th><th>Projeto</th><th>Horas</th><th>Tarifa</th><th>Valor</th><th>Nota</th></tr></thead>'; const tb=document.createElement('tbody'); for(const r of rows){ const tr=document.createElement('tr'); tr.innerHTML = `<td>${r.date}</td><td>${r.client}</td><td>${r.project}</td><td class="mono">${r.hours}</td><td class="mono">R$ ${r.rate}</td><td class="mono">R$ ${r.amount}</td><td>${r.note}</td>`; tb.appendChild(tr);} t.appendChild(tb); out.appendChild(t);
+      const sct = document.createElement('div'); sct.className='right'; sct.innerHTML = `<div class="pill">Subtotal: <span class="mono" style="margin-left:6px">R$ ${total.toFixed(2)}</span></div><div class="pill">Impostos: <span class="mono" style="margin-left:6px">R$ ${taxAmt.toFixed(2)}</span></div><div class="pill">Total: <span class="mono" style="margin-left:6px">R$ ${grand.toFixed(2)}</span></div>`; out.appendChild(sct);
+    }
+
+    // ===================== Pomodoro =====================
+    let pom = { mode:'idle', // idle|focus|break
+                remaining: settings.pomFocus*60, focus:settings.pomFocus, br:settings.pomBreak, cycles:settings.pomCycles, done:0, timer:null };
+    function renderPomodoroHUD(){ document.getElementById('pomFocus').textContent = pom.focus+' min'; document.getElementById('pomBreak').textContent = pom.br+' min'; document.getElementById('pomCycles').textContent = pom.cycles; document.getElementById('pomState').textContent = pom.mode==='focus'? 'Foco' : pom.mode==='break'? 'Pausa' : 'Pronto'; const mm=String(Math.floor(pom.remaining/60)).padStart(2,'0'); const ss=String(pom.remaining%60).padStart(2,'0'); document.getElementById('pomTime').textContent = `${mm}:${ss}`; }
+    function pomStart(){ if(pom.mode==='idle'){ pom.mode='focus'; pom.remaining=pom.focus*60; const link=document.getElementById('pomLinkTimer').checked; if(link){ const pid=document.getElementById('projectSelect').value; startTimer(pid, 'Pomodoro', true); } } if(pom.timer) clearInterval(pom.timer); pom.timer=setInterval(()=>{ pom.remaining--; if(pom.remaining<=0){ if(pom.mode==='focus'){ // fim foco -> parar timer
+            const link=document.getElementById('pomLinkTimer').checked; if(link){ const run=getRunning(); if(run) stopTimer(); }
+            pom.done++; if(pom.done>=pom.cycles){ notify('Pomodoro concluído!'); pom.mode='idle'; pom.done=0; pom.remaining=pom.focus*60; clearInterval(pom.timer); pom.timer=null; } else { pom.mode='break'; pom.remaining=pom.br*60; notify('Hora da pausa.'); }
+          } else { pom.mode='focus'; pom.remaining=pom.focus*60; notify('Voltar ao foco.'); const link=document.getElementById('pomLinkTimer').checked; if(link){ const pid=document.getElementById('projectSelect').value; startTimer(pid, 'Pomodoro', true); } }
+        renderPomodoroHUD(); }
+      }, 1000); renderPomodoroHUD(); }
+    function pomPause(){ if(pom.timer){ clearInterval(pom.timer); pom.timer=null; } else { pomStart(); } }
+    function pomSkip(){ if(pom.mode==='focus'){ const link=document.getElementById('pomLinkTimer').checked; if(link){ const run=getRunning(); if(run) stopTimer(); } pom.mode='break'; pom.remaining=pom.br*60; } else if(pom.mode==='break'){ pom.mode='focus'; pom.remaining=pom.focus*60; const link=document.getElementById('pomLinkTimer').checked; if(link){ const pid=document.getElementById('projectSelect').value; startTimer(pid, 'Pomodoro', true); } } renderPomodoroHUD(); }
+    function pomReset(){ if(pom.timer){ clearInterval(pom.timer); pom.timer=null; } pom={...pom, mode:'idle', remaining: settings.pomFocus*60, done:0}; renderPomodoroHUD(); }
+    function notify(msg){ if(Notification && Notification.permission==='granted'){ new Notification('GreenTime', { body: msg }); } }
+    if('Notification' in window && Notification.permission==='default'){ try{ Notification.requestPermission(); }catch(_){} }
+
+    // ===================== Tabs & UI =====================
+    let activeTab = 'timer';
+    function switchTab(id){ activeTab=id; document.querySelectorAll('nav.tabs button').forEach(b=> b.classList.toggle('active', b.dataset.tab===id)); document.querySelectorAll('[data-pane]').forEach(p=> p.classList.toggle('hidden', p.getAttribute('data-pane')!==id)); if(id==='reports') renderReports(); if(id==='pomodoro') renderPomodoroHUD(); if(id==='clients') renderClientsPanel(); }
+
+    function renderClientsPanel(){ const box=document.getElementById('clientsList'); box.innerHTML=''; for(const c of state.clients){ const row=document.createElement('div'); row.className='row'; row.style.justifyContent='space-between'; row.style.border='1px solid var(--border)'; row.style.borderRadius='12px'; row.style.padding='10px 12px'; const left=document.createElement('div'); left.textContent=c.name; left.style.fontWeight='600'; const right=document.createElement('div'); right.className='row'; const ed=document.createElement('button'); ed.className='ghost small'; ed.textContent='Renomear'; ed.onclick=()=>{ const nv=prompt('Renomear cliente', c.name); if(nv!=null) renameClient(c.id,nv); }; const del=document.createElement('button'); del.className='ghost small'; del.textContent='Excluir'; del.onclick=()=> deleteClient(c.id); right.appendChild(ed); right.appendChild(del); row.appendChild(left); row.appendChild(right); box.appendChild(row);} }
+
+    // ===================== Eventos =====================
+    function bootstrap(){
+      // Tabs
+      document.getElementById('tabs').addEventListener('click', (e)=>{ const btn=e.target.closest('button[data-tab]'); if(!btn) return; switchTab(btn.dataset.tab); });
+
+      // Tema
+      const togg = ()=>{ const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; setTheme(cur); };
+      document.getElementById('themeToggle').onclick = togg; document.getElementById('themeToggle2').onclick = togg;
+
+      // Projetos
+      document.getElementById('addProjectBtn').onclick = ()=>{ const name=document.getElementById('newProjectName').value; const clientId=document.getElementById('newProjectClient').value||null; const rate=document.getElementById('newProjectRate').value; const budget=document.getElementById('newProjectBudget').value; const billable=document.getElementById('newProjectBillable').checked; addProject({name, clientId, rate, budget, billable}); document.getElementById('newProjectName').value=''; };
+
+      // Clientes
+      document.getElementById('addClientBtn').onclick = ()=>{ const n=document.getElementById('newClientName').value; addClient(n); document.getElementById('newClientName').value=''; };
+
+      // Timer
+      document.getElementById('startBtn').onclick = ()=>{ const pid=document.getElementById('projectSelect').value; const note=document.getElementById('noteInput').value; const bill=document.getElementById('billableInput').checked; startTimer(pid, note, bill); };
+      document.getElementById('stopBtn').onclick = ()=> stopTimer();
+
+      // Export/Import
+      document.getElementById('exportJsonBtn').onclick = exportJSON;
+      document.getElementById('exportCsvBtn').onclick = exportCSV;
+      document.getElementById('exportIcsBtn').onclick = exportICS;
+      document.getElementById('importFile').onchange = (ev)=>{ const f=ev.target.files && ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!Array.isArray(data.projects)||!Array.isArray(data.entries)) throw new Error('formato inválido'); state=data; saveState(); renderAll(); }catch(e){ alert('Arquivo inválido: '+e.message);} }; r.readAsText(f); };
+
+      // Invoice
+      document.getElementById('invGen').onclick = genInvoice; document.getElementById('invPrint').onclick = ()=> window.print();
+
+      // Settings
+      const roundSel = document.getElementById('roundSelect'); roundSel.value = String(settings.roundMinutes); roundSel.onchange = ()=>{ settings.roundMinutes = Number(roundSel.value||0); saveSettings(); };
+      const gD=document.getElementById('goalDailyInp'); const gW=document.getElementById('goalWeeklyInp'); gD.value=settings.goalDaily||0; gW.value=settings.goalWeekly||0; gD.onchange=()=>{ settings.goalDaily=Number(gD.value||0); saveSettings(); }; gW.onchange=()=>{ settings.goalWeekly=Number(gW.value||0); saveSettings(); };
+      const spf=document.getElementById('setPomFocus'); const spb=document.getElementById('setPomBreak'); const spc=document.getElementById('setPomCycles'); spf.value=settings.pomFocus; spb.value=settings.pomBreak; spc.value=settings.pomCycles; [spf,spb,spc].forEach(inp=> inp.onchange=()=>{ settings.pomFocus=Number(spf.value||25); settings.pomBreak=Number(spb.value||5); settings.pomCycles=Number(spc.value||4); saveSettings(); pom.focus=settings.pomFocus; pom.br=settings.pomBreak; pom.cycles=settings.pomCycles; pom.remaining=settings.pomFocus*60; renderPomodoroHUD(); });
+
+      // Pomodoro buttons
+      document.getElementById('pomStart').onclick = pomStart;
+      document.getElementById('pomPause').onclick = pomPause;
+      document.getElementById('pomSkip').onclick = pomSkip;
+      document.getElementById('pomReset').onclick = pomReset;
+
+      // Busca & atalhos
+      const searchEl = document.getElementById('search'); if (searchEl) searchEl.oninput = renderEntries;
+      window.addEventListener('keydown', (e)=>{
+        if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') { e.preventDefault(); const s=document.getElementById('search'); if(s){ switchTab('entries'); s.focus(); } }
+        if (e.key === 'Escape'){ if(document.activeElement && (document.activeElement.tagName==='INPUT'||document.activeElement.tagName==='TEXTAREA')) document.activeElement.blur(); const s=document.getElementById('search'); if(s) s.value='', renderEntries(); }
+        if (e.code === 'Space' && activeTab==='timer'){ e.preventDefault(); const run=getRunning(); if(run) stopTimer(); else { const pid=document.getElementById('projectSelect').value; startTimer(pid, document.getElementById('noteInput').value, document.getElementById('billableInput').checked); } }
+      });
+
+      // Timer tick
+      if (tickHandle) clearInterval(tickHandle);
+      tickHandle = setInterval(()=>{ const run=getRunning(); const el=document.getElementById('elapsed'); if(el) el.textContent = run ? fmtMs(Date.now()-new Date(run.start).getTime()) : '0h 0m 0s'; updateDurations(); }, 1000);
+
+      // Network status
+      const netEl = document.getElementById('netStatus'); const setNet = ()=>{ const off=!navigator.onLine; netEl.style.display = off ? 'inline-block' : 'none'; }; window.addEventListener('online', setNet); window.addEventListener('offline', setNet); setNet();
+
+      // PWA SW
+      if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(()=>{}); }); }
+
+      renderAll();
+    }
+
+    bootstrap();
+  </script>
+</body>
+</html>
