@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenTime — Project Time Tracker</title>
+  <meta name="description" content="Rastreador de tempo por projeto — single-file (HTML+CSS+JS), PWA-lite, Pomodoro, relatórios, clientes, faturas, metas e mais." />
+  <meta name="theme-color" content="#16a34a" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2316a34a'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='36' fill='white'%3E%E2%8F%B1%EF%B8%8F%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --g-50:#f0fdf4; --g-100:#dcfce7; --g-200:#bbf7d0; --g-300:#86efac; --g-600:#16a34a; --g-700:#15803d;
+      --surface:#ffffff; --ink:#0f172a; --muted:#64748b; --border:#e2e8f0; --danger:#b91c1c; --warn:#b45309;
+      --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-10:40px;
+      --radius:12px; --radius-lg:16px; --shadow:0 1px 2px rgba(16,24,40,.06), 0 1px 1px rgba(16,24,40,.03);
+      --fs-xs:12px; --fs-sm:13px; --fs-md:15px; --fs-lg:18px; --fs-xl:22px; --fs-2xl:28px;
+    }
+    html[data-theme="dark"]{
+      --g-50:#052e16; --g-100:#064e3b; --g-200:#065f46; --g-300:#047857; --g-600:#10b981; --g-700:#34d399;
+      --surface:#0b1220; --ink:#e5e7eb; --muted:#9ca3af; --border:#1f2937; --danger:#ef4444; --warn:#f59e0b;
+      background:#0b1220; color:var(--ink);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--g-50);color:var(--ink);-webkit-font-smoothing:antialiased}
+    :focus-visible{outline:2px solid var(--g-600); outline-offset:2px}
+    .container{max-width:1200px;margin:0 auto;padding:var(--sp-4)}
+    header.site{position:sticky;top:0;background:color-mix(in oklab, var(--surface) 90%, transparent);backdrop-filter:saturate(1.1) blur(6px);border-bottom:1px solid var(--border);z-index:10}
+    .brand{display:flex;align-items:center;gap:var(--sp-3)}
+    .brand__logo{width:40px;height:40px;border-radius:14px;background:var(--g-600);display:grid;place-items:center;color:#fff;box-shadow:var(--shadow)}
+    .header-actions{display:flex;align-items:center;gap:var(--sp-3)}
+    .grid{display:grid;gap:var(--sp-4)}
+    @media(min-width:1200px){ .grid{grid-template-columns:320px 1fr} }
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow)}
+    .card__head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-4);border-bottom:1px solid var(--border)}
+    .card__title{margin:0;color:var(--g-700);font-weight:700;font-size:var(--fs-lg)}
+    .card__body{padding:var(--sp-4)}
+    .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:8px 12px;background:var(--g-600);color:#fff;cursor:pointer;transition:transform .06s ease, box-shadow .2s ease}
+    .btn:hover{transform:translateY(-1px)}
+    .btn--ghost{background:transparent;color:var(--g-700);border:1px solid var(--g-300)}
+    .btn--sm{padding:6px 10px;font-size:var(--fs-sm)}
+    .input,.select{height:36px;padding:0 10px;border:1px solid var(--g-300);border-radius:10px;background:var(--surface)}
+    .toolbar{display:flex;gap:var(--sp-3);flex-wrap:wrap}
+    .badge{font-size:var(--fs-xs);color:var(--g-700);background:var(--g-100);border:1px solid var(--g-300);padding:4px 8px;border-radius:999px}
+    .pill{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--g-300);background:var(--surface);border-radius:999px;padding:6px 10px}
+    table{width:100%;border-collapse:separate;border-spacing:0}
+    th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:var(--fs-sm)}
+    tr:hover{background:color-mix(in oklab, var(--g-50) 60%, transparent)}
+    .muted{color:var(--muted)}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .bar{height:10px;background:var(--g-100);border:1px solid var(--g-300);border-radius:6px;overflow:hidden}
+    .bar>div{height:100%;background:var(--g-600)}
+    .row{display:flex;align-items:center;gap:var(--sp-3)}
+    .wrap{flex-wrap:wrap}
+    .hidden{display:none}
+    .tabs{display:flex;gap:8px;border-bottom:1px solid var(--border)}
+    .tab{background:transparent;border:0;border-bottom:2px solid transparent;padding:10px 12px;border-radius:0;color:var(--g-700)}
+    .tab[aria-selected="true"]{border-color:var(--g-600);font-weight:600}
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">⏱️</div>
+        <h1 style="margin:0;font-size:var(--fs-xl);color:var(--g-700)">Project Time Tracker</h1>
+        <span id="netStatus" class="badge" style="margin-left:8px;display:none">Offline</span>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="btn btn--ghost" aria-label="Alternar tema">🌙</button>
+        <span class="badge">Single‑file • Local • Rápido</span>
+      </div>
+    </div>
+    <div class="container" style="padding-top:0">
+      <div role="tablist" aria-label="Navegação" class="tabs" id="tabs">
+        <button role="tab" class="tab" id="tab-timer" aria-controls="panel-timer" aria-selected="true" data-tab="timer">Timer</button>
+        <button role="tab" class="tab" id="tab-entries" aria-controls="panel-entries" aria-selected="false" data-tab="entries">Entradas</button>
+        <button role="tab" class="tab" id="tab-reports" aria-controls="panel-reports" aria-selected="false" data-tab="reports">Relatórios</button>
+        <button role="tab" class="tab" id="tab-pomodoro" aria-controls="panel-pomodoro" aria-selected="false" data-tab="pomodoro">Pomodoro</button>
+        <button role="tab" class="tab" id="tab-clients" aria-controls="panel-clients" aria-selected="false" data-tab="clients">Clientes</button>
+        <button role="tab" class="tab" id="tab-invoices" aria-controls="panel-invoices" aria-selected="false" data-tab="invoices">Faturas</button>
+        <button role="tab" class="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" data-tab="settings">Config.</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container grid" id="main">
+    <aside aria-label="Projetos e Resumo">
+      <section class="card" aria-labelledby="h-projects">
+        <div class="card__head"><h2 id="h-projects" class="card__title">Projetos</h2></div>
+        <div class="card__body">
+          <div class="toolbar wrap" style="margin-bottom:var(--sp-3)">
+            <input id="newProjectName" class="input" placeholder="Novo projeto" style="flex:1" />
+            <select id="newProjectClient" class="select" title="Cliente (opcional)"></select>
+            <input id="newProjectRate" class="input" type="number" step="0.01" placeholder="R$/h" style="width:110px" />
+            <input id="newProjectBudget" class="input" type="number" step="0.1" placeholder="Orçamento (h)" style="width:140px" />
+            <label class="row" style="gap:6px"><input type="checkbox" id="newProjectBillable" checked /> Billable</label>
+            <button id="addProjectBtn" class="btn">Adicionar</button>
+          </div>
+          <div id="projectsList" style="display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto" aria-live="polite"></div>
+        </div>
+      </section>
+      <section class="card" aria-labelledby="h-summary" style="margin-top:var(--sp-4)">
+        <div class="card__head"><h2 id="h-summary" class="card__title">Resumo</h2></div>
+        <div class="card__body"><div id="summary"></div></div>
+      </section>
+    </aside>
+
+    <section id="panels" style="display:flex;flex-direction:column;gap:var(--sp-4)">
+      <section id="panel-timer" role="tabpanel" aria-labelledby="tab-timer" class="card">
+        <div class="card__head"><h2 class="card__title">Timer</h2></div>
+        <div class="card__body">
+          <div class="row wrap">
+            <div style="flex:1;min-width:220px">
+              <div class="muted" style="font-size:var(--fs-xs)">Projeto ativo</div>
+              <select id="projectSelect" class="select" style="width:100%"></select>
+            </div>
+            <input id="noteInput" class="input" placeholder="Nota (use #tags)" style="flex:1;min-width:220px" />
+            <label class="row" style="gap:6px"><input type="checkbox" id="billableInput" checked /> Billable</label>
+            <div class="row">
+              <button id="startBtn" class="btn">Iniciar</button>
+              <button id="stopBtn" class="btn btn--ghost">Parar</button>
+              <div class="pill"><span class="muted" style="font-size:var(--fs-xs)">Decorrido</span> <span id="elapsed" class="mono">0h 0m 0s</span></div>
+            </div>
+          </div>
+          <div class="row wrap" style="margin-top:var(--sp-3)">
+            <div class="pill">Templates: <button class="btn btn--ghost btn--sm" data-tpl="Deep Work #focus">Deep Work</button><button class="btn btn--ghost btn--sm" data-tpl="Standup #daily">Standup</button><button class="btn btn--ghost btn--sm" data-tpl="Reunião #meeting">Reunião</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-entries" role="tabpanel" aria-labelledby="tab-entries" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Lançamentos de tempo</h2></div>
+        <div class="card__body">
+          <div class="toolbar wrap" style="margin-bottom:var(--sp-3)">
+            <input id="search" class="input" placeholder="Filtrar por projeto, nota ou #tag…" style="flex:1;min-width:220px" />
+            <div class="pill">Período: 
+              <button class="btn btn--ghost btn--sm" data-range="today">Hoje</button>
+              <button class="btn btn--ghost btn--sm" data-range="week">Semana</button>
+              <button class="btn btn--ghost btn--sm" data-range="month">Mês</button>
+              <input type="date" id="rangeStart" class="input" />
+              <input type="date" id="rangeEnd" class="input" />
+            </div>
+            <button class="btn btn--ghost btn--sm" id="exportJsonBtn">JSON</button>
+            <button class="btn btn--ghost btn--sm" id="exportCsvBtn">CSV</button>
+            <button class="btn btn--ghost btn--sm" id="exportIcsBtn">ICS</button>
+            <label class="btn btn--ghost btn--sm" for="importFile">Importar JSON</label>
+            <input id="importFile" type="file" accept="application/json" style="display:none" />
+          </div>
+          <div class="toolbar wrap" style="margin-bottom:var(--sp-3)">
+            <button class="btn btn--ghost btn--sm" id="selectAll">Selecionar tudo</button>
+            <button class="btn btn--ghost btn--sm" id="bulkDelete">Apagar selecionados</button>
+            <button class="btn btn--ghost btn--sm" id="bulkMerge">Mesclar (contíguos mesmo projeto)</button>
+            <span id="undoArea" class="hidden"><button class="btn btn--ghost btn--sm" id="undoBtn">Desfazer</button></span>
+          </div>
+          <div style="border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+            <table aria-label="Tabela de lançamentos">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="checkAll" /></th>
+                  <th data-sort="project" class="sortable">Projeto</th>
+                  <th>Cliente</th>
+                  <th data-sort="start" class="sortable">Início</th>
+                  <th>Fim</th>
+                  <th data-sort="dur" class="sortable">Duração</th>
+                  <th>Billable</th>
+                  <th>Valor</th>
+                  <th>Nota</th>
+                  <th style="text-align:right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="entriesBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-reports" role="tabpanel" aria-labelledby="tab-reports" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Relatórios</h2></div>
+        <div class="card__body">
+          <div class="row wrap" style="margin-bottom:var(--sp-3)">
+            <div class="pill">Hoje: <span id="todayTotal" class="mono" style="margin-left:6px"></span></div>
+            <div class="pill">Semana: <span id="weekRange" class="mono" style="margin-left:6px"></span> • <span id="weekTotal" class="mono"></span></div>
+            <div class="pill">Mês: <span id="monthLabel" class="mono" style="margin-left:6px"></span> • <span id="monthTotal" class="mono"></span></div>
+            <div class="pill">Meta semanal: <span id="goalWeekly" class="mono" style="margin-left:6px"></span> • <span id="goalStatus" class="mono"></span></div>
+            <div class="pill">Streak: <span id="streak" class="mono" style="margin-left:6px"></span></div>
+          </div>
+          <h3 style="margin:0 0 8px;color:var(--g-700);font-size:var(--fs-md)">Por dia (semana)</h3>
+          <div id="weekByDay" style="margin-bottom:var(--sp-4)"></div>
+          <h3 style="margin:0 0 8px;color:var(--g-700);font-size:var(--fs-md)">Por projeto (mês)</h3>
+          <div id="monthByProject" style="margin-bottom:var(--sp-4)"></div>
+          <h3 style="margin:0 0 8px;color:var(--g-700);font-size:var(--fs-md)">Tags mais usadas (mês)</h3>
+          <div id="topTags"></div>
+        </div>
+      </section>
+
+      <section id="panel-pomodoro" role="tabpanel" aria-labelledby="tab-pomodoro" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Pomodoro</h2></div>
+        <div class="card__body">
+          <div class="row wrap">
+            <div class="pill">Foco: <span id="pomFocus" class="mono" style="margin-left:6px"></span> • Pausa: <span id="pomBreak" class="mono"></span> • Ciclos: <span id="pomCycles" class="mono"></span></div>
+            <div class="pill">Estado: <span id="pomState" class="mono" style="margin-left:6px">Pronto</span></div>
+            <div class="pill mono" style="font-size:22px" id="pomTime">00:00</div>
+            <label class="row" style="gap:6px"><input type="checkbox" id="pomLinkTimer" checked /> Vincular ao timer principal</label>
+            <div class="row">
+              <button id="pomStart" class="btn">Iniciar</button>
+              <button id="pomPause" class="btn btn--ghost">Pausar</button>
+              <button id="pomSkip" class="btn btn--ghost">Pular</button>
+              <button id="pomReset" class="btn btn--ghost">Resetar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-clients" role="tabpanel" aria-labelledby="tab-clients" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Clientes</h2></div>
+        <div class="card__body">
+          <div class="toolbar wrap" style="margin-bottom:var(--sp-3)">
+            <input id="newClientName" class="input" placeholder="Novo cliente" style="flex:1" />
+            <button id="addClientBtn" class="btn">Adicionar</button>
+          </div>
+          <div id="clientsList" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+      </section>
+
+      <section id="panel-invoices" role="tabpanel" aria-labelledby="tab-invoices" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Faturas (imprima em PDF)</h2></div>
+        <div class="card__body">
+          <div class="toolbar wrap" style="margin-bottom:var(--sp-3)">
+            <label>Período: <input type="date" id="invStart" class="input"> a <input type="date" id="invEnd" class="input"></label>
+            <select id="invClientFilter" class="select"></select>
+            <select id="invProjectFilter" class="select"></select>
+            <input type="number" step="0.01" id="invTax" class="input" placeholder="Imposto %" style="width:120px" />
+            <button class="btn btn--ghost" id="invGen">Gerar</button>
+            <button class="btn" id="invPrint">Imprimir/Salvar PDF</button>
+          </div>
+          <div id="invoiceOut"></div>
+        </div>
+      </section>
+
+      <section id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" class="card hidden">
+        <div class="card__head"><h2 class="card__title">Configurações</h2></div>
+        <div class="card__body">
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Tema</label>
+            <button class="btn btn--ghost" id="themeToggle2">Alternar tema</button>
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Arredondar ao parar o timer</label>
+            <select id="roundSelect" class="select">
+              <option value="0">Sem arredondamento</option>
+              <option value="5">5 minutos</option>
+              <option value="15">15 minutos</option>
+            </select>
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Meta diária (h)</label>
+            <input type="number" step="0.1" id="goalDailyInp" class="input" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Meta semanal (h)</label>
+            <input type="number" step="0.1" id="goalWeeklyInp" class="input" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Moeda (código ISO)</label>
+            <input id="currencyInp" class="input" placeholder="BRL" style="width:120px" />
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Ocioso: pausar após (min)</label>
+            <input type="number" id="idleInp" class="input" placeholder="0 = desativado" style="width:160px" />
+          </div>
+          <div class="row" style="margin-bottom:var(--sp-3)">
+            <label style="width:240px">Pomodoro — foco / pausa / ciclos</label>
+            <input type="number" id="setPomFocus" class="input" style="width:90px" />
+            <input type="number" id="setPomBreak" class="input" style="width:90px" />
+            <input type="number" id="setPomCycles" class="input" style="width:90px" />
+          </div>
+          <p class="muted">Atalhos: <span class="mono">/</span> busca • <span class="mono">Espaço</span> iniciar/parar • <span class="mono">Esc</span> limpar • ←/→ troca abas.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="container" style="text-align:center;padding:var(--sp-6) 0;font-size:var(--fs-xs);color:var(--muted)">Single‑file 💚. Dados no seu navegador (localStorage). PWA‑lite (manifest inline). Offline completo requer <code>sw.js</code> externo.</footer>
+
+  <dialog id="editDialog" aria-labelledby="dlgTitle">
+    <form method="dialog" id="editForm">
+      <div class="card__body">
+        <h2 id="dlgTitle" style="margin:0 0 var(--sp-3);color:var(--g-700)">Editar lançamento</h2>
+        <div class="row" style="margin-bottom:var(--sp-2)">
+          <label style="width:90px">Projeto</label>
+          <select id="editProject" class="select" style="flex:1"></select>
+        </div>
+        <div class="row" style="margin-bottom:var(--sp-2)">
+          <label style="width:90px">Início</label>
+          <input type="datetime-local" id="editStart" class="input" style="flex:1" />
+        </div>
+        <div class="row" style="margin-bottom:var(--sp-2)">
+          <label style="width:90px">Fim</label>
+          <input type="datetime-local" id="editEnd" class="input" style="flex:1" />
+        </div>
+        <div class="row" style="margin-bottom:var(--sp-2)">
+          <label style="width:90px">Billable</label>
+          <input type="checkbox" id="editBillable" />
+        </div>
+        <div class="row" style="margin-bottom:var(--sp-2)">
+          <label style="width:90px">Nota</label>
+          <input id="editNote" class="input" style="flex:1" />
+        </div>
+        <div id="editError" class="muted" style="color:var(--danger)"></div>
+        <div class="row" style="justify-content:flex-end;margin-top:var(--sp-3)">
+          <button class="btn btn--ghost" value="cancel">Cancelar</button>
+          <button class="btn" value="default">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Inline manifest (data URL) for single-file installability -->
+  <script id="app-manifest" type="application/json">{
+    "name":"GreenTime — Project Time Tracker",
+    "short_name":"GreenTime",
+    "start_url":"./?source=pwa",
+    "display":"standalone",
+    "theme_color":"#16a34a",
+    "background_color":"#f0fdf4",
+    "icons":[
+      {"src":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==","sizes":"192x192","type":"image/png"},
+      {"src":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==","sizes":"512x512","type":"image/png"}
+    ]
+  }</script>
+
+  <script>
+  // ============== Helpers & Intl ==============
+  const $$ = (id)=> document.getElementById(id);
+  const pad = (n)=> String(n).padStart(2,'0');
+  const fmtMs = (ms)=>{ const t=Math.max(0,Math.floor(ms/1000)); const h=Math.floor(t/3600); const m=Math.floor((t%3600)/60); const s=t%60; return `${h}h ${m}m ${s}s`; };
+  const toLocalInput = (iso)=>{ const d=new Date(iso); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}` };
+  const fromLocalInput = (v)=> new Date(v).toISOString();
+  const parseTags = (txt='')=> (txt.match(/#([\p{L}\p{N}_-]+)/gu)||[]).map(t=>t.toLowerCase());
+
+  // ============== Store (single-file) ==============
+  const LS_DATA='gt_data_v5';
+  const LS_SETTINGS='gt_settings_v4';
+  const LS_THEME='gt_theme';
+  let settings = { roundMinutes:0, goalDaily:0, goalWeekly:0, pomFocus:25, pomBreak:5, pomCycles:4, currency:'BRL', idleMinutes:0 };
+  let state = { clients:[], projects:[{id:uid(), name:'Geral', clientId:null, rate:0, billableDefault:true, budgetHours:0, archived:false}], entries:[] };
+  try{ const s=localStorage.getItem(LS_DATA); if(s) state=JSON.parse(s);}catch{}
+  try{ const s=localStorage.getItem(LS_SETTINGS); if(s) settings={...settings, ...JSON.parse(s)};}catch{}
+  try{ const th=localStorage.getItem(LS_THEME); if(th) document.documentElement.setAttribute('data-theme', th);}catch{}
+  const save=()=> localStorage.setItem(LS_DATA, JSON.stringify(state));
+  const saveSettings=()=> localStorage.setItem(LS_SETTINGS, JSON.stringify(settings));
+  const setTheme=(t)=>{ document.documentElement.setAttribute('data-theme', t); localStorage.setItem(LS_THEME, t); };
+  const money=()=> new Intl.NumberFormat('pt-BR', { style:'currency', currency: settings.currency||'BRL' });
+  const dt = new Intl.DateTimeFormat('pt-BR', { dateStyle:'short', timeStyle:'short' });
+
+  // ============== Domain logic ==============
+  const getRunning = ()=> state.entries.find(e=>e.end===null) || null;
+  const stopAll = ()=>{ const now=new Date().toISOString(); state.entries = state.entries.map(e=> e.end===null ? ({...e,end:now}) : e ); };
+  const roundDate=(iso,min)=>{ if(!min) return iso; const d=new Date(iso); const ms=min*60*1000; return new Date(Math.round(d.getTime()/ms)*ms).toISOString(); };
+  const startTimer=(projectId, note='', billable=true)=>{ stopAll(); state.entries.push({id:uid(), projectId, start:new Date().toISOString(), end:null, note, billable}); save(); renderAll(); };
+  const stopTimer=()=>{ const run=getRunning(); if(!run) return; let endIso=new Date().toISOString(); let finalEnd=settings.roundMinutes? roundDate(endIso,settings.roundMinutes) : endIso; if(+new Date(finalEnd) < +new Date(run.start)) finalEnd=run.start; state.entries=state.entries.map(e=> e.end===null? ({...e,end:finalEnd}) : e); save(); renderAll(); };
+  const totalsByProject=(list=null)=>{ const map=new Map(); const L=list||state.entries; const now=Date.now(); for(const e of L){ const s=+new Date(e.start); const en=e.end? +new Date(e.end): now; const d=Math.max(0,en-s); map.set(e.projectId,(map.get(e.projectId)||0)+d);} return map; };
+
+  // ============== Ranges & Filters ==============
+  const startOfWeek=(d=new Date())=>{ const x=new Date(d); const day=(x.getDay()+6)%7; x.setHours(0,0,0,0); x.setDate(x.getDate()-day); return x; };
+  const endOfWeek=(d=new Date())=>{ const s=startOfWeek(d); const e=new Date(s); e.setDate(e.getDate()+7); return e; };
+  const startOfMonth=(d=new Date())=>{ const x=new Date(d.getFullYear(), d.getMonth(), 1); x.setHours(0,0,0,0); return x; };
+  const endOfMonth=(d=new Date())=>{ const x=new Date(d.getFullYear(), d.getMonth()+1, 1); x.setHours(0,0,0,0); return x; };
+  const entriesInRange=(start,end)=> state.entries.filter(e=> new Date(e.start) < end && new Date(e.end||new Date()) > start );
+
+  // ============== UI Rendering ==============
+  function renderAll(){ renderClientsSelects(); renderProjects(); renderSummary(); renderTimerSelect(); renderEntries(); if(activeTab==='reports') renderReports(); renderPomodoroHUD(); }
+  function clientName(id){ const c=state.clients.find(x=>x.id===id); return c? c.name : ''; }
+
+  function renderClientsSelects(){ const sel=$$('newProjectClient'); sel.innerHTML='<option value="">Cliente (opcional)</option>'; for(const c of state.clients){ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; sel.appendChild(o);} const csel=$$('invClientFilter'); if(csel){ csel.innerHTML='<option value="">Todos os clientes</option>'; for(const c of state.clients){ const o=document.createElement('option'); o.value=c.id; o.textContent=c.name; csel.appendChild(o);} } const psel=$$('invProjectFilter'); if(psel){ psel.innerHTML='<option value="">Todos os projetos</option>'; for(const p of state.projects){ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; psel.appendChild(o);} } }
+
+  function renderProjects(){ const list=$$('projectsList'); list.innerHTML=''; const totals=totalsByProject(); const running=getRunning(); for(const p of state.projects){ const row=document.createElement('div'); row.className='row'; row.style.justifyContent='space-between'; row.style.border='1px solid var(--border)'; row.style.borderRadius='var(--radius)'; row.style.padding='10px 12px'; const left=document.createElement('div'); left.className='row'; const dot=document.createElement('div'); dot.style.width='10px'; dot.style.height='10px'; dot.style.borderRadius='999px'; dot.style.background=(running && running.projectId===p.id)?'var(--g-600)':'var(--g-300)'; left.appendChild(dot); const name=document.createElement('span'); name.textContent=p.name + (p.clientId? ` — ${clientName(p.clientId)}` : ''); name.style.fontWeight='600'; left.appendChild(name); if(p.archived){ const a=document.createElement('span'); a.className='badge'; a.textContent='Arquivado'; left.appendChild(a);} if(p.budgetHours>0){ const usedH=(totals.get(p.id)||0)/3600000; const pct=usedH/p.budgetHours; if(pct>=0.8){ const warn=document.createElement('span'); warn.className='badge'; warn.style.color='var(--warn)'; warn.textContent=pct>=1?'Orçamento estourado':'≥80% do orçamento'; left.appendChild(warn);} }
+    row.appendChild(left);
+    const right=document.createElement('div'); right.className='row'; if(p.rate){ const rate=document.createElement('span'); rate.className='muted mono'; rate.textContent= money().format(Number(p.rate)); right.appendChild(rate); }
+    const act=document.createElement('button'); const isRun=(running && running.projectId===p.id); act.className=isRun?'btn':'btn btn--ghost'; act.textContent=isRun?'Parar':'Iniciar'; act.onclick=()=>{ if(isRun) stopTimer(); else { const b=$$('billableInput').checked; startTimer(p.id, $$('noteInput').value, b);} }; right.appendChild(act);
+    const cfg=document.createElement('button'); cfg.className='btn btn--ghost btn--sm'; cfg.textContent='Config'; cfg.onclick=()=> editProjectDialog(p); right.appendChild(cfg);
+    const arch=document.createElement('button'); arch.className='btn btn--ghost btn--sm'; arch.textContent=p.archived?'Reativar':'Arquivar'; arch.onclick=()=>{ p.archived=!p.archived; save(); renderAll(); }; right.appendChild(arch);
+    const del=document.createElement('button'); del.className='btn btn--ghost btn--sm'; del.textContent='Excluir'; del.onclick=()=>{ const has=state.entries.some(e=>e.projectId===p.id); if(has) return alert('Há lançamentos neste projeto.'); state.projects=state.projects.filter(x=>x.id!==p.id); save(); renderAll(); }; right.appendChild(del);
+    const sum=document.createElement('span'); sum.className='muted mono'; sum.textContent=fmtMs(totals.get(p.id)||0); right.appendChild(sum);
+    row.appendChild(right); list.appendChild(row);} }
+
+  function editProjectDialog(p){ const nvRate = prompt('Tarifa '+(settings.currency||'BRL')+'/h', p.rate||0); if(nvRate==null) return; const nvBudget = prompt('Orçamento em horas (0 para nenhum)', p.budgetHours||0); if(nvBudget==null) return; const bill = confirm('Billable por padrão? OK=Sim / Cancelar=Não'); const client = prompt('Cliente (nome exato ou deixe em branco)', p.clientId? clientName(p.clientId): ''); let clientId=p.clientId; if(client && !state.clients.some(c=> c.name===client)){ const c={id:uid(), name:client}; state.clients.push(c); clientId=c.id; } else if(client){ clientId= state.clients.find(c=>c.name===client).id; } state.projects = state.projects.map(x=> x.id===p.id? {...x, rate:Number(nvRate||0), budgetHours:Number(nvBudget||0), billableDefault:bill, clientId} : x); save(); renderAll(); }
+
+  function renderTimerSelect(){ const sel=$$('projectSelect'); sel.innerHTML=''; for(const p of state.projects.filter(p=>!p.archived)){ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o);} if(state.projects.find(p=>!p.archived)) sel.value=state.projects.find(p=>!p.archived).id; const prj=state.projects.find(x=>x.id===sel.value); $$('billableInput').checked = prj? !!prj.billableDefault : true; sel.onchange=()=>{ const prj2=state.projects.find(x=>x.id===sel.value); $$('billableInput').checked = prj2? !!prj2.billableDefault : true; } }
+
+  function renderSummary(){ const box=$$('summary'); box.innerHTML=''; const totals=totalsByProject(); const max=Math.max(1, ...Array.from(totals.values())); for(const p of state.projects){ const ms=totals.get(p.id)||0; const hr=(ms/3600000).toFixed(2); const billableMs = state.entries.filter(e=> e.projectId===p.id && e.billable).reduce((a,e)=> a + (+new Date(e.end||new Date()) - +new Date(e.start)), 0); const amount = (billableMs/3600000) * (p.rate||0); const row=document.createElement('div'); row.style.marginBottom='10px'; const top=document.createElement('div'); top.className='row'; top.style.justifyContent='space-between'; const label=document.createElement('div'); label.textContent=p.name; label.style.fontWeight='600'; const qty=document.createElement('div'); qty.innerHTML = `<span class="mono">${hr} h</span>${p.rate? ` • <span class='mono'>${money().format(amount)}</span>`:''}`; qty.className='muted'; top.appendChild(label); top.appendChild(qty); row.appendChild(top); const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(ms/max*100)+'%'; bar.appendChild(fill); row.appendChild(bar); box.appendChild(row);} }
+
+  // ======= Entries (sorting, selection, bulk) =======
+  let sortBy='start'; let sortDir='desc';
+  const selected = new Set(); let lastTrash=[]; let undoTimer=null;
+  function renderEntries(){ const body=$$('entriesBody'); if(!body) return; const q=($$('search').value||'').toLowerCase().trim(); const rs=$$('rangeStart').value; const re=$$('rangeEnd').value; let start=null,end=null; if(rs){ start=new Date(rs); start.setHours(0,0,0,0);} if(re){ end=new Date(re); end.setHours(23,59,59,999);} let list=state.entries.slice(); if(start&&end) list=list.filter(e=> new Date(e.start) <= end && new Date(e.end||new Date()) >= start); list=list.filter(e=>{ const p=state.projects.find(p=>p.id===e.projectId)||{}; const pname=(p.name||'').toLowerCase(); const cname=(p.clientId? clientName(p.clientId).toLowerCase(): ''); const note=(e.note||'').toLowerCase(); const tags=parseTags(e.note).join(' '); return !q || pname.includes(q) || cname.includes(q) || note.includes(q) || tags.includes(q); }); list.sort((a,b)=>{ if(sortBy==='start'){ return sortDir==='desc'? (+new Date(b.start) - +new Date(a.start)) : (+new Date(a.start) - +new Date(b.start)); } if(sortBy==='dur'){ const da=(+new Date(a.end||new Date()))-(+new Date(a.start)); const db=(+new Date(b.end||new Date()))-(+new Date(b.start)); return sortDir==='desc'? (db-da):(da-db);} if(sortBy==='project'){ const pa=(state.projects.find(p=>p.id===a.projectId)?.name||''); const pb=(state.projects.find(p=>p.id===b.projectId)?.name||''); return sortDir==='desc'? pb.localeCompare(pa): pa.localeCompare(pb);} return 0; });
+    body.innerHTML=''; for(const e of list){ const p=state.projects.find(p=>p.id===e.projectId)||{}; const startMs=+new Date(e.start); const endMs=e.end? +new Date(e.end) : Date.now(); const dur=Math.max(0,endMs-startMs); const amount = e.billable && p? (dur/3600000)*(p.rate||0) : 0; const tr=document.createElement('tr'); const ckId='ck_'+e.id; tr.innerHTML=`
+      <td><input type="checkbox" id="${ckId}" ${selected.has(e.id)?'checked':''}></td>
+      <td style="font-weight:600">${p.name||'—'}</td>
+      <td>${p.clientId? clientName(p.clientId): ''}</td>
+      <td>${dt.format(new Date(e.start))}</td>
+      <td>${e.end? dt.format(new Date(e.end)) : '<span class="muted">Em andamento…</span>'}</td>
+      <td class="mono">${fmtMs(dur)}</td>
+      <td>${e.billable? 'Sim':'Não'}</td>
+      <td class="mono">${amount? money().format(amount) : '—'}</td>
+      <td title="${(e.note||'').replace(/"/g,'&quot;')}">${(e.note||'')}</td>
+      <td style="text-align:right">
+        <button class="btn btn--ghost btn--sm" data-dup>Duplicar</button>
+        <button class="btn btn--ghost btn--sm" data-edit>Editar</button>
+        <button class="btn btn--ghost btn--sm" data-del>Excluir</button>
+      </td>`;
+    tr.querySelector('#'+ckId).onchange=(ev)=>{ ev.target.checked? selected.add(e.id): selected.delete(e.id); };
+    tr.querySelector('[data-edit]').onclick=()=> openEdit(e);
+    tr.querySelector('[data-del]').onclick=()=> { lastTrash=[e]; state.entries=state.entries.filter(x=>x.id!==e.id); save(); showUndo(); renderEntries(); };
+    tr.querySelector('[data-dup]').onclick=()=>{ const copy={...e, id:uid()}; state.entries.push(copy); save(); renderEntries(); };
+    body.appendChild(tr);} }
+
+  function showUndo(){ clearTimeout(undoTimer); $$('undoArea').classList.remove('hidden'); undoTimer=setTimeout(()=> $$('undoArea').classList.add('hidden'), 8000); }
+
+  // ======= Reports =======
+  function renderReports(){ const today=new Date(); today.setHours(0,0,0,0); const todayEnd=new Date(today); todayEnd.setDate(today.getDate()+1); const todays=entriesInRange(today,todayEnd); const tms=todays.reduce((a,e)=> a + (+new Date(e.end||new Date()) - +new Date(e.start)), 0); $$('todayTotal').textContent=(tms/3600000).toFixed(2)+' h'; const sW=startOfWeek(); const eW=endOfWeek(); $$('weekRange').textContent = sW.toLocaleDateString() + ' — ' + new Date(eW.getTime()-1).toLocaleDateString(); const listW=entriesInRange(sW,eW); const wms=listW.reduce((a,e)=> a + (+new Date(e.end||new Date()) - +new Date(e.start)), 0); $$('weekTotal').textContent=(wms/3600000).toFixed(2)+' h'; const sM=startOfMonth(); const eM=endOfMonth(); $$('monthLabel').textContent = sM.toLocaleDateString(undefined,{month:'long', year:'numeric'}); const listM=entriesInRange(sM,eM); const mms=listM.reduce((a,e)=> a + (+new Date(e.end||new Date()) - +new Date(e.start)), 0); $$('monthTotal').textContent=(mms/3600000).toFixed(2)+' h'; $$('goalWeekly').textContent=(settings.goalWeekly||0).toFixed(1)+' h'; $$('goalStatus').textContent = (wms/3600000)>= (settings.goalWeekly||0) ? '✅ atingida' : '⏳ em progresso'; $$('streak').textContent = computeStreak(settings.goalDaily||0) + ' dias'; // semana por dia
+    const byDay=Array(7).fill(0); const dayLabel=['Seg','Ter','Qua','Qui','Sex','Sáb','Dom']; for(const e of listW){ const st=new Date(Math.max(+new Date(e.start), +sW)); const en=new Date(Math.min(+new Date(e.end||new Date()), +eW)); let cur=new Date(st); while(cur<en){ const idx=(cur.getDay()+6)%7; const endOfCur=new Date(cur); endOfCur.setHours(23,59,59,999); const sliceEnd=new Date(Math.min(+endOfCur, +en)); byDay[idx]+= +sliceEnd - +cur; cur=new Date(+sliceEnd+1); } } const contDay=$$('weekByDay'); contDay.innerHTML=''; const mx=Math.max(1,...byDay); for(let i=0;i<7;i++){ const row=document.createElement('div'); row.style.marginBottom='8px'; const top=document.createElement('div'); top.className='row'; top.style.justifyContent='space-between'; const lb=document.createElement('div'); lb.textContent=dayLabel[i]; lb.style.fontWeight='600'; const qty=document.createElement('div'); qty.className='mono muted'; qty.textContent=(byDay[i]/3600000).toFixed(2)+' h'; top.appendChild(lb); top.appendChild(qty); row.appendChild(top); const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(byDay[i]/mx*100)+'%'; bar.appendChild(fill); row.appendChild(bar); contDay.appendChild(row);} // Por projeto mês
+    const map=totalsByProject(listM); const contProj=$$('monthByProject'); contProj.innerHTML=''; const maxp=Math.max(1, ...Array.from(map.values())); for(const p of state.projects){ const ms=map.get(p.id)||0; if(!ms) continue; const row=document.createElement('div'); row.style.marginBottom='8px'; const top=document.createElement('div'); top.className='row'; top.style.justifyContent='space-between'; const lb=document.createElement('div'); lb.textContent=p.name + (p.clientId? ` — ${clientName(p.clientId)}` : ''); lb.style.fontWeight='600'; const qty=document.createElement('div'); qty.className='mono muted'; qty.textContent=(ms/3600000).toFixed(2)+' h'; top.appendChild(lb); top.appendChild(qty); row.appendChild(top); const bar=document.createElement('div'); bar.className='bar'; const fill=document.createElement('div'); fill.style.width=(ms/maxp*100)+'%'; bar.appendChild(fill); row.appendChild(bar); contProj.appendChild(row);} // Tags
+    const tagCount=new Map(); for(const e of listM){ for(const t of parseTags(e.note)) tagCount.set(t,(tagCount.get(t)||0)+1); } const contTags=$$('topTags'); contTags.innerHTML=''; const top=Array.from(tagCount.entries()).sort((a,b)=>b[1]-a[1]).slice(0,12); if(top.length===0){ contTags.innerHTML='<span class="muted">Sem tags neste mês.</span>'; } else { for(const [t,c] of top){ const span=document.createElement('span'); span.className='badge'; span.textContent = `#${t} (${c})`; contTags.appendChild(span);} } }
+
+  function computeStreak(goalDaily){ if(!goalDaily) return 0; let streak=0; let day=new Date(); day.setHours(0,0,0,0); for(;;){ const next=new Date(day); next.setDate(day.getDate()+1); const list=entriesInRange(day,next); const ms=list.reduce((a,e)=> a + (+new Date(e.end||new Date()) - +new Date(e.start)), 0); if (ms/3600000 >= goalDaily) { streak++; day.setDate(day.getDate()-1);} else break; } return streak; }
+
+  // ======= Edit Dialog =======
+  function openEdit(entry){ const dlg=$$('editDialog'); const local=JSON.parse(JSON.stringify(entry)); const sel=$$('editProject'); sel.innerHTML=''; for(const p of state.projects){ const o=document.createElement('option'); o.value=p.id; o.textContent=p.name; sel.appendChild(o);} sel.value=local.projectId; $$('editStart').value=toLocalInput(local.start); $$('editEnd').value= local.end? toLocalInput(local.end): ''; $$('editBillable').checked= !!local.billable; $$('editNote').value= local.note||''; $$('editError').textContent=''; dlg.showModal(); $$('editForm').onsubmit=(ev)=>{ ev.preventDefault(); local.projectId=sel.value; local.start=fromLocalInput($$('editStart').value); const endVal=$$('editEnd').value; local.end= endVal? fromLocalInput(endVal): null; local.billable= $$('editBillable').checked; if (+new Date(local.end||new Date()) < +new Date(local.start)){ $$('editError').textContent='Fim não pode ser antes do início.'; return; } state.entries=state.entries.map(e=> e.id===local.id? local: e); save(); dlg.close(); renderEntries(); }; }
+
+  // ======= Export/Import =======
+  const download=(name,data,type)=>{ const blob=new Blob([data],{type}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; a.click(); URL.revokeObjectURL(url); };
+  function exportJSON(){ download('greentime-data.json', JSON.stringify(state,null,2), 'application/json'); }
+  function exportCSV(){ const rows=[[ 'client','project','project_id','start_iso','end_iso','duration_ms','duration_hours','billable','rate_hr','amount','note']]; for(const e of state.entries){ const p=state.projects.find(x=>x.id===e.projectId)||{}; const s=+new Date(e.start); const en=e.end? +new Date(e.end): Date.now(); const dur=Math.max(0,en-s); const amt=e.billable && p? (dur/3600000)*(p.rate||0) : 0; rows.push([p.clientId? clientName(p.clientId):'', p.name||'', e.projectId, e.start, e.end||'', String(dur), (dur/3600000).toFixed(4), e.billable?'1':'0', p.rate? String(p.rate):'0', amt.toFixed(2), (e.note||'').replace(/\n/g,' ') ]);} const csv=rows.map(r=> r.map(v=> /[",\n]/.test(v) ? '"'+String(v).replace(/"/g,'""')+'"' : v).join(',')).join('\n'); download('greentime-data.csv', csv, 'text/csv'); }
+  function exportICS(){ const dtf=(iso)=> iso.replace(/[-:]/g,'').split('.')[0]+'Z'; const lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//GreenTime//PT-BR']; for(const e of state.entries){ const p=state.projects.find(x=>x.id===e.projectId); if(!p||!e.end) continue; const uid=e.id+'@greentime'; const title=(p.name + (p.clientId? ' — '+clientName(p.clientId):'')); lines.push('BEGIN:VEVENT','UID:'+uid,'DTSTAMP:'+dtf(new Date().toISOString()),'DTSTART:'+dtf(e.start),'DTEND:'+dtf(e.end),'SUMMARY:'+title, ...(e.note? ['DESCRIPTION:'+e.note.replace(/\n/g,' ')] : []),'END:VEVENT'); } lines.push('END:VCALENDAR'); download('greentime.ics', lines.join('\n'), 'text/calendar'); }
+
+  // ======= Invoices =======
+  function genInvoice(){ const s=$$('invStart').value; const e=$$('invEnd').value; if(!s||!e) return alert('Selecione o período.'); const start=new Date(s); const end=new Date(e); end.setHours(23,59,59,999); const cFil=$$('invClientFilter').value||null; const pFil=$$('invProjectFilter').value||null; const tax=Number($$('invTax').value||0); const list=entriesInRange(start,end).filter(en=>{ const p=state.projects.find(x=>x.id===en.projectId); if(!p||!en.billable) return false; if(cFil && p.clientId!==cFil) return false; if(pFil && p.id!==pFil) return false; return true; }); let total=0; const rows=[]; for(const en of list){ const p=state.projects.find(x=>x.id===en.projectId); const dur=(+new Date(en.end||new Date()) - +new Date(en.start)); const hrs=dur/3600000; const amt=hrs*(p.rate||0); total+=amt; rows.push({date:dt.format(new Date(en.start)), client:p.clientId?clientName(p.clientId):'', project:p.name, hours:hrs.toFixed(2), rate:(p.rate||0), amount:amt, note:en.note||''}); } const taxAmt=total*tax/100; const grand=total+taxAmt; const out=$$('invoiceOut'); out.innerHTML=''; const hdr=document.createElement('div'); hdr.className='row wrap'; hdr.innerHTML=`<div style="font-weight:700;font-size:var(--fs-lg)">Fatura</div><div style="margin-left:auto" class="mono">Período: ${start.toLocaleDateString()} — ${end.toLocaleDateString()}</div>`; out.appendChild(hdr); const t=document.createElement('table'); t.innerHTML='<thead><tr><th>Data</th><th>Cliente</th><th>Projeto</th><th>Horas</th><th>Tarifa</th><th>Valor</th><th>Nota</th></tr></thead>'; const tb=document.createElement('tbody'); for(const r of rows){ const tr=document.createElement('tr'); tr.innerHTML=`<td>${r.date}</td><td>${r.client}</td><td>${r.project}</td><td class="mono">${r.hours}</td><td class="mono">${money().format(r.rate)}</td><td class="mono">${money().format(r.amount)}</td><td>${r.note}</td>`; tb.appendChild(tr);} t.appendChild(tb); out.appendChild(t); const sct=document.createElement('div'); sct.className='row'; sct.style.justifyContent='flex-end'; sct.innerHTML = `<div class="pill">Subtotal: <span class="mono" style="margin-left:6px">${money().format(total)}</span></div><div class="pill">Impostos: <span class="mono" style="margin-left:6px">${money().format(taxAmt)}</span></div><div class="pill">Total: <span class="mono" style="margin-left:6px">${money().format(grand)}</span></div>`; out.appendChild(sct); }
+
+  // ======= Pomodoro =======
+  let pom = { mode:'idle', remaining: settings.pomFocus*60, focus:settings.pomFocus, br:settings.pomBreak, cycles:settings.pomCycles, done:0, timer:null };
+  function renderPomodoroHUD(){ $$('pomFocus').textContent=pom.focus+' min'; $$('pomBreak').textContent=pom.br+' min'; $$('pomCycles').textContent=pom.cycles; $$('pomState').textContent= pom.mode==='focus'? 'Foco': pom.mode==='break'? 'Pausa':'Pronto'; const mm=String(Math.floor(pom.remaining/60)).padStart(2,'0'); const ss=String(pom.remaining%60).padStart(2,'0'); $$('pomTime').textContent=`${mm}:${ss}`; }
+  function pomStart(){ if(pom.mode==='idle'){ pom.mode='focus'; pom.remaining=pom.focus*60; if($$('pomLinkTimer').checked){ const pid=$$('projectSelect').value; startTimer(pid,'Pomodoro',true);} } if(pom.timer) clearInterval(pom.timer); pom.timer=setInterval(()=>{ pom.remaining--; if(pom.remaining<=0){ if(pom.mode==='focus'){ if($$('pomLinkTimer').checked){ if(getRunning()) stopTimer(); } pom.done++; if(pom.done>=pom.cycles){ notify('Pomodoro concluído!'); pom.mode='idle'; pom.done=0; pom.remaining=pom.focus*60; clearInterval(pom.timer); pom.timer=null; } else { pom.mode='break'; pom.remaining=pom.br*60; notify('Hora da pausa.'); } } else { pom.mode='focus'; pom.remaining=pom.focus*60; notify('Voltar ao foco.'); if($$('pomLinkTimer').checked){ const pid=$$('projectSelect').value; startTimer(pid,'Pomodoro',true);} } renderPomodoroHUD(); } },1000); renderPomodoroHUD(); }
+  function pomPause(){ if(pom.timer){ clearInterval(pom.timer); pom.timer=null; } else { pomStart(); } }
+  function pomSkip(){ if(pom.mode==='focus'){ if($$('pomLinkTimer').checked){ if(getRunning()) stopTimer(); } pom.mode='break'; pom.remaining=pom.br*60; } else { pom.mode='focus'; pom.remaining=pom.focus*60; if($$('pomLinkTimer').checked){ const pid=$$('projectSelect').value; startTimer(pid,'Pomodoro',true);} } renderPomodoroHUD(); }
+  function pomReset(){ if(pom.timer){ clearInterval(pom.timer); pom.timer=null; } pom={...pom, mode:'idle', remaining: settings.pomFocus*60, done:0}; renderPomodoroHUD(); }
+  function notify(msg){ if('Notification' in window && Notification.permission==='granted'){ new Notification('GreenTime', { body: msg }); } }
+  if('Notification' in window && Notification.permission==='default'){ try{ Notification.requestPermission(); }catch{} }
+
+  // ======= Idle detection =======
+  let lastActive=Date.now();
+  const bump=()=> lastActive=Date.now();
+  ['pointerdown','keydown','mousemove','visibilitychange'].forEach(ev=> window.addEventListener(ev, bump, {passive:true}));
+  setInterval(()=>{ if(settings.idleMinutes>0 && getRunning()){ const idle=(Date.now()-lastActive)/(60*1000); if(idle>=settings.idleMinutes){ if(confirm(`Sem atividade por ${Math.floor(idle)} min. Pausar timer?`)){ stopTimer(); } lastActive=Date.now(); } } }, 15000);
+
+  // ======= Tabs/Keyboard/Events =======
+  let activeTab='timer';
+  function switchTab(id, pushHash=true){ activeTab=id; document.querySelectorAll('[role="tab"]').forEach(b=>{ const is=b.dataset.tab===id; b.setAttribute('aria-selected', String(is)); }); document.querySelectorAll('[role="tabpanel"]').forEach(p=> p.classList.toggle('hidden', p.id!==`panel-${id}`)); if(id==='reports') renderReports(); if(pushHash) location.hash = `#${id}`; }
+  function setupTabs(){ $$("tabs").addEventListener('click', (e)=>{ const btn=e.target.closest('[role="tab"]'); if(!btn) return; switchTab(btn.dataset.tab); btn.focus(); }); $$("tabs").addEventListener('keydown', (e)=>{ const tabs=[...document.querySelectorAll('[role="tab"]')]; const idx=tabs.findIndex(t=> t.getAttribute('aria-selected')==='true'); if(e.key==='ArrowRight'){ tabs[(idx+1)%tabs.length].click(); } if(e.key==='ArrowLeft'){ tabs[(idx-1+tabs.length)%tabs.length].click(); } }); if(location.hash){ const id=location.hash.replace('#',''); const target=document.querySelector(`[data-tab="${id}"]`); if(target) switchTab(id,false); } }
+
+  function bootstrap(){
+    // Manifest via data URL (single-file)
+    try{ const m=document.getElementById('app-manifest').textContent; const url=URL.createObjectURL(new Blob([m],{type:'application/manifest+json'})); const link=document.createElement('link'); link.rel='manifest'; link.href=url; document.head.appendChild(link);}catch{}
+
+    // Theme
+    const togg=()=> setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); $$('themeToggle').onclick=togg; $$('themeToggle2').onclick=togg;
+
+    // Projects & clients
+    $$('addProjectBtn').onclick=()=>{ const name=$$('newProjectName').value; const clientId=$$('newProjectClient').value||null; const rate=$$('newProjectRate').value; const budget=$$('newProjectBudget').value; const billable=$$('newProjectBillable').checked; state.projects.push({id:uid(), name:name.trim(), clientId, rate:Number(rate||0), billableDefault:!!billable, budgetHours:Number(budget||0), archived:false}); save(); $$('newProjectName').value=''; renderAll(); };
+    $$('addClientBtn').onclick=()=>{ const n=$$('newClientName').value.trim(); if(!n) return; state.clients.push({id:uid(), name:n}); save(); $$('newClientName').value=''; renderAll(); };
+
+    // Timer
+    $$('startBtn').onclick=()=>{ const pid=$$('projectSelect').value; const note=$$('noteInput').value; const bill=$$('billableInput').checked; startTimer(pid,note,bill); };
+    $$('stopBtn').onclick=stopTimer;
+    document.querySelectorAll('[data-tpl]').forEach(b=> b.addEventListener('click', ()=>{ $$('noteInput').value = b.getAttribute('data-tpl'); }));
+
+    // Range quick buttons
+    document.querySelectorAll('[data-range]').forEach(b=> b.addEventListener('click', ()=>{
+      const t=b.getAttribute('data-range'); const now=new Date(); let s,e; if(t==='today'){ s=new Date(); s.setHours(0,0,0,0); e=new Date(s); e.setDate(s.getDate()+1);} if(t==='week'){ s=startOfWeek(now); e=endOfWeek(now);} if(t==='month'){ s=startOfMonth(now); e=endOfMonth(now);} $$('rangeStart').value = `${s.getFullYear()}-${pad(s.getMonth()+1)}-${pad(s.getDate())}`; $$('rangeEnd').value = `${e.getFullYear()}-${pad(e.getMonth()+1)}-${pad(e.getDate())}`; renderEntries(); }));
+    $$('rangeStart').addEventListener('change', renderEntries); $$('rangeEnd').addEventListener('change', renderEntries);
+
+    // Export/Import
+    $$('exportJsonBtn').onclick=exportJSON; $$('exportCsvBtn').onclick=exportCSV; $$('exportIcsBtn').onclick=exportICS;
+    $$('importFile').onchange=(ev)=>{ const f=ev.target.files && ev.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const data=JSON.parse(r.result); if(!Array.isArray(data.projects)||!Array.isArray(data.entries)) throw new Error('formato inválido'); state=data; save(); renderAll(); }catch(e){ alert('Arquivo inválido: '+e.message);} }; r.readAsText(f); };
+
+    // Entries bulk
+    $$('checkAll').onchange=(ev)=>{ const body=$$('entriesBody'); body.querySelectorAll('input[type="checkbox"]').forEach(ck=> ck.checked=ev.target.checked); selected.clear(); if(ev.target.checked){ state.entries.forEach(e=> selected.add(e.id)); } };
+    $$('selectAll').onclick=()=>{ $$('checkAll').checked=true; $$('checkAll').dispatchEvent(new Event('change')); };
+    $$('bulkDelete').onclick=()=>{ lastTrash = state.entries.filter(e=> selected.has(e.id)); if(!lastTrash.length) return; state.entries = state.entries.filter(e=> !selected.has(e.id)); selected.clear(); save(); showUndo(); renderEntries(); };
+    $$('undoBtn').onclick=()=>{ if(!lastTrash.length) return; state.entries = state.entries.concat(lastTrash); lastTrash=[]; save(); $$('undoArea').classList.add('hidden'); renderEntries(); };
+    $$('bulkMerge').onclick=()=>{ if(selected.size<2) return alert('Selecione pelo menos 2 entradas do mesmo projeto contíguas.'); const list = state.entries.filter(e=> selected.has(e.id)).sort((a,b)=> +new Date(a.start)- +new Date(b.start)); const pid=list[0].projectId; if(!list.every(e=> e.projectId===pid)) return alert('Apenas entradas do mesmo projeto.'); const merged={...list[0]}; merged.end = list[list.length-1].end; merged.note = list.map(e=> e.note).filter(Boolean).join(' | '); state.entries = state.entries.filter(e=> !selected.has(e.id)); state.entries.push(merged); selected.clear(); save(); renderEntries(); };
+
+    // Sorting
+    document.querySelectorAll('th.sortable').forEach(th=> th.addEventListener('click', ()=>{ const key=th.getAttribute('data-sort'); if(sortBy===key) sortDir = (sortDir==='desc'?'asc':'desc'); else { sortBy=key; sortDir='desc'; } renderEntries(); }));
+
+    // Invoice
+    $$('invGen').onclick=genInvoice; $$('invPrint').onclick=()=> window.print();
+
+    // Settings
+    $$('roundSelect').value=String(settings.roundMinutes); $$('goalDailyInp').value=settings.goalDaily||0; $$('goalWeeklyInp').value=settings.goalWeekly||0; $$('setPomFocus').value=settings.pomFocus; $$('setPomBreak').value=settings.pomBreak; $$('setPomCycles').value=settings.pomCycles; $$('currencyInp').value=settings.currency||'BRL'; $$('idleInp').value=settings.idleMinutes||0;
+    ['roundSelect','goalDailyInp','goalWeeklyInp','setPomFocus','setPomBreak','setPomCycles','currencyInp','idleInp'].forEach(id=> $$(id).addEventListener('change', ()=>{ settings.roundMinutes=Number($$('roundSelect').value||0); settings.goalDaily=Number($$('goalDailyInp').value||0); settings.goalWeekly=Number($$('goalWeeklyInp').value||0); settings.pomFocus=Number($$('setPomFocus').value||25); settings.pomBreak=Number($$('setPomBreak').value||5); settings.pomCycles=Number($$('setPomCycles').value||4); settings.currency=($$('currencyInp').value||'BRL').toUpperCase(); settings.idleMinutes=Number($$('idleInp').value||0); saveSettings(); pom.focus=settings.pomFocus; pom.br=settings.pomBreak; pom.cycles=settings.pomCycles; pom.remaining=settings.pomFocus*60; renderPomodoroHUD(); renderAll(); }));
+
+    // Search & shortcuts
+    const searchEl=$$('search'); if(searchEl) searchEl.oninput = renderEntries;
+    window.addEventListener('keydown', (e)=>{ const active=document.activeElement; const typing=active && (active.tagName==='INPUT'||active.tagName==='TEXTAREA'); if(e.key==='/' && !typing){ e.preventDefault(); switchTab('entries'); $$('search')?.focus(); } if(e.key==='Escape'){ if(typing) active.blur(); if($$('search')) { $$('search').value=''; renderEntries(); } } if(e.code==='Space' && activeTab==='timer' && !typing){ e.preventDefault(); const run=getRunning(); if(run) stopTimer(); else { const pid=$$('projectSelect').value; startTimer(pid, $$('noteInput').value, $$('billableInput').checked); } } });
+
+    // Network indicator
+    const setNet=()=> $$('netStatus').style.display = navigator.onLine? 'none':'inline-block'; window.addEventListener('online', setNet); window.addEventListener('offline', setNet); setNet();
+
+    // Timer tick (rAF)
+    let lastSec=0; function tick(ts){ const sec=Math.floor(ts/1000); if(sec!==lastSec){ lastSec=sec; const run=getRunning(); const el=$$('elapsed'); if(el) el.textContent = run? fmtMs(Date.now()- +new Date(run.start)) : '0h 0m 0s'; } requestAnimationFrame(tick); } requestAnimationFrame(tick);
+
+    // Init tabs & first render
+    setupTabs(); renderAll();
+
+    // SW note: single-file não registra SW. Se você adicionar um sw.js ao lado, ele será detectado abaixo
+    if('serviceWorker' in navigator){ fetch('./sw.js',{method:'HEAD'}).then(r=>{ if(r.ok) navigator.serviceWorker.register('./sw.js'); }).catch(()=>{}); }
+  }
+
+  function uid(){ return Math.random().toString(36).slice(2,10) + Date.now().toString(36).slice(-4); }
+  bootstrap();
+  </script>
+</body>
+</html>
